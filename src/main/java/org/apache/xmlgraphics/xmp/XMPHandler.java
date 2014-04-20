@@ -138,7 +138,7 @@ public class XMPHandler extends DefaultHandler {
             } else if ("Description".equals(localName)) {
                 final String about = attributes.getValue(
                         XMPConstants.RDF_NAMESPACE, "about");
-                for (int i = 0, c = attributes.getLength(); i < c; i++) {
+                for (int i = 0, c = attributes.getLength(); i < c; ++i) {
                     final String ns = attributes.getURI(i);
                     if (XMPConstants.RDF_NAMESPACE.equals(ns)) {
                         // ignore

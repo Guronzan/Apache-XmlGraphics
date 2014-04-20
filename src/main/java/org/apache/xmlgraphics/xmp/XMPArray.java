@@ -108,7 +108,7 @@ public class XMPArray extends XMPComplexValue {
     public String getLangValue(final String lang) {
         String v = null;
         String valueForParentLanguage = null;
-        for (int i = 0, c = this.values.size(); i < c; i++) {
+        for (int i = 0, c = this.values.size(); i < c; ++i) {
             final String l = this.xmllang.get(i);
             if (l == null && lang == null || l != null && l.equals(lang)) {
                 v = this.values.get(i).toString();
@@ -149,7 +149,7 @@ public class XMPArray extends XMPComplexValue {
         } else {
             lang = inLang;
         }
-        for (int i = 0, c = this.values.size(); i < c; i++) {
+        for (int i = 0, c = this.values.size(); i < c; ++i) {
             final String l = this.xmllang.get(i);
             if (XMPConstants.DEFAULT_LANGUAGE.equals(lang) && l == null
                     || lang.equals(l)) {
@@ -230,7 +230,7 @@ public class XMPArray extends XMPComplexValue {
      */
     public Object[] toObjectArray() {
         final Object[] res = new Object[getSize()];
-        for (int i = 0, c = res.length; i < c; i++) {
+        for (int i = 0, c = res.length; i < c; ++i) {
             res[i] = getValue(i);
         }
         return res;
@@ -242,7 +242,7 @@ public class XMPArray extends XMPComplexValue {
         final AttributesImpl atts = new AttributesImpl();
         handler.startElement(XMPConstants.RDF_NAMESPACE, this.type.getName(),
                 "rdf:" + this.type.getName(), atts);
-        for (int i = 0, c = this.values.size(); i < c; i++) {
+        for (int i = 0, c = this.values.size(); i < c; ++i) {
             final String lang = this.xmllang.get(i);
             atts.clear();
             final Object v = this.values.get(i);

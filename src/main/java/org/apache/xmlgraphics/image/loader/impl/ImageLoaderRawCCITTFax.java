@@ -181,7 +181,7 @@ public class ImageLoaderRawCCITTFax extends AbstractImageLoader implements
             final int result = super.read(b, off, len);
             if (result > 0) {
                 final int endpos = off + result;
-                for (int i = off; i < endpos; i++) {
+                for (int i = off; i < endpos; ++i) {
                     b[i] = FLIP_TABLE[b[i] & 0xff];
                 }
             }

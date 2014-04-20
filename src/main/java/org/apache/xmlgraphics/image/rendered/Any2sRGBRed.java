@@ -125,7 +125,7 @@ public class Any2sRGBRed extends AbstractRed {
         final double scale = 1.0 / 255;
         final double exp = 1.0 / GAMMA;
         // System.out.print("L2S: ");
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 256; ++i) {
             double value = i * scale;
             if (value <= 0.0031308) {
                 value *= 12.92;
@@ -301,7 +301,7 @@ public class Any2sRGBRed extends AbstractRed {
         // log.info("After filter:");
 
         final WritableRaster wr00 = wr.createWritableTranslatedChild(0, 0);
-        for (int i = 0; i < dstCM.getColorSpace().getNumComponents(); i++) {
+        for (int i = 0; i < dstCM.getColorSpace().getNumComponents(); ++i) {
             copyBand(dstBI.getRaster(), i, wr00, i);
         }
 

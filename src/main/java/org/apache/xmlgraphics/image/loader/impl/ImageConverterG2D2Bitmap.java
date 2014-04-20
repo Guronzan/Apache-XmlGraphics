@@ -174,7 +174,7 @@ public class ImageConverterG2D2Bitmap extends AbstractImageConverter {
         final boolean alphaPremultiplied = true;
         final int bands = 2;
         final int[] bits = new int[bands];
-        for (int i = 0; i < bands; i++) {
+        for (int i = 0; i < bands; ++i) {
             bits[i] = 8;
         }
         final ColorModel cm = new ComponentColorModel(

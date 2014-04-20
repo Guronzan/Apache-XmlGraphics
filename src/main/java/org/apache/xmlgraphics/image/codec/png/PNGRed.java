@@ -317,7 +317,7 @@ public class PNGRed extends AbstractRed {
         final int maxOutSample = bits == 16 ? 65535 : 255;
 
         this.gammaLut = new int[numSamples];
-        for (int i = 0; i < numSamples; i++) {
+        for (int i = 0; i < numSamples; ++i) {
             final double gbright = (double) i / (numSamples - 1);
             final double gamma = Math.pow(gbright, exp);
             int igamma = (int) (gamma * maxOutSample + 0.5);
@@ -347,7 +347,7 @@ public class PNGRed extends AbstractRed {
         if (this.performGammaCorrection) {
             System.arraycopy(this.gammaLut, 0, this.grayLut, 0, len);
         } else {
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < len; ++i) {
                 this.grayLut[i] = this.expandBits[bits][i];
             }
         }
@@ -488,7 +488,7 @@ public class PNGRed extends AbstractRed {
 
             if (this.significantBits == null) {
                 this.significantBits = new int[this.inputBands];
-                for (int i = 0; i < this.inputBands; i++) {
+                for (int i = 0; i < this.inputBands; ++i) {
                     this.significantBits[i] = this.bitDepth;
                 }
 
@@ -734,7 +734,7 @@ public class PNGRed extends AbstractRed {
         // Store text strings
         final int textLen = this.textKeys.size();
         final String[] textArray = new String[2 * textLen];
-        for (int i = 0; i < textLen; i++) {
+        for (int i = 0; i < textLen; ++i) {
             final String key = this.textKeys.get(i);
             final String val = this.textStrings.get(i);
             textArray[2 * i] = key;
@@ -751,7 +751,7 @@ public class PNGRed extends AbstractRed {
         // Store compressed text strings
         final int ztextLen = this.ztextKeys.size();
         final String[] ztextArray = new String[2 * ztextLen];
-        for (int i = 0; i < ztextLen; i++) {
+        for (int i = 0; i < ztextLen; ++i) {
             final String key = this.ztextKeys.get(i);
             final String val = this.ztextStrings.get(i);
             ztextArray[2 * i] = key;
@@ -969,7 +969,7 @@ public class PNGRed extends AbstractRed {
                 initGammaLut(this.bitDepth == 16 ? 16 : 8);
             }
 
-            for (int i = 0; i < this.paletteEntries; i++) {
+            for (int i = 0; i < this.paletteEntries; ++i) {
                 final byte r = chunk.getByte(pltIndex++);
                 final byte g = chunk.getByte(pltIndex++);
                 final byte b = chunk.getByte(pltIndex++);
@@ -979,7 +979,7 @@ public class PNGRed extends AbstractRed {
                 this.bluePalette[i] = (byte) this.gammaLut[b & 0xff];
             }
         } else {
-            for (int i = 0; i < this.paletteEntries; i++) {
+            for (int i = 0; i < this.paletteEntries; ++i) {
                 this.redPalette[i] = chunk.getByte(pltIndex++);
                 this.greenPalette[i] = chunk.getByte(pltIndex++);
                 this.bluePalette[i] = chunk.getByte(pltIndex++);
@@ -1106,7 +1106,7 @@ public class PNGRed extends AbstractRed {
 
         final int length = this.redPalette.length;
         final int[] hist = new int[length];
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; ++i) {
             hist[i] = chunk.getInt2(2 * i);
         }
 
@@ -1155,7 +1155,7 @@ public class PNGRed extends AbstractRed {
         } else {
             this.significantBits = new int[this.inputBands];
         }
-        for (int i = 0; i < this.significantBits.length; i++) {
+        for (int i = 0; i < this.significantBits.length; ++i) {
             final int bits = chunk.getByte(i);
             final int depth = this.colorType == PNG_COLOR_PALETTE ? 8
                     : this.bitDepth;
@@ -1227,7 +1227,7 @@ public class PNGRed extends AbstractRed {
             key.append((char) b);
         }
 
-        for (int i = textIndex; i < chunk.getLength(); i++) {
+        for (int i = textIndex; i < chunk.getLength(); ++i) {
             value.append((char) chunk.getByte(i));
         }
 
@@ -1268,12 +1268,12 @@ public class PNGRed extends AbstractRed {
 
             // Load beginning of palette from the chunk
             this.alphaPalette = new byte[this.paletteEntries];
-            for (int i = 0; i < entries; i++) {
+            for (int i = 0; i < entries; ++i) {
                 this.alphaPalette[i] = chunk.getByte(i);
             }
 
             // Fill rest of palette with 255
-            for (int i = entries; i < this.paletteEntries; i++) {
+            for (int i = entries; i < this.paletteEntries; ++i) {
                 this.alphaPalette[i] = (byte) 255;
             }
 
@@ -1392,7 +1392,7 @@ public class PNGRed extends AbstractRed {
 
     private static void decodeSubFilter(final byte[] curr, final int count,
             final int bpp) {
-        for (int i = bpp; i < count; i++) {
+        for (int i = bpp; i < count; ++i) {
             int val;
 
             val = curr[i] & 0xff;
@@ -1404,7 +1404,7 @@ public class PNGRed extends AbstractRed {
 
     private static void decodeUpFilter(final byte[] curr, final byte[] prev,
             final int count) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; ++i) {
             final int raw = curr[i] & 0xff;
             final int prior = prev[i] & 0xff;
 
@@ -1414,14 +1414,14 @@ public class PNGRed extends AbstractRed {
 
     private static void decodeAverageFilter(final byte[] curr,
             final byte[] prev, final int count, final int bpp) {
-        for (int i = 0; i < bpp; i++) {
+        for (int i = 0; i < bpp; ++i) {
             final int raw = curr[i] & 0xff;
             final int priorRow = prev[i] & 0xff;
 
             curr[i] = (byte) (raw + priorRow / 2);
         }
 
-        for (int i = bpp; i < count; i++) {
+        for (int i = bpp; i < count; ++i) {
             final int raw = curr[i] & 0xff;
             final int priorPixel = curr[i - bpp] & 0xff;
             final int priorRow = prev[i] & 0xff;
@@ -1449,14 +1449,14 @@ public class PNGRed extends AbstractRed {
             final int count, final int bpp) {
         int priorPixel, priorRowPixel;
 
-        for (int i = 0; i < bpp; i++) {
+        for (int i = 0; i < bpp; ++i) {
             final int raw = curr[i] & 0xff;
             final int priorRow = prev[i] & 0xff;
 
             curr[i] = (byte) (raw + priorRow);
         }
 
-        for (int i = bpp; i < count; i++) {
+        for (int i = bpp; i < count; ++i) {
             final int raw = curr[i] & 0xff;
             priorPixel = curr[i - bpp] & 0xff;
             final int priorRow = prev[i] & 0xff;
@@ -1490,7 +1490,7 @@ public class PNGRed extends AbstractRed {
             for (srcX = 0; srcX < width; srcX++) {
                 src.getPixel(srcX, 0, ps);
 
-                for (int i = 0; i < this.inputBands; i++) {
+                for (int i = 0; i < this.inputBands; ++i) {
                     final int x = ps[i];
                     ps[i] = this.gammaLut[x];
                 }

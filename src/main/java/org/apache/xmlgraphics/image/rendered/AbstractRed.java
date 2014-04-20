@@ -78,8 +78,8 @@ public abstract class AbstractRed implements CachableRed {
 
     /**
      * Construct an Abstract RenderedImage from a bounds rect and props (may be
-     * null). The srcs Vector will be empty.
-     * 
+     * null). The srcs List will be empty.
+     *
      * @param bounds
      *            this defines the extent of the rable in the user coordinate
      *            system.
@@ -94,9 +94,9 @@ public abstract class AbstractRed implements CachableRed {
     /**
      * Construct an Abstract RenderedImage from a source image and props (may be
      * null).
-     * 
+     *
      * @param src
-     *            will be the first (and only) member of the srcs Vector. Src is
+     *            will be the first (and only) member of the srcs List. Src is
      *            also used to set the bounds, ColorModel, SampleModel, and tile
      *            grid offsets.
      * @param props
@@ -110,9 +110,9 @@ public abstract class AbstractRed implements CachableRed {
     /**
      * Construct an Abstract RenderedImage from a source image, bounds rect and
      * props (may be null).
-     * 
+     *
      * @param src
-     *            will be the first (and only) member of the srcs Vector. Src is
+     *            will be the first (and only) member of the srcs List. Src is
      *            also used to set the ColorModel, SampleModel, and tile grid
      *            offsets.
      * @param bounds
@@ -129,10 +129,10 @@ public abstract class AbstractRed implements CachableRed {
     /**
      * Construct an Abstract RenderedImage from a source image, bounds rect and
      * props (may be null).
-     * 
+     *
      * @param src
      *            if not null, will be the first (and only) member of the srcs
-     *            Vector. Also if it is not null it provides the tile grid
+     *            List. Also if it is not null it provides the tile grid
      *            offsets, otherwise they are zero.
      * @param bounds
      *            The bounds of this image.
@@ -155,10 +155,10 @@ public abstract class AbstractRed implements CachableRed {
 
     /**
      * Construct an Abstract Rable from a bounds rect and props (may be null).
-     * The srcs Vector will be empty.
-     * 
+     * The srcs List will be empty.
+     *
      * @param src
-     *            will be the first (and only) member of the srcs Vector. Src is
+     *            will be the first (and only) member of the srcs List. Src is
      *            also used to set the ColorModel, SampleModel, and tile grid
      *            offsets.
      * @param bounds
@@ -262,9 +262,9 @@ public abstract class AbstractRed implements CachableRed {
     /**
      * Construct an Abstract Rable from a List of sources a bounds rect and
      * props (may be null).
-     * 
+     *
      * @param srcs
-     *            This is used to initialize the srcs Vector. All the members of
+     *            This is used to initialize the srcs List. All the members of
      *            srcs must be CachableRed otherwise an error will be thrown.
      * @param bounds
      *            this defines the extent of the rendered in pixels
@@ -279,10 +279,10 @@ public abstract class AbstractRed implements CachableRed {
     /**
      * Construct an Abstract RenderedImage from a bounds rect, ColorModel (may
      * be null), SampleModel (may be null) and props (may be null). The srcs
-     * Vector will be empty.
-     * 
+     * List will be empty.
+     *
      * @param srcs
-     *            This is used to initialize the srcs Vector. All the members of
+     *            This is used to initialize the srcs List. All the members of
      *            srcs must be CachableRed otherwise an error will be thrown.
      * @param bounds
      *            this defines the extent of the rendered in pixels
@@ -305,10 +305,10 @@ public abstract class AbstractRed implements CachableRed {
     /**
      * Construct an Abstract RenderedImage from a bounds rect, ColorModel (may
      * be null), SampleModel (may be null), tile grid offsets and props (may be
-     * null). The srcs Vector will be empty.
-     * 
+     * null). The srcs List will be empty.
+     *
      * @param srcs
-     *            This is used to initialize the srcs Vector. All the members of
+     *            This is used to initialize the srcs List. All the members of
      *            srcs must be CachableRed otherwise an error will be thrown.
      * @param bounds
      *            this defines the extent of the rable in the user coordinate
@@ -613,7 +613,7 @@ public abstract class AbstractRed implements CachableRed {
 
     /**
      * Returns the x index of tile under xloc.
-     * 
+     *
      * @param xloc
      *            the x location (in pixels) to get tile for.
      * @return The tile index under xloc (may be outside tile grid).
@@ -630,7 +630,7 @@ public abstract class AbstractRed implements CachableRed {
 
     /**
      * Returns the y index of tile under yloc.
-     * 
+     *
      * @param yloc
      *            the y location (in pixels) to get tile for.
      * @return The tile index under yloc (may be outside tile grid).
@@ -649,7 +649,7 @@ public abstract class AbstractRed implements CachableRed {
      * Copies data from this images tile grid into wr. wr may extend outside the
      * bounds of this image in which case the data in wr outside the bounds will
      * not be touched.
-     * 
+     *
      * @param wr
      *            Raster to fill with image data.
      */
@@ -694,7 +694,7 @@ public abstract class AbstractRed implements CachableRed {
      * This is a helper function that will create the tile requested Including
      * properly subsetting the bounds of the tile to the bounds of the current
      * image.
-     * 
+     *
      * @param tileX
      *            The x index of the tile to be built
      * @param tileY

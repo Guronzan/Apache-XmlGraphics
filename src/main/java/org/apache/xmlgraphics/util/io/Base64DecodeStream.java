@@ -66,7 +66,7 @@ public class Base64DecodeStream extends InputStream {
 
     private static final byte[] pem_array = new byte[256];
     static {
-        for (int i = 0; i < pem_array.length; i++) {
+        for (int i = 0; i < pem_array.length; ++i) {
             pem_array[i] = -1;
         }
 

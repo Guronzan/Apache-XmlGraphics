@@ -139,7 +139,7 @@ public class TIFFImage extends AbstractRed {
             final int dataType, final int tileWidth, final int tileHeight,
             final int bands) {
         final int[] bandOffsets = new int[bands];
-        for (int i = 0; i < bands; i++) {
+        for (int i = 0; i < bands; ++i) {
             bandOffsets[i] = i;
         }
         return new PixelInterleavedSampleModel(dataType, tileWidth, tileHeight,
@@ -155,7 +155,7 @@ public class TIFFImage extends AbstractRed {
         if (field.getType() == TIFFField.TIFF_SHORT) {
             final char[] charValue = field.getAsChars();
             value = new long[charValue.length];
-            for (int i = 0; i < charValue.length; i++) {
+            for (int i = 0; i < charValue.length; ++i) {
                 value[i] = charValue[i] & 0xffff;
             }
         } else if (field.getType() == TIFFField.TIFF_LONG) {
@@ -226,7 +226,7 @@ public class TIFFImage extends AbstractRed {
                     bitsPerSample = new char[] { 1 };
 
                     // Ensure that all samples have the same bit depth.
-                    for (int i = 1; i < bitsPerSample.length; i++) {
+                    for (int i = 1; i < bitsPerSample.length; ++i) {
                         if (bitsPerSample[i] != bitsPerSample[0]) {
                             throw new RuntimeException(
                                     PropertyUtil.getString("TIFFImage1"));
@@ -543,11 +543,11 @@ public class TIFFImage extends AbstractRed {
             } else {
                 final byte[] map = new byte[16];
                 if (this.isWhiteZero) {
-                    for (int i = 0; i < map.length; i++) {
+                    for (int i = 0; i < map.length; ++i) {
                         map[i] = (byte) (255 - 16 * i);
                     }
                 } else {
-                    for (int i = 0; i < map.length; i++) {
+                    for (int i = 0; i < map.length; ++i) {
                         map[i] = (byte) (16 * i);
                     }
                 }
@@ -562,7 +562,7 @@ public class TIFFImage extends AbstractRed {
             // Create a pixel interleaved SampleModel with decreasing
             // band offsets.
             final int[] reverseOffsets = new int[this.numBands];
-            for (int i = 0; i < this.numBands; i++) {
+            for (int i = 0; i < this.numBands; ++i) {
                 reverseOffsets[i] = this.numBands - 1 - i;
             }
             sampleModel = new PixelInterleavedSampleModel(this.dataType,
@@ -604,7 +604,7 @@ public class TIFFImage extends AbstractRed {
             // ColorModel as null, as there is no appropriate ColorModel.
 
             final int[] bandOffsets = new int[this.numBands];
-            for (int i = 0; i < this.numBands; i++) {
+            for (int i = 0; i < this.numBands; ++i) {
                 bandOffsets[i] = i;
             }
 
@@ -689,7 +689,7 @@ public class TIFFImage extends AbstractRed {
 
                 if (this.dataType == DataBuffer.TYPE_SHORT) {
 
-                    for (int i = 0; i < bandLength; i++) {
+                    for (int i = 0; i < bandLength; ++i) {
                         r[i] = param
                                 .decodeSigned16BitsTo8Bits((short) this.colormap[i]);
                         g[i] = param
@@ -702,7 +702,7 @@ public class TIFFImage extends AbstractRed {
 
                 } else {
 
-                    for (int i = 0; i < bandLength; i++) {
+                    for (int i = 0; i < bandLength; ++i) {
                         r[i] = param
                                 .decode16BitsTo8Bits(this.colormap[i] & 0xffff);
                         g[i] = param.decode16BitsTo8Bits(this.colormap[gIndex
@@ -944,7 +944,7 @@ public class TIFFImage extends AbstractRed {
                                 int count = 0, lookup;
                                 final int len = this.colormap.length / 3;
                                 final int len2 = len * 2;
-                                for (int i = 0; i < unitsBeforeLookup; i++) {
+                                for (int i = 0; i < unitsBeforeLookup; ++i) {
                                     // Get the index into the colormap
                                     lookup = tempData[i] & 0xffff;
                                     // Get the blue value
@@ -966,7 +966,7 @@ public class TIFFImage extends AbstractRed {
                                 int count = 0, lookup;
                                 final int len = this.colormap.length / 3;
                                 final int len2 = len * 2;
-                                for (int i = 0; i < unitsBeforeLookup; i++) {
+                                for (int i = 0; i < unitsBeforeLookup; ++i) {
                                     // Get the index into the colormap
                                     lookup = tempData[i] & 0xffff;
                                     // Get the blue value
@@ -1102,7 +1102,7 @@ public class TIFFImage extends AbstractRed {
                             int count = 0, lookup;
                             final int len = this.colormap.length / 3;
                             final int len2 = len * 2;
-                            for (int i = 0; i < unitsBeforeLookup; i++) {
+                            for (int i = 0; i < unitsBeforeLookup; ++i) {
                                 // Get the index into the colormap
                                 lookup = tempData[i] & 0xff;
                                 // Get the blue value
@@ -1206,7 +1206,7 @@ public class TIFFImage extends AbstractRed {
 
                             int srcCount = 0, dstCount = 0;
                             for (int j = 0; j < newRect.height; j++) {
-                                for (int i = 0; i < newRect.width / 2; i++) {
+                                for (int i = 0; i < newRect.width / 2; ++i) {
                                     data[dstCount++] = (byte) ((tempData[srcCount] & 0xf0) >> 4);
                                     data[dstCount++] = (byte) (tempData[srcCount++] & 0x0f);
                                 }
@@ -1220,7 +1220,7 @@ public class TIFFImage extends AbstractRed {
                             final int len2 = len * 2;
                             int cmapValue, lookup;
                             int count = 0;
-                            for (int i = 0; i < bytes; i++) {
+                            for (int i = 0; i < bytes; ++i) {
                                 lookup = data[i] & 0xff;
                                 cmapValue = this.colormap[lookup + len2];
                                 sdata[count++] = (short) (cmapValue & 0xffff);
@@ -1555,7 +1555,7 @@ public class TIFFImage extends AbstractRed {
                 int y = newRect.y;
                 for (int j = 0; j < numV; j++) {
                     int x = newRect.x;
-                    for (int i = 0; i < numH; i++) {
+                    for (int i = 0; i < numH; ++i) {
                         final int Cb = tempData[bOffset + offsetCb];
                         final int Cr = tempData[bOffset + offsetCr];
                         int k = 0;
@@ -1625,7 +1625,7 @@ public class TIFFImage extends AbstractRed {
 
         if (this.isBigEndian) {
 
-            for (int i = 0; i < shortCount; i++) {
+            for (int i = 0; i < shortCount; ++i) {
                 firstByte = byteArray[j++] & 0xff;
                 secondByte = byteArray[j++] & 0xff;
                 shortArray[i] = (short) ((firstByte << 8) + secondByte);
@@ -1633,7 +1633,7 @@ public class TIFFImage extends AbstractRed {
 
         } else {
 
-            for (int i = 0; i < shortCount; i++) {
+            for (int i = 0; i < shortCount; ++i) {
                 firstByte = byteArray[j++] & 0xff;
                 secondByte = byteArray[j++] & 0xff;
                 shortArray[i] = (short) ((secondByte << 8) + firstByte);
@@ -1650,7 +1650,7 @@ public class TIFFImage extends AbstractRed {
 
         if (this.isBigEndian) {
 
-            for (int i = 0; i < intCount; i++) {
+            for (int i = 0; i < intCount; ++i) {
                 intArray[i] = (byteArray[j++] & 0xff) << 24
                         | (byteArray[j++] & 0xff) << 16
                         | (byteArray[j++] & 0xff) << 8 | byteArray[j++] & 0xff;
@@ -1658,7 +1658,7 @@ public class TIFFImage extends AbstractRed {
 
         } else {
 
-            for (int i = 0; i < intCount; i++) {
+            for (int i = 0; i < intCount; ++i) {
                 intArray[i] = byteArray[j++] & 0xff
                         | (byteArray[j++] & 0xff) << 8
                         | (byteArray[j++] & 0xff) << 16
@@ -1687,7 +1687,7 @@ public class TIFFImage extends AbstractRed {
                 if (b >= 0 && b <= 127) {
 
                     // literal run packet
-                    for (int i = 0; i < b + 1; i++) {
+                    for (int i = 0; i < b + 1; ++i) {
                         dst[dstCount++] = data[srcCount++];
                     }
 
@@ -1695,7 +1695,7 @@ public class TIFFImage extends AbstractRed {
 
                     // 2 byte encoded run packet
                     repeat = data[srcCount++];
-                    for (int i = 0; i < -b + 1; i++) {
+                    for (int i = 0; i < -b + 1; ++i) {
                         dst[dstCount++] = repeat;
                     }
 
@@ -1752,7 +1752,7 @@ public class TIFFImage extends AbstractRed {
         }
 
         RGBBits = new int[numBands];
-        for (int i = 0; i < numBands; i++) {
+        for (int i = 0; i < numBands; ++i) {
             RGBBits[i] = componentSize;
         }
 

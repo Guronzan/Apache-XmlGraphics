@@ -314,7 +314,7 @@ public class ImageEncodingHelper {
                     PixelInterleavedSampleModel piSampleModel;
                     piSampleModel = (PixelInterleavedSampleModel) sampleModel;
                     final int[] offsets = piSampleModel.getBandOffsets();
-                    for (int i = 0; i < offsets.length; i++) {
+                    for (int i = 0; i < offsets.length; ++i) {
                         if (offsets[i] != i
                                 && offsets[i] != offsets.length - 1 - i) {
                             // Don't encode directly as samples are not next to

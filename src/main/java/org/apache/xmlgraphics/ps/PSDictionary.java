@@ -61,7 +61,7 @@ public class PSDictionary extends HashMap<String, Object> {
         }
 
         private static final String[][] BRACES = { { "<<", ">>" },
-                { "[", "]" }, { "{", "}" }, { "(", ")" } };
+            { "[", "]" }, { "{", "}" }, { "(", ")" } };
 
         private static final int OPENING = 0;
         private static final int CLOSING = 1;
@@ -83,7 +83,7 @@ public class PSDictionary extends HashMap<String, Object> {
          */
         protected Token nextToken(final String str, final int fromIndex) {
             Token t = null;
-            for (int i = fromIndex; i < str.length(); i++) {
+            for (int i = fromIndex; i < str.length(); ++i) {
                 final boolean isWhitespace = Character.isWhitespace(str
                         .charAt(i));
                 // start index found
@@ -123,7 +123,7 @@ public class PSDictionary extends HashMap<String, Object> {
          */
         private int indexOfMatchingBrace(final String str,
                 final String[] braces, final int inIndex)
-                throws PSDictionaryFormatException {
+                        throws PSDictionaryFormatException {
             int fromIndex = inIndex;
             final int len = str.length();
             if (braces.length != 2) {
@@ -225,7 +225,7 @@ public class PSDictionary extends HashMap<String, Object> {
                         || braces == BRACES[STRING]) {
                     obj = valueToken.value;
                 } else if (BRACES[ARRAY] == braces) {
-                    final List<String> objList = new ArrayList<String>();
+                    final List<String> objList = new ArrayList<>();
                     final String objString = stripBraces(valueToken.value,
                             braces);
                     final StringTokenizer tokenizer = new StringTokenizer(
@@ -273,8 +273,7 @@ public class PSDictionary extends HashMap<String, Object> {
         if (dictionaryObj.size() != size()) {
             return false;
         }
-        for (final Object element : keySet()) {
-            final String key = (String) element;
+        for (final String key : keySet()) {
             if (!dictionaryObj.containsKey(key)) {
                 return false;
             }
@@ -302,8 +301,7 @@ public class PSDictionary extends HashMap<String, Object> {
             return "";
         }
         final StringBuilder sb = new StringBuilder("<<\n");
-        for (final Object element2 : super.keySet()) {
-            final String key = (String) element2;
+        for (final String key : super.keySet()) {
             sb.append("  " + key + " ");
             final Object obj = super.get(key);
             if (obj instanceof ArrayList) {

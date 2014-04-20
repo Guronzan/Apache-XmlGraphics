@@ -231,7 +231,7 @@ class PNGFile implements PNGConstants {
         this.hasPalette = true;
 
         int pltIndex = 0;
-        for (int i = 0; i < this.paletteEntries; i++) {
+        for (int i = 0; i < this.paletteEntries; ++i) {
             this.redPalette[i] = chunk.getByte(pltIndex++);
             this.greenPalette[i] = chunk.getByte(pltIndex++);
             this.bluePalette[i] = chunk.getByte(pltIndex++);
@@ -248,11 +248,11 @@ class PNGFile implements PNGConstants {
             }
             // Load beginning of palette from the chunk
             this.alphaPalette = new byte[this.paletteEntries];
-            for (int i = 0; i < entries; i++) {
+            for (int i = 0; i < entries; ++i) {
                 this.alphaPalette[i] = chunk.getByte(i);
             }
             // Fill rest of palette with 255
-            for (int i = entries; i < this.paletteEntries; i++) {
+            for (int i = entries; i < this.paletteEntries; ++i) {
                 this.alphaPalette[i] = (byte) 255;
             }
             this.hasAlphaPalette = true;

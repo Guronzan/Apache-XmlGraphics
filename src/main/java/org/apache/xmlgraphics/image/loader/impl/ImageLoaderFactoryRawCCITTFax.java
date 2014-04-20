@@ -47,7 +47,7 @@ public class ImageLoaderFactoryRawCCITTFax extends AbstractImageLoaderFactory {
      * @return the associated MIME type
      */
     public static String getMimeForRawFlavor(final ImageFlavor flavor) {
-        for (int i = 0, ci = FLAVORS.length; i < ci; i++) {
+        for (int i = 0, ci = FLAVORS.length; i < ci; ++i) {
             for (int j = 0, cj = FLAVORS[i].length; j < cj; j++) {
                 if (FLAVORS[i][j].equals(flavor)) {
                     return MIMES[i];
@@ -67,7 +67,7 @@ public class ImageLoaderFactoryRawCCITTFax extends AbstractImageLoaderFactory {
     /** {@inheritDoc} */
     @Override
     public ImageFlavor[] getSupportedFlavors(final String mime) {
-        for (int i = 0, c = MIMES.length; i < c; i++) {
+        for (int i = 0, c = MIMES.length; i < c; ++i) {
             if (MIMES[i].equals(mime)) {
                 return FLAVORS[i];
             }

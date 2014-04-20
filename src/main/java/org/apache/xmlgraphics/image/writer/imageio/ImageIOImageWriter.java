@@ -210,7 +210,7 @@ public class ImageIOImageWriter implements ImageWriter, IIOWriteWarningListener 
     protected static IIOMetadataNode getChildNode(final Node n,
             final String name) {
         final NodeList nodes = n.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
+        for (int i = 0; i < nodes.getLength(); ++i) {
             final Node child = nodes.item(i);
             if (name.equals(child.getNodeName())) {
                 return (IIOMetadataNode) child;

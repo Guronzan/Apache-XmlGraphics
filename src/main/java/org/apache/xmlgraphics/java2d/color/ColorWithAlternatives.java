@@ -232,7 +232,7 @@ public class ColorWithAlternatives extends Color {
         if (alt1.length != alt2.length) {
             return false;
         }
-        for (int i = 0, c = alt1.length; i < c; i++) {
+        for (int i = 0, c = alt1.length; i < c; ++i) {
             final Color c1 = alt1[i];
             final Color c2 = alt2[i];
             if (!ColorUtil.isSameColor(c1, c2)) {

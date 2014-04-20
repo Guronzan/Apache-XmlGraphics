@@ -428,7 +428,7 @@ public class PSTilingPattern {
             sb.append("{<");
             this.texture.getImage().getRGB(0, 0, width, height, argb, 0, width);
             int count = 0;
-            for (int i = 0; i < argb.length; i++) {
+            for (int i = 0; i < argb.length; ++i) {
                 if (i % width == 0 || count > 249) {
                     sb.append("\n");
                     count = 0; // line should not be longer than 255 characters
@@ -522,7 +522,7 @@ public class PSTilingPattern {
             patternTexture.getImage().getRGB(0, 0, widthPattern, heightPattern,
                     rgbDataPattern, 0, widthPattern);
 
-            for (int i = 0; i < rgbData.length; i++) {
+            for (int i = 0; i < rgbData.length; ++i) {
                 if (rgbData[i] != rgbDataPattern[i]) {
                     return false;
                 }

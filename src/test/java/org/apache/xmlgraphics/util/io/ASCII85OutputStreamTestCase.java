@@ -37,7 +37,7 @@ public class ASCII85OutputStreamTestCase extends TestCase {
 
     static {
         // Fill in some data
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; ++i) {
             DATA[i] = (byte) i;
         }
     }

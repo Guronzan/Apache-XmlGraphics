@@ -161,7 +161,7 @@ public class ASCII85OutputStream extends FilterOutputStream implements
             final int rest = this.pos;
             /*
              * byte[] lastdata = new byte[4]; int i = 0; for (int j = 0; j < 4;
-             * j++) { if (j < rest) { lastdata[j] = data[i++]; } else {
+             * j++) { if (j < rest) { lastdata[j] = data[++i]; } else {
              * lastdata[j] = 0; } }
              * 
              * long val = ((lastdata[0] << 24) & 0xff000000L) + ((lastdata[1] <<

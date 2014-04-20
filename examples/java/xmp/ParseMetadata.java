@@ -47,7 +47,7 @@ public class ParseMetadata {
         prop = meta.getProperty(XMPConstants.DUBLIN_CORE_NAMESPACE, "creator");
         XMPArray array;
         array = prop.getArrayValue();
-        for (int i = 0, c = array.getSize(); i < c; i++) {
+        for (int i = 0, c = array.getSize(); i < c; ++i) {
             log.info("Creator: " + array.getValue(i));
         }
         prop = meta.getProperty(XMPConstants.DUBLIN_CORE_NAMESPACE, "title");

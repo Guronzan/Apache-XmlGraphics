@@ -56,7 +56,7 @@ public class NamedColorTest extends TestCase {
         assertEquals(1, comp.length);
         assertEquals(1.0f, comp[0], 0.001f);
         final float[] xyz = ncs.toCIEXYZ(new float[] { 1.0f });
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; ++i) {
             assertEquals(c1xyz[i], xyz[i], 0.001f);
         }
 

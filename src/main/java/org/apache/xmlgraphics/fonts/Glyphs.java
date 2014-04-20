@@ -935,7 +935,7 @@ public final class Glyphs {
 
     private static void addAlternatives(final Map<String, String[]> map,
             final String[] alternatives) {
-        for (int i = 0, c = alternatives.length; i < c; i++) {
+        for (int i = 0, c = alternatives.length; i < c; ++i) {
             final String[] alt = new String[c - 1];
             int idx = 0;
             for (int j = 0; j < c; j++) {
@@ -979,7 +979,7 @@ public final class Glyphs {
         final String[] arr = new String[lines.size() * 2];
         int pos = 0;
         final StringBuilder buf = new StringBuilder();
-        for (int i = 0, c = lines.size(); i < c; i++) {
+        for (int i = 0, c = lines.size(); i < c; ++i) {
             final String line = lines.get(i);
             final int semicolon = line.indexOf(';');
             if (semicolon <= 0) {

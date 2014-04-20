@@ -53,7 +53,7 @@ public class SubInputStreamTestCase extends TestCase {
     public void testMain() throws IOException {
         // Initialize test data
         final byte[] data = new byte[256];
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < data.length; ++i) {
             data[i] = (byte) (i & 0xff);
         }
 

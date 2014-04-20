@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
-import java.awt.font.GlyphVector;
+import java.awt.font.GlyphList;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -126,7 +126,7 @@ public class TilingPatternExample {
     private void paintText(Graphics2D g2d) {
         g2d.setPaint(paint);
         Font font = new Font("serif", Font.BOLD, 80);
-        GlyphVector gv = font.createGlyphVector(g2d.getFontRenderContext(), "Java");
+        GlyphList gv = font.createGlyphList(g2d.getFontRenderContext(), "Java");
         g2d.translate(100, 180);
         g2d.fill(gv.getOutline());
     }

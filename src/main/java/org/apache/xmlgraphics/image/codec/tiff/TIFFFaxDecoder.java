@@ -562,7 +562,7 @@ class TIFFFaxDecoder {
         this.bitPointer = 0;
         this.bytePointer = 0;
 
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < height; ++i) {
             decodeNextScanline(buffer, lineOffset, startX);
             lineOffset += scanlineStride;
         }

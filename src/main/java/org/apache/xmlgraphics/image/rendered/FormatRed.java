@@ -191,7 +191,7 @@ public class FormatRed extends AbstractRed {
 
         if (sm instanceof ComponentSampleModel) {
             final int[] bitsPer = new int[bands];
-            for (int i = 0; i < bands; i++) {
+            for (int i = 0; i < bands; ++i) {
                 bitsPer[i] = bits;
             }
 

@@ -299,7 +299,7 @@ public class CIELabColorSpace extends ColorSpace {
     public float[] toNativeComponents(final float[] comps) {
         checkNumComponents(comps);
         final float[] nativeComps = new float[comps.length];
-        for (int i = 0, c = comps.length; i < c; i++) {
+        for (int i = 0, c = comps.length; i < c; ++i) {
             nativeComps[i] = denormalize(comps[i], i);
         }
         return nativeComps;
@@ -320,7 +320,7 @@ public class CIELabColorSpace extends ColorSpace {
     public Color toColor(final float[] colorvalue, final float alpha) {
         final int c = colorvalue.length;
         final float[] normalized = new float[c];
-        for (int i = 0; i < c; i++) {
+        for (int i = 0; i < c; ++i) {
             normalized[i] = normalize(colorvalue[i], i);
         }
         // Using ColorWithAlternatives for better equals() functionality

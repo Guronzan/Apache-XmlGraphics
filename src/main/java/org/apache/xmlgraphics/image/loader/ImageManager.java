@@ -419,7 +419,7 @@ public class ImageManager {
 
         Image img = null;
         final int count = flavors.length;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; ++i) {
             if (image.getFlavor().equals(flavors[i])) {
                 // Shortcut (the image is already in one of the requested
                 // formats)
@@ -475,7 +475,7 @@ public class ImageManager {
         final int count = candidates.length;
         if (log.isTraceEnabled()) {
             log.trace("Candidate Pipelines:");
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 if (candidates[i] == null) {
                     continue;
                 }

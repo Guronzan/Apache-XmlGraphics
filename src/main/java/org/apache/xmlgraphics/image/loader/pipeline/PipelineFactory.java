@@ -176,7 +176,7 @@ public class PipelineFactory {
             } else {
                 final int count = loaderFactories.length;
                 final ImageLoader[] loaders = new ImageLoader[count];
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < count; ++i) {
                     loaders[i] = loaderFactories[i]
                             .newImageLoader(targetFlavor);
                 }
@@ -308,7 +308,7 @@ public class PipelineFactory {
             final Image sourceImage, final ImageFlavor[] flavors) {
         final List<ImageProviderPipeline> candidates = new ArrayList<>();
         final int count = flavors.length;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; ++i) {
             // Find the best pipeline for each flavor
             final ImageProviderPipeline pipeline = newImageConverterPipeline(
                     sourceImage, flavors[i]);

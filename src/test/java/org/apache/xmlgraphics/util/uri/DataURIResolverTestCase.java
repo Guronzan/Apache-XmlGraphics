@@ -85,7 +85,7 @@ public class DataURIResolverTestCase extends TestCase {
 
     private static boolean byteCmp(final byte[] src, final int srcOffset,
             final byte[] cmp) {
-        for (int i = 0, c = cmp.length; i < c; i++) {
+        for (int i = 0, c = cmp.length; i < c; ++i) {
             if (src[srcOffset + i] != cmp[i]) {
                 return false;
             }

@@ -272,7 +272,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
          */
         public void setPaletteTransparency(final byte[] alpha) {
             this.transparency = new int[alpha.length];
-            for (int i = 0; i < alpha.length; i++) {
+            for (int i = 0; i < alpha.length; ++i) {
                 this.transparency[i] = alpha[i] & 0xff;
             }
             this.transparencySet = true;
@@ -294,7 +294,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
                         PropertyUtil.getString("PNGEncodeParam5"));
             }
             final byte[] alpha = new byte[this.transparency.length];
-            for (int i = 0; i < alpha.length; i++) {
+            for (int i = 0; i < alpha.length; ++i) {
                 alpha[i] = (byte) this.transparency[i];
             }
             return alpha;
@@ -1366,7 +1366,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
         final List<byte[]> newChunkData = new ArrayList<>();
 
         final int len = getNumPrivateChunks();
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; ++i) {
             final String type = getPrivateChunkType(i);
             final char lastChar = type.charAt(3);
             if (lastChar >= 'a' && lastChar <= 'z') {
@@ -1442,7 +1442,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
      * implemented (non-optimally) as follows:
      *
      * <pre>
-     * for (int i = bytesPerPixel; i &lt; bytesPerRow + bytesPerPixel; i++) {
+     * for (int i = bytesPerPixel; i &lt; bytesPerRow + bytesPerPixel; ++i) {
      *     int curr = currRow[i] &amp; 0xff;
      *     int left = currRow[i - bytesPerPixel] &amp; 0xff;
      *     scratchRow[PNG_FILTER_SUB][i] = (byte) (curr - left);
@@ -1485,7 +1485,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
         final int[] badness = { 0, 0, 0, 0, 0 };
         int curr, left, up, upleft, diff;
         int pa, pb, pc;
-        for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; i++) {
+        for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; ++i) {
             curr = currRow[i] & 0xff;
             left = currRow[i - bytesPerPixel] & 0xff;
             up = prevRow[i] & 0xff;
@@ -1596,7 +1596,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
         int filterType = 0;
         int minBadness = badness[0];
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 5; ++i) {
             if (badness[i] < minBadness) {
                 minBadness = badness[i];
                 filterType = i;

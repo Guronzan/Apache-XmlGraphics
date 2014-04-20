@@ -157,7 +157,7 @@ public class ASCII85InputStreamTestCase extends TestCase {
 
     private byte[] getFullASCIIRange() throws IOException {
         try (final ByteArrayOutputStream baout = new ByteArrayOutputStream(256)) {
-            for (int i = 254; i < 256; i++) {
+            for (int i = 254; i < 256; ++i) {
                 baout.write(i);
             }
             return baout.toByteArray();

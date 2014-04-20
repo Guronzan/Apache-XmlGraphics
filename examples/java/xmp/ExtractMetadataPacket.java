@@ -57,7 +57,7 @@ public class ExtractMetadataPacket {
         if (prop != null) {
             XMPArray array;
             array = prop.getArrayValue();
-            for (int i = 0, c = array.getSize(); i < c; i++) {
+            for (int i = 0, c = array.getSize(); i < c; ++i) {
                 log.info("Creator: " + array.getValue(i));
             }
         }

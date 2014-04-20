@@ -130,7 +130,7 @@ public class TIFFDirectory implements Serializable {
         // Get the initial ifd offset as an unsigned int (using a long)
         ifd_offset = readUnsignedInt(stream);
 
-        for (int i = 0; i < directory; i++) {
+        for (int i = 0; i < directory; ++i) {
             if (ifd_offset == 0L) {
                 throw new IllegalArgumentException(
                         PropertyUtil.getString("TIFFDirectory3"));
@@ -229,7 +229,7 @@ public class TIFFDirectory implements Serializable {
         this.numEntries = readUnsignedShort(stream);
         this.fields = new TIFFField[this.numEntries];
 
-        for (i = 0; i < this.numEntries; i++) {
+        for (i = 0; i < this.numEntries; ++i) {
             final int tag = readUnsignedShort(stream);
             final int type = readUnsignedShort(stream);
             int count = (int) readUnsignedInt(stream);

@@ -225,10 +225,10 @@ public final class DoubleFormatUtil {
     private static final double[] POWERS_OF_TEN_DOUBLE = new double[30];
     static {
         POWERS_OF_TEN_LONG[0] = 1L;
-        for (int i = 1; i < POWERS_OF_TEN_LONG.length; i++) {
+        for (int i = 1; i < POWERS_OF_TEN_LONG.length; ++i) {
             POWERS_OF_TEN_LONG[i] = POWERS_OF_TEN_LONG[i - 1] * 10L;
         }
-        for (int i = 0; i < POWERS_OF_TEN_DOUBLE.length; i++) {
+        for (int i = 0; i < POWERS_OF_TEN_DOUBLE.length; ++i) {
             POWERS_OF_TEN_DOUBLE[i] = Double.parseDouble("1e" + i);
         }
     }

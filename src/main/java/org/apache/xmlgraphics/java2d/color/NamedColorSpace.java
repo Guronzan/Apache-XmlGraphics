@@ -234,7 +234,7 @@ public class NamedColorSpace extends ColorSpace implements ColorSpaceOrigin {
         if (!this.name.equals(other.name)) {
             return false;
         }
-        for (int i = 0, c = this.xyz.length; i < c; i++) {
+        for (int i = 0, c = this.xyz.length; i < c; ++i) {
             if (this.xyz[i] != other.xyz[i]) {
                 return false;
             }

@@ -405,14 +405,14 @@ public class PSGenerator implements PSCommandMap {
             final StringBuilder sb = new StringBuilder(initialSize);
             if (text.indexOf(' ') >= 0 || forceParentheses) {
                 sb.append('(');
-                for (int i = 0; i < text.length(); i++) {
+                for (int i = 0; i < text.length(); ++i) {
                     final char c = text.charAt(i);
                     escapeChar(c, sb);
                 }
                 sb.append(')');
                 return sb.toString();
             } else {
-                for (int i = 0; i < text.length(); i++) {
+                for (int i = 0; i < text.length(); ++i) {
                     final char c = text.charAt(i);
                     escapeChar(c, sb);
                 }
@@ -473,7 +473,7 @@ public class PSGenerator implements PSCommandMap {
         this.tempBuffer.append(name);
         if (params != null && params.length > 0) {
             this.tempBuffer.append(": ");
-            for (int i = 0; i < params.length; i++) {
+            for (int i = 0; i < params.length; ++i) {
                 if (i > 0) {
                     this.tempBuffer.append(" ");
                 }
@@ -815,7 +815,7 @@ public class PSGenerator implements PSCommandMap {
 
     private void writeSetColor(final StringBuilder codeBuffer,
             final float[] comps, final String command) {
-        for (int i = 0, c = comps.length; i < c; i++) {
+        for (int i = 0, c = comps.length; i < c; ++i) {
             if (i > 0) {
                 codeBuffer.append(" ");
             }

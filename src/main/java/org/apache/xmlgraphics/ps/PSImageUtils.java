@@ -216,7 +216,7 @@ public class PSImageUtils {
             final boolean invertColors) {
         String decodeArray;
         final StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < numComponents; i++) {
+        for (int i = 0; i < numComponents; ++i) {
             if (i > 0) {
                 sb.append(" ");
             }
@@ -253,7 +253,7 @@ public class PSImageUtils {
             gen.write("  <");
             final int[] palette = new int[c];
             im.getRGBs(palette);
-            for (int i = 0; i < c; i++) {
+            for (int i = 0; i < c; ++i) {
                 if (i > 0) {
                     if (i % 8 == 0) {
                         gen.newLine();

@@ -51,7 +51,7 @@ public class CompositeImageLoader extends AbstractImageLoader {
             throw new IllegalArgumentException(
                     "Must at least pass one ImageLoader as parameter");
         }
-        for (int i = 1, c = loaders.length; i < c; i++) {
+        for (int i = 1, c = loaders.length; i < c; ++i) {
             if (!loaders[0].getTargetFlavor().equals(
                     loaders[i].getTargetFlavor())) {
                 throw new IllegalArgumentException(
@@ -71,7 +71,7 @@ public class CompositeImageLoader extends AbstractImageLoader {
     @Override
     public int getUsagePenalty() {
         int maxPenalty = NO_LOADING_PENALTY;
-        for (int i = 1, c = this.loaders.length; i < c; i++) {
+        for (int i = 1, c = this.loaders.length; i < c; ++i) {
             maxPenalty = Math
                     .max(maxPenalty, this.loaders[i].getUsagePenalty());
         }
@@ -106,7 +106,7 @@ public class CompositeImageLoader extends AbstractImageLoader {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < this.loaders.length; i++) {
+        for (int i = 0; i < this.loaders.length; ++i) {
             if (i > 0) {
                 sb.append(",");
             }

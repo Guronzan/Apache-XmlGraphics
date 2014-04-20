@@ -250,7 +250,7 @@ public class PSState implements Serializable {
      *                In case of an I/O problem
      */
     public void reestablish(final PSGenerator gen) throws IOException {
-        for (int i = 0, len = this.transformConcatList.size(); i < len; i++) {
+        for (int i = 0, len = this.transformConcatList.size(); i < len; ++i) {
             gen.concatMatrix(this.transformConcatList.get(i));
         }
         gen.useLineCap(this.linecap);

@@ -159,7 +159,7 @@ public final class ColorUtil {
         if (comps1.length != comps2.length) {
             return false;
         }
-        for (int i = 0, c = comps1.length; i < c; i++) {
+        for (int i = 0, c = comps1.length; i < c; ++i) {
             if (comps1[i] != comps2[i]) {
                 return false;
             }

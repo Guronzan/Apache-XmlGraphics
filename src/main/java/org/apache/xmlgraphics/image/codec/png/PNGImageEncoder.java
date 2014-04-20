@@ -404,7 +404,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
             if (this.compressGray) {
                 final int shift = 8 - this.bitDepth;
-                for (int i = 0; i < width; i++) {
+                for (int i = 0; i < width; ++i) {
                     samples[i] >>= shift;
                 }
             }
@@ -502,7 +502,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
         if (this.skipAlpha) {
             final int numBands = ras.getNumBands() - 1;
             final int[] bandList = new int[numBands];
-            for (int i = 0; i < numBands; i++) {
+            for (int i = 0; i < numBands; ++i) {
                 bandList[i] = i;
             }
             ras = ras.createChild(0, 0, ras.getWidth(), ras.getHeight(), 0, 0,
@@ -554,7 +554,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
                 chroma = srgbChroma; // SRGB chromaticities
             }
 
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 8; ++i) {
                 cs.writeInt((int) (chroma[i] * 100000));
             }
             cs.writeToStream(this.dataOutput);
@@ -595,7 +595,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
             final ChunkStream cs = new ChunkStream("sBIT");
             final int[] significantBits = this.param.getSignificantBits();
             final int len = significantBits.length;
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < len; ++i) {
                 cs.writeByte(significantBits[i]);
             }
             cs.writeToStream(this.dataOutput);
@@ -620,7 +620,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
         }
 
         final ChunkStream cs = new ChunkStream("PLTE");
-        for (int i = 0; i < this.redPalette.length; i++) {
+        for (int i = 0; i < this.redPalette.length; ++i) {
             cs.writeByte(this.redPalette[i]);
             cs.writeByte(this.greenPalette[i]);
             cs.writeByte(this.bluePalette[i]);
@@ -714,7 +714,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
             if (nonOpaque >= 0) {
                 final ChunkStream cs = new ChunkStream("tRNS");
-                for (int i = 0; i <= nonOpaque; i++) {
+                for (int i = 0; i <= nonOpaque; ++i) {
                     cs.writeByte(this.alphaPalette[i]);
                 }
                 cs.writeToStream(this.dataOutput);
@@ -781,7 +781,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
         if (this.param.isTextSet()) {
             final String[] text = this.param.getText();
 
-            for (int i = 0; i < text.length / 2; i++) {
+            for (int i = 0; i < text.length / 2; ++i) {
                 final byte[] keyword = text[2 * i].getBytes();
                 final byte[] value = text[2 * i + 1].getBytes();
 
@@ -801,7 +801,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
         if (this.param.isCompressedTextSet()) {
             final String[] text = this.param.getCompressedText();
 
-            for (int i = 0; i < text.length / 2; i++) {
+            for (int i = 0; i < text.length / 2; ++i) {
                 final byte[] keyword = text[2 * i].getBytes();
                 final byte[] value = text[2 * i + 1].getBytes();
 
@@ -824,7 +824,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
     private void writePrivateChunks() throws IOException {
         final int numChunks = this.param.getNumPrivateChunks();
-        for (int i = 0; i < numChunks; i++) {
+        for (int i = 0; i < numChunks; ++i) {
             final String type = this.param.getPrivateChunkType(i);
             final byte[] data = this.param.getPrivateChunkData(i);
 
@@ -850,7 +850,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
         final int grayFactor = 255 / ((1 << this.bitDepth) - 1);
         final int entries = 1 << this.bitDepth;
-        for (int i = 0; i < entries; i++) {
+        for (int i = 0; i < entries; ++i) {
             final byte red = redPalette[i];
             if (red != i * grayFactor || red != greenPalette[i]
                     || red != bluePalette[i]) {
@@ -911,7 +911,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
             this.bitDepth = sampleSize[0];
             // Ensure all channels have the same bit depth
-            for (int i = 1; i < sampleSize.length; i++) {
+            for (int i = 1; i < sampleSize.length; ++i) {
                 if (sampleSize[i] != this.bitDepth) {
                     throw new RuntimeException(
                             PropertyUtil.getString("PNGImageEncoder0"));
@@ -978,7 +978,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
                     size = palette.length / 3;
 
                     int index = 0;
-                    for (int i = 0; i < size; i++) {
+                    for (int i = 0; i < size; ++i) {
                         this.redPalette[i] = (byte) palette[index++];
                         this.greenPalette[i] = (byte) palette[index++];
                         this.bluePalette[i] = (byte) palette[index++];

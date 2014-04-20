@@ -129,7 +129,7 @@ public class NamedColorProfileParser {
         final int numDeviceCoord = din.readInt();
         final String prefix = readAscii(din, 32);
         final String suffix = readAscii(din, 32);
-        for (int i = 0; i < numColors; i++) {
+        for (int i = 0; i < numColors; ++i) {
             final String name = prefix + readAscii(din, 32) + suffix;
             final int[] pcs = readUInt16Array(din, 3);
             final float[] colorvalue = new float[3];
@@ -167,7 +167,7 @@ public class NamedColorProfileParser {
             return null;
         }
         final int[] result = new int[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; ++i) {
             final int v = din.readUnsignedShort();
             result[i] = v;
         }

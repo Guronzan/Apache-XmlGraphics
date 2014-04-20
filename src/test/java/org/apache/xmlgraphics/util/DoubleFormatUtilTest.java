@@ -583,7 +583,7 @@ public class DoubleFormatUtilTest extends TestCase {
         double value;
         String expected, actual;
         int minScale, maxScale;
-        for (int i = -330; i <= 315; i++) {
+        for (int i = -330; i <= 315; ++i) {
             values[values.length - 1] = r.nextDouble();
             final double pow = Math.pow(10.0, i);
             for (final double d : values) {

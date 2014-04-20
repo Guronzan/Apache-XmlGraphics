@@ -146,7 +146,7 @@ Finalizable {
     public void write(final byte[] b, final int off, final int len)
             throws IOException {
 
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; ++i) {
             this.write(b[off + i]);
         }
     }

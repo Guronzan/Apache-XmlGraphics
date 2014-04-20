@@ -396,7 +396,7 @@ public class XMPSchemaAdapter {
         if (prop != null) {
             array = prop.getArrayValue();
             if (array != null) {
-                for (int i = 0, c = array.getSize(); i < c; i++) {
+                for (int i = 0, c = array.getSize(); i < c; ++i) {
                     final Object value = array.getValue(i);
                     if (value instanceof PropertyAccess) {
                         final PropertyAccess pa = (PropertyAccess) value;
@@ -475,7 +475,7 @@ public class XMPSchemaAdapter {
             return null;
         }
         final String[] res = new String[arr.length];
-        for (int i = 0, c = res.length; i < c; i++) {
+        for (int i = 0, c = res.length; i < c; ++i) {
             final Object o = arr[i];
             if (o instanceof PropertyAccess) {
                 final XMPProperty prop = ((PropertyAccess) o)
@@ -501,7 +501,7 @@ public class XMPSchemaAdapter {
             return null;
         }
         final Date[] res = new Date[arr.length];
-        for (int i = 0, c = res.length; i < c; i++) {
+        for (int i = 0, c = res.length; i < c; ++i) {
             final Object obj = arr[i];
             if (obj instanceof Date) {
                 res[i] = (Date) ((Date) obj).clone();

@@ -235,7 +235,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 
         // Retrieve and verify sample size.
         final int[] sampleSize = sampleModel.getSampleSize();
-        for (int i = 1; i < sampleSize.length; i++) {
+        for (int i = 1; i < sampleSize.length; ++i) {
             if (sampleSize[i] != sampleSize[0]) {
                 throw new RuntimeException(
                         PropertyUtil.getString("TIFFImageEncoder0"));
@@ -426,7 +426,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             greenIndex = sizeOfColormap;
             int blueIndex = 2 * sizeOfColormap;
             colormap = new char[sizeOfColormap * 3];
-            for (int i = 0; i < sizeOfColormap; i++) {
+            for (int i = 0; i < sizeOfColormap; ++i) {
                 int tmp = 0xff & r[i]; // beware of sign extended bytes
                 colormap[redIndex++] = (char) (tmp << 8 | tmp);
                 tmp = 0xff & g[i];
@@ -491,7 +491,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 
         final long bytesPerTile = bytesPerRow * tileHeight;
 
-        for (int i = 0; i < numTiles; i++) {
+        for (int i = 0; i < numTiles; ++i) {
             tileByteCounts[i] = bytesPerTile;
         }
 
@@ -533,7 +533,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                 TIFFField.TIFF_LONG, 1, new long[] { height }));
 
         final char[] shortSampleSize = new char[numBands];
-        for (int i = 0; i < numBands; i++) {
+        for (int i = 0; i < numBands; ++i) {
             shortSampleSize[i] = (char) sampleSize[i];
         }
         fields.add(new TIFFField(TIFFImageDecoder.TIFF_BITS_PER_SAMPLE,
@@ -584,7 +584,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 
         if (numExtraSamples > 0) {
             final char[] extraSamples = new char[numExtraSamples];
-            for (int i = 0; i < numExtraSamples; i++) {
+            for (int i = 0; i < numExtraSamples; ++i) {
                 extraSamples[i] = (char) extraSampleType;
             }
             fields.add(new TIFFField(TIFFImageDecoder.TIFF_EXTRA_SAMPLES,
@@ -706,7 +706,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             }
 
             // Update the data offsets (which TIFFField stores by reference).
-            for (int i = 1; i < numTiles; i++) {
+            for (int i = 1; i < numTiles; ++i) {
                 tileOffsets[i] = tileOffsets[i - 1] + tileByteCounts[i - 1];
             }
 
@@ -833,7 +833,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                                 useDataBuffer = false;
                             } else {
                                 useDataBuffer = true;
-                                for (int i = 0; useDataBuffer && i < numBands; i++) {
+                                for (int i = 0; useDataBuffer && i < numBands; ++i) {
                                     if (bankIndices[i] != 0
                                             || bandOffsets[i] != i) {
                                         useDataBuffer = false;
@@ -895,7 +895,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                         index = 0;
 
                         // For each of the rows in a strip
-                        for (int i = 0; i < rows; i++) {
+                        for (int i = 0; i < rows; ++i) {
 
                             // Write number of pixels exactly divisible by 8
                             for (int j = 0; j < tileWidth / 8; j++) {
@@ -944,7 +944,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                     index = 0;
 
                     // For each of the rows in a strip
-                    for (int i = 0; i < rows; i++) {
+                    for (int i = 0; i < rows; ++i) {
 
                         // Write the number of pixels that will fit into an
                         // even number of nibbles.
@@ -1001,7 +1001,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                                 }
                             }
                         } else {
-                            for (int i = 0; i < size; i++) {
+                            for (int i = 0; i < size; ++i) {
                                 bpixels[i] = (byte) pixels[i];
                             }
                         }
@@ -1025,7 +1025,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                 case 16:
 
                     int ls = 0;
-                    for (int i = 0; i < size; i++) {
+                    for (int i = 0; i < size; ++i) {
                         final int value = pixels[i];
                         bpixels[ls++] = (byte) ((value & 0xff00) >> 8);
                         bpixels[ls++] = (byte) (value & 0x00ff);
@@ -1049,7 +1049,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                 case 32:
                     if (dataType == DataBuffer.TYPE_INT) {
                         int li = 0;
-                        for (int i = 0; i < size; i++) {
+                        for (int i = 0; i < size; ++i) {
                             final int value = pixels[i];
                             bpixels[li++] = (byte) ((value & 0xff000000) >>> 24);
                             bpixels[li++] = (byte) ((value & 0x00ff0000) >>> 16);
@@ -1058,7 +1058,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
                         }
                     } else { // DataBuffer.TYPE_FLOAT
                         int lf = 0;
-                        for (int i = 0; i < size; i++) {
+                        for (int i = 0; i < size; ++i) {
                             final int value = Float.floatToIntBits(fpixels[i]);
                             bpixels[lf++] = (byte) ((value & 0xff000000) >>> 24);
                             bpixels[lf++] = (byte) ((value & 0x00ff0000) >>> 16);
@@ -1093,7 +1093,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         } else {
             // Recompute the tile offsets the size of the compressed tiles.
             int totalBytes = 0;
-            for (int i = 1; i < numTiles; i++) {
+            for (int i = 1; i < numTiles; ++i) {
                 final int numBytes = (int) tileByteCounts[i - 1];
                 totalBytes += numBytes;
                 tileOffsets[i] = tileOffsets[i - 1] + numBytes;
@@ -1279,7 +1279,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         writeLong(nextIFDOffset);
 
         // Write the tag values that did not fit into 4 bytes
-        for (int i = 0; i < tooBig.size(); i++) {
+        for (int i = 0; i < tooBig.size(); ++i) {
             writeValues(tooBig.get(i));
         }
     }
@@ -1292,7 +1292,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         final int count = field.getCount();
         int valueSize = 0;
         if (type == TIFFField.TIFF_ASCII) {
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 final byte[] stringBytes = field.getAsString(i).getBytes(); // note:
                 // default
                 // encoding
@@ -1338,11 +1338,11 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             if (count > 4) {
                 count = 4;
             }
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 this.output.write(bytes[i]);
             }
 
-            for (int i = 0; i < 4 - count; i++) {
+            for (int i = 0; i < 4 - count; ++i) {
                 this.output.write(0);
             }
             break;
@@ -1353,10 +1353,10 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
             if (count > 2) {
                 count = 2;
             }
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 writeUnsignedShort(chars[i]);
             }
-            for (int i = 0; i < 2 - count; i++) {
+            for (int i = 0; i < 2 - count; ++i) {
                 writeUnsignedShort(0);
             }
 
@@ -1366,7 +1366,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         case TIFFField.TIFF_LONG:
             final long[] longs = field.getAsLongs();
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 writeLong(longs[i]);
             }
             break;
@@ -1386,7 +1386,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         case TIFFField.TIFF_SBYTE:
         case TIFFField.TIFF_UNDEFINED:
             final byte[] bytes = field.getAsBytes();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 this.output.write(bytes[i]);
             }
             break;
@@ -1394,13 +1394,13 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         // unsigned 16 bits
         case TIFFField.TIFF_SHORT:
             final char[] chars = field.getAsChars();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 writeUnsignedShort(chars[i]);
             }
             break;
         case TIFFField.TIFF_SSHORT:
             final short[] shorts = field.getAsShorts();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 writeUnsignedShort(shorts[i]);
             }
             break;
@@ -1409,14 +1409,14 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         case TIFFField.TIFF_LONG:
         case TIFFField.TIFF_SLONG:
             final long[] longs = field.getAsLongs();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 writeLong(longs[i]);
             }
             break;
 
         case TIFFField.TIFF_FLOAT:
             final float[] floats = field.getAsFloats();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 final int intBits = Float.floatToIntBits(floats[i]);
                 writeLong(intBits);
             }
@@ -1424,7 +1424,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 
         case TIFFField.TIFF_DOUBLE:
             final double[] doubles = field.getAsDoubles();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 final long longBits = Double.doubleToLongBits(doubles[i]);
                 writeLong(longBits >>> 32); // write upper 32 bits
                 writeLong(longBits & 0xffffffffL); // write lower 32 bits
@@ -1434,14 +1434,14 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         case TIFFField.TIFF_RATIONAL:
         case TIFFField.TIFF_SRATIONAL:
             final long[][] rationals = field.getAsRationals();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 writeLong(rationals[i][0]);
                 writeLong(rationals[i][1]);
             }
             break;
 
         case TIFFField.TIFF_ASCII:
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; ++i) {
                 final byte[] stringBytes = field.getAsString(i).getBytes();
                 this.output.write(stringBytes);
                 if (stringBytes[stringBytes.length - 1] != (byte) 0) {
@@ -1487,7 +1487,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
         int inOffset = 0;
         int outOffset = 0;
 
-        for (int i = 0; i < numRows; i++) {
+        for (int i = 0; i < numRows; ++i) {
             outOffset = packBits(data, inOffset, bytesPerRow, compData,
                     outOffset);
             inOffset += bytesPerRow;

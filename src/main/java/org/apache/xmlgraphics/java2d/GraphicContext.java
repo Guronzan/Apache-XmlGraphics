@@ -175,7 +175,7 @@ public class GraphicContext implements Cloneable {
         // Transform stack
         this.transformStack = new ArrayList<Object>(
                 template.transformStack.size());
-        for (int i = 0; i < template.transformStack.size(); i++) {
+        for (int i = 0; i < template.transformStack.size(); ++i) {
             final TransformStackElement stackElement = (TransformStackElement) template.transformStack
                     .get(i);
             this.transformStack.add(stackElement.clone());
@@ -928,7 +928,7 @@ public class GraphicContext implements Cloneable {
      *
      * @return a reference to an instance of FontRenderContext.
      * @see java.awt.font.FontRenderContext
-     * @see java.awt.Font#createGlyphVector(FontRenderContext,char[])
+     * @see java.awt.Font#createGlyphList(FontRenderContext,char[])
      * @see java.awt.font.TextLayout
      * @since JDK1.2
      */

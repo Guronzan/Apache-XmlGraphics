@@ -287,7 +287,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
             return null;
         }
 
-        // Copy the strings from the Vector over to a String array.
+        // Copy the strings from the List over to a String array.
         final String[] prefixNames = new String[names.size()];
         names.toArray(prefixNames);
         return prefixNames;
@@ -460,7 +460,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
                     bounds.getLocation());
 
             for (int j = startY; j <= endY; j++) {
-                for (int i = startX; i <= endX; i++) {
+                for (int i = startX; i <= endX; ++i) {
                     tile = getTile(i, j);
                     final Rectangle intersectRect = bounds.intersection(tile
                             .getBounds());
@@ -514,7 +514,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
         final int endY = convertYToTileY(bounds.y + bounds.height - 1);
 
         for (int j = startY; j <= endY; j++) {
-            for (int i = startX; i <= endX; i++) {
+            for (int i = startX; i <= endX; ++i) {
                 tile = getTile(i, j);
                 final Rectangle intersectRect = bounds.intersection(tile
                         .getBounds());

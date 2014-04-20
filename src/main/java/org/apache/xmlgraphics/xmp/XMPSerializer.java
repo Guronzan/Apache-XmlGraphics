@@ -119,11 +119,11 @@ public final class XMPSerializer {
                 // the recommended 4KB)
                 final StringBuilder sb = new StringBuilder(101);
                 sb.append('\n');
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 100; ++i) {
                     sb.append(" ");
                 }
                 final char[] padding = sb.toString().toCharArray();
-                for (int i = 0; i < 40; i++) {
+                for (int i = 0; i < 40; ++i) {
                     handler.characters(padding, 0, padding.length);
                 }
                 handler.characters(new char[] { '\n' }, 0, 1);

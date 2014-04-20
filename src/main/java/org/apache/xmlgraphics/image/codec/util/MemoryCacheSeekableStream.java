@@ -54,7 +54,7 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
     /** A mask to determine the offset within a sector. */
     private static final int SECTOR_MASK = SECTOR_SIZE - 1;
 
-    /** A Vector of source sectors. */
+    /** A List of source sectors. */
     private final List<byte[]> data = new ArrayList<>();
 
     /** Number of sectors stored. */
@@ -96,7 +96,7 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
         final int startSector = this.length >> SECTOR_SHIFT;
 
         // Read sectors until the desired sector
-        for (int i = startSector; i <= sector; i++) {
+        for (int i = startSector; i <= sector; ++i) {
             final byte[] buf = new byte[SECTOR_SIZE];
             this.data.add(buf);
 

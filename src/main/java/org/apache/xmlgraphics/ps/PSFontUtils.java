@@ -117,7 +117,7 @@ public class PSFontUtils {
         gen.writeDSCComment(DSCConstants.BEGIN_RESOURCE,
                 WINANSI_ENCODING_RESOURCE);
         gen.writeln("/WinAnsiEncoding [");
-        for (int i = 0; i < Glyphs.WINANSI_ENCODING.length; i++) {
+        for (int i = 0; i < Glyphs.WINANSI_ENCODING.length; ++i) {
             if (i > 0) {
                 if (i % 5 == 0) {
                     gen.newLine();
@@ -158,7 +158,7 @@ public class PSFontUtils {
         gen.writeDSCComment(DSCConstants.BEGIN_RESOURCE,
                 ADOBECYRILLIC_ENCODING_RESOURCE);
         gen.writeln("/AdobeStandardCyrillicEncoding [");
-        for (int i = 0; i < Glyphs.ADOBECYRILLIC_ENCODING.length; i++) {
+        for (int i = 0; i < Glyphs.ADOBECYRILLIC_ENCODING.length; ++i) {
             if (i > 0) {
                 if (i % 5 == 0) {
                     gen.newLine();

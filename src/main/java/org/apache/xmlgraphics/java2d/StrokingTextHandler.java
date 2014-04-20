@@ -23,7 +23,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
-import java.io.IOException;
 
 /**
  * Default TextHandler implementation which paints text using graphics
@@ -41,7 +40,7 @@ public class StrokingTextHandler implements TextHandler {
     /** {@inheritDoc} */
     @Override
     public void drawString(final Graphics2D g2d, final String text,
-            final float x, final float y) throws IOException {
+            final float x, final float y) {
         final java.awt.Font awtFont = g2d.getFont();
         final FontRenderContext frc = g2d.getFontRenderContext();
         final GlyphVector gv = awtFont.createGlyphVector(frc, text);

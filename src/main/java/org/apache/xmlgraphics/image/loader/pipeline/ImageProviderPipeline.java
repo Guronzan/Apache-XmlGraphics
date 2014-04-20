@@ -192,7 +192,7 @@ public class ImageProviderPipeline {
         }
 
         if (converterCount > 0) {
-            for (int i = startingPoint; i < converterCount; i++) {
+            for (int i = startingPoint; i < converterCount; ++i) {
                 final ImageConverter converter = getConverter(i);
                 start = System.currentTimeMillis();
                 img = converter.convert(img, hints);

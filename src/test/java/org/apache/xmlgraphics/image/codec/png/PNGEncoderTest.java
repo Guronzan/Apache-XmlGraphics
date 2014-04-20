@@ -141,7 +141,7 @@ public class PNGEncoderTest extends TestCase {
                 && imgA.getHeight() == imgB.getHeight()) {
             final int w = imgA.getWidth();
             final int h = imgA.getHeight();
-            for (int i = 0; i < h; i++) {
+            for (int i = 0; i < h; ++i) {
                 for (int j = 0; j < w; j++) {
                     if (imgA.getRGB(j, i) != imgB.getRGB(j, i)) {
                         identical = false;

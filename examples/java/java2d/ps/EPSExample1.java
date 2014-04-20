@@ -58,7 +58,7 @@ public class EPSExample1 {
             //A few rectangles rotated and with different color
             Graphics2D copy = (Graphics2D)g2d.create();
             int c = 12;
-            for (int i = 0; i < c; i++) {
+            for (int i = 0; i < c; ++i) {
                 float f = ((i + 1) / (float)c);
                 Color col = new Color(0.0f, 1 - f, 0.0f);
                 copy.setColor(col);

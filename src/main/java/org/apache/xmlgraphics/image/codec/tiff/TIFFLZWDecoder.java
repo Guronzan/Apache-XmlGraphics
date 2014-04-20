@@ -136,7 +136,7 @@ public class TIFFLZWDecoder {
                 count = this.samplesPerPixel * (j * this.w + 1);
 
                 for (int i = this.samplesPerPixel; i < this.w
-                        * this.samplesPerPixel; i++) {
+                        * this.samplesPerPixel; ++i) {
 
                     uncompData[count] += uncompData[count
                             - this.samplesPerPixel];
@@ -155,7 +155,7 @@ public class TIFFLZWDecoder {
 
         this.stringTable = new byte[4096][];
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 256; ++i) {
             this.stringTable[i] = new byte[1];
             this.stringTable[i][0] = (byte) i;
         }

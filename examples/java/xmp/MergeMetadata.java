@@ -54,7 +54,7 @@ public class MergeMetadata {
         XMPProperty prop;
         dc = new DublinCoreAdapter(meta);
         String[] creators = dc.getCreators();
-        for (int i = 0, c = creators.length; i < c; i++) {
+        for (int i = 0, c = creators.length; i < c; ++i) {
             log.info("Creator: " + creators[i]);
         }
         log.info("Title: " + dc.getTitle());
