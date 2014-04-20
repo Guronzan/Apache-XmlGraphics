@@ -29,11 +29,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.AttributedString;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.xmlgraphics.image.writer.ImageWriter;
 import org.apache.xmlgraphics.image.writer.ImageWriterParams;
 import org.apache.xmlgraphics.image.writer.ImageWriterRegistry;
 
+@Slf4j
 public class ImageWriterExample1 {
 
     /**
@@ -106,8 +109,8 @@ public class ImageWriterExample1 {
         //Paint something
         paintSome(g2d, 1);
 
-        OutputStream out = new java.io.FileOutputStream(outputFile);
-        out = new java.io.BufferedOutputStream(out);
+        OutputStream out = FileOutputStream(outputFile);
+        out = BufferedOutputStream(out);
         try {
 
             ImageWriter writer = ImageWriterRegistry.getInstance().getWriterFor(format);
@@ -134,14 +137,14 @@ public class ImageWriterExample1 {
                 targetDir = new File(".");
             }
             if (!targetDir.exists()) {
-                System.err.println("Target Directory does not exist: " + targetDir);
+                log.error("Target Directory does not exist: " + targetDir);
             }
             File outputFile = new File(targetDir, "eps-example1.tif");
             ImageWriterExample1 app = new ImageWriterExample1();
             app.generateBitmapUsingJava2D(outputFile, "image/tiff");
-            System.out.println("File written: " + outputFile.getCanonicalPath());
+            log.info("File written: " + outputFile.getCanonicalPath());
         } catch (Exception e) {
-            e.printStackTrace();
+        	log.error("Exception", e);
         }
     }
 

@@ -19,9 +19,13 @@
 
 package org.apache.xmlgraphics.ps.dsc;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.xmlgraphics.ps.DSCConstants;
+import org.apache.xmlgraphics.ps.dsc.events.AbstractEvent;
 import org.apache.xmlgraphics.ps.dsc.events.DSCComment;
 import org.apache.xmlgraphics.ps.dsc.events.DSCCommentBeginDocument;
 import org.apache.xmlgraphics.ps.dsc.events.DSCCommentBeginResource;
@@ -43,12 +47,13 @@ import org.apache.xmlgraphics.ps.dsc.events.DSCCommentTitle;
 /**
  * Factory for DSCComment subclasses.
  */
+@Slf4j
 public final class DSCCommentFactory {
 
     private DSCCommentFactory() {
     }
 
-    private static final Map DSC_FACTORIES = new java.util.HashMap();
+    private static final Map<String, Class<? extends AbstractEvent>> DSC_FACTORIES = new HashMap<>();
 
     static {
         DSC_FACTORIES.put(DSCConstants.END_COMMENTS,
@@ -61,12 +66,9 @@ public final class DSCCommentFactory {
                 DSCCommentPageResources.class);
         DSC_FACTORIES.put(DSCConstants.BEGIN_DOCUMENT,
                 DSCCommentBeginDocument.class);
-        DSC_FACTORIES.put(DSCConstants.PAGE,
-                DSCCommentPage.class);
-        DSC_FACTORIES.put(DSCConstants.PAGES,
-                DSCCommentPages.class);
-        DSC_FACTORIES.put(DSCConstants.BBOX,
-                DSCCommentBoundingBox.class);
+        DSC_FACTORIES.put(DSCConstants.PAGE, DSCCommentPage.class);
+        DSC_FACTORIES.put(DSCConstants.PAGES, DSCCommentPages.class);
+        DSC_FACTORIES.put(DSCConstants.BBOX, DSCCommentBoundingBox.class);
         DSC_FACTORIES.put(DSCConstants.HIRES_BBOX,
                 DSCCommentHiResBoundingBox.class);
         DSC_FACTORIES.put(DSCConstants.PAGE_BBOX,
@@ -79,32 +81,30 @@ public final class DSCCommentFactory {
                 DSCCommentDocumentNeededResources.class);
         DSC_FACTORIES.put(DSCConstants.DOCUMENT_SUPPLIED_RESOURCES,
                 DSCCommentDocumentSuppliedResources.class);
-        DSC_FACTORIES.put(DSCConstants.TITLE,
-                DSCCommentTitle.class);
-        DSC_FACTORIES.put(DSCConstants.EOF,
-                DSCCommentEndOfFile.class);
-        //TODO Add additional implementations as needed
+        DSC_FACTORIES.put(DSCConstants.TITLE, DSCCommentTitle.class);
+        DSC_FACTORIES.put(DSCConstants.EOF, DSCCommentEndOfFile.class);
     }
 
     /**
      * Creates and returns new instances for DSC comments with a given name.
-     * @param name the name of the DSCComment (without the "%%" prefix)
-     * @return the new instance or null if no particular subclass registered for the given
-     *          DSC comment.
+     * 
+     * @param name
+     *            the name of the DSCComment (without the "%%" prefix)
+     * @return the new instance or null if no particular subclass registered for
+     *         the given DSC comment.
      */
-    public static DSCComment createDSCCommentFor(String name) {
-        Class clazz = (Class)DSC_FACTORIES.get(name);
+    public static DSCComment createDSCCommentFor(final String name) {
+        final Class<? extends AbstractEvent> clazz = DSC_FACTORIES.get(name);
         if (clazz == null) {
             return null;
         }
         try {
-            return (DSCComment)clazz.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException("Error instantiating instance for '" + name + "': "
-                    + e.getMessage());
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Illegal Access error while instantiating instance for '"
-                    + name + "': " + e.getMessage());
+            return (DSCComment) clazz.newInstance();
+        } catch (final IllegalAccessException | InstantiationException e) {
+            log.error("IllegalAccessException or InstantiationException", e);
+            throw new RuntimeException(
+                    "Illegal Access error while instantiating instance for '"
+                            + name + "': " + e.getMessage());
         }
     }
 

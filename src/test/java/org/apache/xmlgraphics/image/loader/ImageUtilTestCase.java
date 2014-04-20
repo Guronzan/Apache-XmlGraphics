@@ -29,72 +29,72 @@ import org.junit.Test;
  */
 public class ImageUtilTestCase extends TestCase {
 
-	/**
-	 * Tests {@link ImageUtil.needPageIndexFromURI(String)}.
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testNeedPageIndex() {
-		int pageIndex;
+    /**
+     * Tests {@link ImageUtil.needPageIndexFromURI(String)}.
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testNeedPageIndex() {
+        int pageIndex;
 
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("http://localhost/images/scan1.tif");
-		assertEquals(0, pageIndex);
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("http://localhost/images/scan1.tif#page=3");
-		assertEquals(2, pageIndex);
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("http://localhost/images/scan1.tif#page=0");
-		assertEquals(0, pageIndex);
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("http://localhost/images/scan1.tif#page=");
-		assertEquals(0, pageIndex);
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("http://localhost/images/scan1.tif#page=x");
-		assertEquals(0, pageIndex);
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("http://localhost/images/scan1.tif#page=-1");
-		assertEquals(0, pageIndex);
-		pageIndex = ImageUtil.needPageIndexFromURI("#page=2");
-		assertEquals(1, pageIndex);
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("http://localhost/images/scan1.tif");
+        assertEquals(0, pageIndex);
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("http://localhost/images/scan1.tif#page=3");
+        assertEquals(2, pageIndex);
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("http://localhost/images/scan1.tif#page=0");
+        assertEquals(0, pageIndex);
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("http://localhost/images/scan1.tif#page=");
+        assertEquals(0, pageIndex);
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("http://localhost/images/scan1.tif#page=x");
+        assertEquals(0, pageIndex);
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("http://localhost/images/scan1.tif#page=-1");
+        assertEquals(0, pageIndex);
+        pageIndex = ImageUtil.needPageIndexFromURI("#page=2");
+        assertEquals(1, pageIndex);
 
-		// Not a valid URI
-		try {
-			pageIndex = ImageUtil
-					.needPageIndexFromURI("C:\\images\\scan1.tif#page=44");
-			fail("Invalid URI. Method must fail.");
-		} catch (final IllegalArgumentException e) {
-			// expected
-		}
-		// Valid URI
-		pageIndex = ImageUtil
-				.needPageIndexFromURI("file:///C:/images/scan1.tif#page=44");
-		assertEquals(43, pageIndex);
-	}
+        // Not a valid URI
+        try {
+            pageIndex = ImageUtil
+                    .needPageIndexFromURI("C:\\images\\scan1.tif#page=44");
+            fail("Invalid URI. Method must fail.");
+        } catch (final IllegalArgumentException e) {
+            // expected
+        }
+        // Valid URI
+        pageIndex = ImageUtil
+                .needPageIndexFromURI("file:///C:/images/scan1.tif#page=44");
+        assertEquals(43, pageIndex);
+    }
 
-	/**
-	 * Tests {@link ImageUtil.getPageIndexFromURI(String)}.
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testGetPageIndex() {
-		Integer pageIndex;
+    /**
+     * Tests {@link ImageUtil.getPageIndexFromURI(String)}.
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testGetPageIndex() {
+        Integer pageIndex;
 
-		pageIndex = ImageUtil
-				.getPageIndexFromURI("http://localhost/images/scan1.tif");
-		assertNull(pageIndex);
-		pageIndex = ImageUtil
-				.getPageIndexFromURI("http://localhost/images/scan1.tif#page=3");
-		assertEquals(2, pageIndex.intValue());
-		// Note: no detailed test anymore as this is tested through
-		// needPageIndexFromURI().
+        pageIndex = ImageUtil
+                .getPageIndexFromURI("http://localhost/images/scan1.tif");
+        assertNull(pageIndex);
+        pageIndex = ImageUtil
+                .getPageIndexFromURI("http://localhost/images/scan1.tif#page=3");
+        assertEquals(2, pageIndex.intValue());
+        // Note: no detailed test anymore as this is tested through
+        // needPageIndexFromURI().
 
-		// getPageIndexFromURI only works on URIs, so ignore anything that
-		// doesn't have a '#'
-		pageIndex = ImageUtil.getPageIndexFromURI("C:\\Temp\\scan1.tif");
-		assertNull(pageIndex);
-	}
+        // getPageIndexFromURI only works on URIs, so ignore anything that
+        // doesn't have a '#'
+        pageIndex = ImageUtil.getPageIndexFromURI("C:\\Temp\\scan1.tif");
+        assertNull(pageIndex);
+    }
 
 }

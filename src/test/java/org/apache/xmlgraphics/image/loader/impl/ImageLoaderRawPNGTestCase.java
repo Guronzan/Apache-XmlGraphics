@@ -38,41 +38,40 @@ import org.junit.Test;
 
 public class ImageLoaderRawPNGTestCase {
 
-	private final ImageLoaderRawPNG ilrpng = new ImageLoaderRawPNG();
+    private final ImageLoaderRawPNG ilrpng = new ImageLoaderRawPNG();
 
-	@Test
-	public void testGetUsagePenalty() {
-		assertEquals(1000, this.ilrpng.getUsagePenalty());
-	}
+    @Test
+    public void testGetUsagePenalty() {
+        assertEquals(1000, this.ilrpng.getUsagePenalty());
+    }
 
-	@Test
-	public void testLoadImageBadMime() throws ImageException, IOException {
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		final ImageInfo info = new ImageInfo("basn2c08.png",
-				MimeConstants.MIME_JPEG);
-		try {
-			final ImageRawPNG irpng = (ImageRawPNG) this.ilrpng.loadImage(info,
-					null, session);
-			fail("An exception should have been thrown above");
-		} catch (final IllegalArgumentException e) {
-			// do nothing; this was expected
-		}
-	}
+    @Test
+    public void testLoadImageBadMime() throws ImageException, IOException {
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        final ImageInfo info = new ImageInfo("basn2c08.png",
+                MimeConstants.MIME_JPEG);
+        try {
+            this.ilrpng.loadImage(info, null, session);
+            fail("An exception should have been thrown above");
+        } catch (final IllegalArgumentException e) {
+            // do nothing; this was expected
+        }
+    }
 
-	@Test
-	public void testGetTargetFlavor() {
-		assertEquals(ImageFlavor.RAW_PNG, this.ilrpng.getTargetFlavor());
-	}
+    @Test
+    public void testGetTargetFlavor() {
+        assertEquals(ImageFlavor.RAW_PNG, this.ilrpng.getTargetFlavor());
+    }
 
-	@Test
-	public void testLoadImageGoodMime() throws ImageException, IOException {
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		final ImageInfo info = new ImageInfo("basn2c08.png",
-				MimeConstants.MIME_PNG);
-		final Image im = this.ilrpng.loadImage(info, null, session);
-		assertTrue(im instanceof ImageRawPNG);
-	}
+    @Test
+    public void testLoadImageGoodMime() throws ImageException, IOException {
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        final ImageInfo info = new ImageInfo("basn2c08.png",
+                MimeConstants.MIME_PNG);
+        final Image im = this.ilrpng.loadImage(info, null, session);
+        assertTrue(im instanceof ImageRawPNG);
+    }
 
 }

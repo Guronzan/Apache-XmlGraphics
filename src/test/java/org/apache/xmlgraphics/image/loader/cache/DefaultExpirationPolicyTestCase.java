@@ -28,47 +28,47 @@ import org.junit.Test;
  */
 public class DefaultExpirationPolicyTestCase extends TestCase {
 
-	/**
-	 * Never expire.
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testNeverExpire() {
-		ExpirationPolicy policy;
-		policy = new DefaultExpirationPolicy(
-				DefaultExpirationPolicy.EXPIRATION_NEVER);
+    /**
+     * Never expire.
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testNeverExpire() {
+        ExpirationPolicy policy;
+        policy = new DefaultExpirationPolicy(
+                DefaultExpirationPolicy.EXPIRATION_NEVER);
 
-		final MockTimeStampProvider provider = new MockTimeStampProvider();
+        final MockTimeStampProvider provider = new MockTimeStampProvider();
 
-		final long ts = 1000000;
-		assertFalse(policy.isExpired(provider, ts));
-		provider.setTimeStamp(ts + Integer.MAX_VALUE);
-		assertFalse(policy.isExpired(provider, ts));
-	}
+        final long ts = 1000000;
+        assertFalse(policy.isExpired(provider, ts));
+        provider.setTimeStamp(ts + Integer.MAX_VALUE);
+        assertFalse(policy.isExpired(provider, ts));
+    }
 
-	/**
-	 * Normal expiration
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testNormalExpiration() {
-		ExpirationPolicy policy;
-		policy = new DefaultExpirationPolicy(2);
+    /**
+     * Normal expiration
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testNormalExpiration() {
+        ExpirationPolicy policy;
+        policy = new DefaultExpirationPolicy(2);
 
-		final MockTimeStampProvider provider = new MockTimeStampProvider();
+        final MockTimeStampProvider provider = new MockTimeStampProvider();
 
-		final long ts = 1000000;
-		provider.setTimeStamp(ts);
-		assertFalse(policy.isExpired(provider, ts));
-		provider.setTimeStamp(ts + 1000);
-		assertFalse(policy.isExpired(provider, ts));
+        final long ts = 1000000;
+        provider.setTimeStamp(ts);
+        assertFalse(policy.isExpired(provider, ts));
+        provider.setTimeStamp(ts + 1000);
+        assertFalse(policy.isExpired(provider, ts));
 
-		provider.setTimeStamp(ts + 2000);
-		assertTrue(policy.isExpired(provider, ts));
-		provider.setTimeStamp(ts + 3000);
-		assertTrue(policy.isExpired(provider, ts));
-	}
+        provider.setTimeStamp(ts + 2000);
+        assertTrue(policy.isExpired(provider, ts));
+        provider.setTimeStamp(ts + 3000);
+        assertTrue(policy.isExpired(provider, ts));
+    }
 
 }

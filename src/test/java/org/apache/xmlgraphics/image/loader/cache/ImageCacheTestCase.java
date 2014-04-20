@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.xmlgraphics.image.loader.ImageException;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
@@ -36,184 +37,185 @@ import org.junit.Test;
 /**
  * Tests for bundled ImageLoader implementations.
  */
+@Slf4j
 public class ImageCacheTestCase extends TestCase {
 
-	private static final boolean DEBUG = false;
+    private static final boolean DEBUG = false;
 
-	private final MockImageContext imageContext = MockImageContext
-			.getInstance();
-	private final ImageSessionContext sessionContext = this.imageContext
-			.newSessionContext();
-	private final ImageManager manager = this.imageContext.getImageManager();
-	private final ImageCacheStatistics statistics = DEBUG ? new ImageCacheLoggingStatistics(
-			true) : new ImageCacheStatistics(true);
+    private final MockImageContext imageContext = MockImageContext
+            .getInstance();
+    private final ImageSessionContext sessionContext = this.imageContext
+            .newSessionContext();
+    private final ImageManager manager = this.imageContext.getImageManager();
+    private final ImageCacheStatistics statistics = DEBUG ? new ImageCacheLoggingStatistics(
+            true) : new ImageCacheStatistics(true);
 
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @throws Exception
-			 */
-			@Override
-	protected void setUp() throws Exception {
-				super.setUp();
+    /**
+     * {@inheritDoc}
+     * 
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
 
-				this.manager.getCache().clearCache();
-				this.statistics.reset();
-				this.manager.getCache().setCacheListener(this.statistics);
-			}
+        this.manager.getCache().clearCache();
+        this.statistics.reset();
+        this.manager.getCache().setCacheListener(this.statistics);
+    }
 
-			/**
-			 * Tests the ImageInfo cache.
-			 * 
-			 * @throws IOException
-			 * @throws ImageException
-			 * @if an error occurs
-			 */
-			@Test
-			public void testImageInfoCache() throws ImageException, IOException {
-				final String invalid1 = "invalid1.jpg";
-				final String invalid2 = "invalid2.jpg";
-				final String valid1 = "bgimg300dpi.bmp";
-				final String valid2 = "big-image.png";
+    /**
+     * Tests the ImageInfo cache.
+     * 
+     * @throws IOException
+     * @throws ImageException
+     * @if an error occurs
+     */
+    @Test
+    public void testImageInfoCache() throws ImageException, IOException {
+        final String invalid1 = "invalid1.jpg";
+        final String invalid2 = "invalid2.jpg";
+        final String valid1 = "bgimg300dpi.bmp";
+        final String valid2 = "big-image.png";
 
-				ImageInfo info1, info2;
-				info1 = this.manager.getImageInfo(valid1, this.sessionContext);
-				assertNotNull(info1);
-				assertEquals(valid1, info1.getOriginalURI());
+        ImageInfo info1, info2;
+        info1 = this.manager.getImageInfo(valid1, this.sessionContext);
+        assertNotNull(info1);
+        assertEquals(valid1, info1.getOriginalURI());
 
-				try {
-					this.manager.getImageInfo(invalid1, this.sessionContext);
-					fail("Expected FileNotFoundException for invalid URI");
-				} catch (final FileNotFoundException e) {
-					// expected
-				}
+        try {
+            this.manager.getImageInfo(invalid1, this.sessionContext);
+            fail("Expected FileNotFoundException for invalid URI");
+        } catch (final FileNotFoundException e) {
+            // expected
+        }
 
-				// 2 requests:
-				assertEquals(0, this.statistics.getImageInfoCacheHits());
-				assertEquals(2, this.statistics.getImageInfoCacheMisses());
-				assertEquals(0, this.statistics.getInvalidHits());
-				this.statistics.reset();
+        // 2 requests:
+        assertEquals(0, this.statistics.getImageInfoCacheHits());
+        assertEquals(2, this.statistics.getImageInfoCacheMisses());
+        assertEquals(0, this.statistics.getInvalidHits());
+        this.statistics.reset();
 
-				// Cache Hit
-				info1 = this.manager.getImageInfo(valid1, this.sessionContext);
-				assertNotNull(info1);
-				assertEquals(valid1, info1.getOriginalURI());
+        // Cache Hit
+        info1 = this.manager.getImageInfo(valid1, this.sessionContext);
+        assertNotNull(info1);
+        assertEquals(valid1, info1.getOriginalURI());
 
-				// Cache Miss
-				info2 = this.manager.getImageInfo(valid2, this.sessionContext);
-				assertNotNull(info2);
-				assertEquals(valid2, info2.getOriginalURI());
+        // Cache Miss
+        info2 = this.manager.getImageInfo(valid2, this.sessionContext);
+        assertNotNull(info2);
+        assertEquals(valid2, info2.getOriginalURI());
 
-				try {
-					// Invalid Hit
-					this.manager.getImageInfo(invalid1, this.sessionContext);
-					fail("Expected FileNotFoundException for invalid URI");
-				} catch (final FileNotFoundException e) {
-					// expected
-				}
-				try {
-					// Invalid (Cache Miss)
-					this.manager.getImageInfo(invalid2, this.sessionContext);
-					fail("Expected FileNotFoundException for invalid URI");
-				} catch (final FileNotFoundException e) {
-					// expected
-				}
+        try {
+            // Invalid Hit
+            this.manager.getImageInfo(invalid1, this.sessionContext);
+            fail("Expected FileNotFoundException for invalid URI");
+        } catch (final FileNotFoundException e) {
+            // expected
+        }
+        try {
+            // Invalid (Cache Miss)
+            this.manager.getImageInfo(invalid2, this.sessionContext);
+            fail("Expected FileNotFoundException for invalid URI");
+        } catch (final FileNotFoundException e) {
+            // expected
+        }
 
-				// 4 requests:
-				assertEquals(1, this.statistics.getImageInfoCacheHits());
-				assertEquals(2, this.statistics.getImageInfoCacheMisses());
-				assertEquals(1, this.statistics.getInvalidHits());
-				this.statistics.reset();
-			}
+        // 4 requests:
+        assertEquals(1, this.statistics.getImageInfoCacheHits());
+        assertEquals(2, this.statistics.getImageInfoCacheMisses());
+        assertEquals(1, this.statistics.getInvalidHits());
+        this.statistics.reset();
+    }
 
-			@Test
-			public void testInvalidURIExpiration() {
-				final MockTimeStampProvider provider = new MockTimeStampProvider();
-				final ImageCache cache = new ImageCache(provider,
-						new DefaultExpirationPolicy(2));
-				cache.setCacheListener(this.statistics);
+    @Test
+    public void testInvalidURIExpiration() {
+        final MockTimeStampProvider provider = new MockTimeStampProvider();
+        final ImageCache cache = new ImageCache(provider,
+                new DefaultExpirationPolicy(2));
+        cache.setCacheListener(this.statistics);
 
-				final String invalid1 = "invalid1.jpg";
-				final String invalid2 = "invalid2.jpg";
-				final String valid1 = "valid1.jpg";
+        final String invalid1 = "invalid1.jpg";
+        final String invalid2 = "invalid2.jpg";
+        final String valid1 = "valid1.jpg";
 
-				provider.setTimeStamp(1000);
-				cache.registerInvalidURI(invalid1);
-				provider.setTimeStamp(1100);
-				cache.registerInvalidURI(invalid2);
+        provider.setTimeStamp(1000);
+        cache.registerInvalidURI(invalid1);
+        provider.setTimeStamp(1100);
+        cache.registerInvalidURI(invalid2);
 
-				assertEquals(0, this.statistics.getInvalidHits());
+        assertEquals(0, this.statistics.getInvalidHits());
 
-				// not expired, yet
-				provider.setTimeStamp(1200);
-				assertFalse(cache.isInvalidURI(valid1));
-				assertTrue(cache.isInvalidURI(invalid1));
-				assertTrue(cache.isInvalidURI(invalid2));
-				assertEquals(2, this.statistics.getInvalidHits());
+        // not expired, yet
+        provider.setTimeStamp(1200);
+        assertFalse(cache.isInvalidURI(valid1));
+        assertTrue(cache.isInvalidURI(invalid1));
+        assertTrue(cache.isInvalidURI(invalid2));
+        assertEquals(2, this.statistics.getInvalidHits());
 
-				// first expiration time reached
-				provider.setTimeStamp(3050);
-				assertFalse(cache.isInvalidURI(valid1));
-				assertFalse(cache.isInvalidURI(invalid1));
-				assertTrue(cache.isInvalidURI(invalid2));
-				assertEquals(3, this.statistics.getInvalidHits());
+        // first expiration time reached
+        provider.setTimeStamp(3050);
+        assertFalse(cache.isInvalidURI(valid1));
+        assertFalse(cache.isInvalidURI(invalid1));
+        assertTrue(cache.isInvalidURI(invalid2));
+        assertEquals(3, this.statistics.getInvalidHits());
 
-				// second expiration time reached
-				provider.setTimeStamp(3200);
-				assertFalse(cache.isInvalidURI(valid1));
-				assertFalse(cache.isInvalidURI(invalid1));
-				assertFalse(cache.isInvalidURI(invalid2));
-				assertEquals(3, this.statistics.getInvalidHits());
-			}
+        // second expiration time reached
+        provider.setTimeStamp(3200);
+        assertFalse(cache.isInvalidURI(valid1));
+        assertFalse(cache.isInvalidURI(invalid1));
+        assertFalse(cache.isInvalidURI(invalid2));
+        assertEquals(3, this.statistics.getInvalidHits());
+    }
 
-			/**
-			 * Tests the image cache reusing a cacheable Image created by the
-			 * ImageLoader.
-			 * 
-			 * @throws IOException
-			 * @throws ImageException
-			 * @if an error occurs
-			 */
-			@Test
-			public void testImageCache1() throws ImageException, IOException {
-				final String valid1 = "bgimg72dpi.gif";
+    /**
+     * Tests the image cache reusing a cacheable Image created by the
+     * ImageLoader.
+     * 
+     * @throws IOException
+     * @throws ImageException
+     * @if an error occurs
+     */
+    @Test
+    public void testImageCache1() throws ImageException, IOException {
+        final String valid1 = "bgimg72dpi.gif";
 
-				final ImageInfo info = this.manager.getImageInfo(valid1,
-						this.sessionContext);
-				assertNotNull(info);
+        final ImageInfo info = this.manager.getImageInfo(valid1,
+                this.sessionContext);
+        assertNotNull(info);
 
-				final ImageBuffered img1 = (ImageBuffered) this.manager.getImage(info,
-						ImageFlavor.BUFFERED_IMAGE, this.sessionContext);
-				assertNotNull(img1);
-				assertNotNull(img1.getBufferedImage());
+        final ImageBuffered img1 = (ImageBuffered) this.manager.getImage(info,
+                ImageFlavor.BUFFERED_IMAGE, this.sessionContext);
+        assertNotNull(img1);
+        assertNotNull(img1.getBufferedImage());
 
-				final ImageBuffered img2 = (ImageBuffered) this.manager.getImage(info,
-						ImageFlavor.BUFFERED_IMAGE, this.sessionContext);
-				// ImageBuffered does not have to be the same instance but we want at
-				// least the
-				// BufferedImage to be reused.
-				assertTrue("BufferedImage must be reused",
-						img1.getBufferedImage() == img2.getBufferedImage());
+        final ImageBuffered img2 = (ImageBuffered) this.manager.getImage(info,
+                ImageFlavor.BUFFERED_IMAGE, this.sessionContext);
+        // ImageBuffered does not have to be the same instance but we want at
+        // least the
+        // BufferedImage to be reused.
+        assertTrue("BufferedImage must be reused",
+                img1.getBufferedImage() == img2.getBufferedImage());
 
-				assertEquals(1, this.statistics.getImageCacheHits());
-				assertEquals(1, this.statistics.getImageCacheMisses());
-			}
+        assertEquals(1, this.statistics.getImageCacheHits());
+        assertEquals(1, this.statistics.getImageCacheMisses());
+    }
 
-			/**
-			 * Test to check if doInvalidURIHouseKeeping() throws a
-			 * ConcurrentModificationException.
-			 */
-			@Test
-			public void testImageCacheHouseKeeping() {
-				final ImageCache imageCache = new ImageCache(new TimeStampProvider(),
-						new DefaultExpirationPolicy(1));
-				imageCache.registerInvalidURI("invalid");
-				imageCache.registerInvalidURI("invalid2");
-				try {
-					Thread.sleep(1200);
-				} catch (final InterruptedException e) {
-					e.printStackTrace();
-				}
-				imageCache.doHouseKeeping();
-			}
+    /**
+     * Test to check if doInvalidURIHouseKeeping() throws a
+     * ConcurrentModificationException.
+     */
+    @Test
+    public void testImageCacheHouseKeeping() {
+        final ImageCache imageCache = new ImageCache(new TimeStampProvider(),
+                new DefaultExpirationPolicy(1));
+        imageCache.registerInvalidURI("invalid");
+        imageCache.registerInvalidURI("invalid2");
+        try {
+            Thread.sleep(1200);
+        } catch (final InterruptedException e) {
+            log.error("Exception", e);
+        }
+        imageCache.doHouseKeeping();
+    }
 }

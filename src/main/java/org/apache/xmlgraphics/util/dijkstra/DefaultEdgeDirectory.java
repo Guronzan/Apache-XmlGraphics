@@ -20,40 +20,45 @@
 package org.apache.xmlgraphics.util.dijkstra;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Default implementation of an edge directory for the {@link DijkstraAlgorithm}.
+ * Default implementation of an edge directory for the {@link DijkstraAlgorithm}
+ * .
  */
 public class DefaultEdgeDirectory implements EdgeDirectory {
 
     /** The directory of edges */
-    private Map edges = new java.util.HashMap();
-    //Map<Vertex,Map<Vertex,Edge>>
+    private final Map<Vertex, Map<Vertex, Edge>> edges = new HashMap<>();
 
     /**
      * Adds a new edge between two vertices.
-     * @param edge the new edge
+     * 
+     * @param edge
+     *            the new edge
      */
-    public void addEdge(Edge edge) {
-        Map directEdges = (Map)edges.get(edge.getStart());
+    public void addEdge(final Edge edge) {
+        Map<Vertex, Edge> directEdges = this.edges.get(edge.getStart());
         if (directEdges == null) {
-            directEdges = new java.util.HashMap();
-            edges.put(edge.getStart(), directEdges);
+            directEdges = new HashMap<Vertex, Edge>();
+            this.edges.put(edge.getStart(), directEdges);
         }
         directEdges.put(edge.getEnd(), edge);
     }
 
     /** {@inheritDoc} */
-    public int getPenalty(Vertex start, Vertex end) {
-        Map edgeMap = (Map)edges.get(start);
+    @Override
+    public int getPenalty(final Vertex start, final Vertex end) {
+        final Map<Vertex, Edge> edgeMap = this.edges.get(start);
         if (edgeMap != null) {
-            Edge route = (Edge)edgeMap.get(end);
+            final Edge route = edgeMap.get(end);
             if (route != null) {
-                int penalty = route.getPenalty();
+                final int penalty = route.getPenalty();
                 if (penalty < 0) {
-                    throw new IllegalStateException("Penalty must not be negative");
+                    throw new IllegalStateException(
+                            "Penalty must not be negative");
                 }
                 return penalty;
             }
@@ -62,40 +67,47 @@ public class DefaultEdgeDirectory implements EdgeDirectory {
     }
 
     /** {@inheritDoc} */
-    public Iterator getDestinations(Vertex origin) {
-        Map directRoutes = (Map)edges.get(origin);
+    @Override
+    public Iterator<Vertex> getDestinations(final Vertex origin) {
+        final Map<Vertex, Edge> directRoutes = this.edges.get(origin);
         if (directRoutes != null) {
-            Iterator iter = directRoutes.keySet().iterator();
+            final Iterator<Vertex> iter = directRoutes.keySet().iterator();
             return iter;
         }
-        return Collections.EMPTY_LIST.iterator();
+        return Collections.<Vertex> emptyList().iterator();
     }
 
     /**
      * Returns an iterator over all edges with the given origin.
-     * @param origin the origin
+     * 
+     * @param origin
+     *            the origin
      * @return an iterator over Edge instances
      */
-    public Iterator getEdges(Vertex origin) {
-        Map directRoutes = (Map)edges.get(origin);
+    public Iterator<Edge> getEdges(final Vertex origin) {
+        final Map<Vertex, Edge> directRoutes = this.edges.get(origin);
         if (directRoutes != null) {
-            Iterator iter = directRoutes.values().iterator();
+            final Iterator<Edge> iter = directRoutes.values().iterator();
             return iter;
         }
-        return Collections.EMPTY_LIST.iterator();
+        return Collections.<Edge> emptyList().iterator();
     }
 
     /**
-     * Returns the best edge (the edge with the lowest penalty) between two given vertices.
-     * @param start the start vertex
-     * @param end the end vertex
+     * Returns the best edge (the edge with the lowest penalty) between two
+     * given vertices.
+     * 
+     * @param start
+     *            the start vertex
+     * @param end
+     *            the end vertex
      * @return the best vertex or null if none is found
      */
-    public Edge getBestEdge(Vertex start, Vertex end) {
+    public Edge getBestEdge(final Vertex start, final Vertex end) {
         Edge best = null;
-        Iterator iter = getEdges(start);
+        final Iterator<Edge> iter = getEdges(start);
         while (iter.hasNext()) {
-            Edge edge = (Edge)iter.next();
+            final Edge edge = iter.next();
             if (edge.getEnd().equals(end)) {
                 if (best == null || edge.getPenalty() < best.getPenalty()) {
                     best = edge;
@@ -104,6 +116,5 @@ public class DefaultEdgeDirectory implements EdgeDirectory {
         }
         return best;
     }
-
 
 }

@@ -35,35 +35,35 @@ import org.junit.Test;
  */
 public class NamedColorProfileParserTest extends TestCase {
 
-	private static final String NCP_EXAMPLE_FILE = "ncp-example.icc";
+    private static final String NCP_EXAMPLE_FILE = "ncp-example.icc";
 
-	@Test
-	public void testParser() throws IOException {
-		final InputStream in = getClass().getResourceAsStream(NCP_EXAMPLE_FILE);
-		assertNotNull(NCP_EXAMPLE_FILE + " is missing!", in);
-		ICC_Profile iccProfile;
-		try {
-			iccProfile = ICC_Profile.getInstance(in);
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-		final NamedColorProfileParser parser = new NamedColorProfileParser();
-		final NamedColorProfile ncp = parser.parseProfile(iccProfile);
-		assertEquals("Named Color Profile Example", ncp.getProfileName());
-		assertEquals("The Apache Software Foundation", ncp.getCopyright());
-		assertEquals(RenderingIntent.PERCEPTUAL, ncp.getRenderingIntent());
-		final NamedColorSpace[] namedColors = ncp.getNamedColors();
-		assertEquals(2, namedColors.length);
-		NamedColorSpace ncs;
-		ncs = namedColors[0];
-		assertEquals("Postgelb", ncs.getColorName());
-		final float[] xyz = ncs.getXYZ();
-		assertEquals(0.6763079f, xyz[0], 0.01f);
-		assertEquals(0.6263507f, xyz[1], 0.01f);
-		assertEquals(0.04217565f, xyz[2], 0.01f);
+    @Test
+    public void testParser() throws IOException {
+        final InputStream in = getClass().getResourceAsStream(NCP_EXAMPLE_FILE);
+        assertNotNull(NCP_EXAMPLE_FILE + " is missing!", in);
+        ICC_Profile iccProfile;
+        try {
+            iccProfile = ICC_Profile.getInstance(in);
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+        final NamedColorProfileParser parser = new NamedColorProfileParser();
+        final NamedColorProfile ncp = parser.parseProfile(iccProfile);
+        assertEquals("Named Color Profile Example", ncp.getProfileName());
+        assertEquals("The Apache Software Foundation", ncp.getCopyright());
+        assertEquals(RenderingIntent.PERCEPTUAL, ncp.getRenderingIntent());
+        final NamedColorSpace[] namedColors = ncp.getNamedColors();
+        assertEquals(2, namedColors.length);
+        NamedColorSpace ncs;
+        ncs = namedColors[0];
+        assertEquals("Postgelb", ncs.getColorName());
+        final float[] xyz = ncs.getXYZ();
+        assertEquals(0.6763079f, xyz[0], 0.01f);
+        assertEquals(0.6263507f, xyz[1], 0.01f);
+        assertEquals(0.04217565f, xyz[2], 0.01f);
 
-		ncs = namedColors[1];
-		assertEquals("MyRed", ncs.getColorName());
-	}
+        ncs = namedColors[1];
+        assertEquals("MyRed", ncs.getColorName());
+    }
 
 }

@@ -33,19 +33,19 @@ import org.junit.Test;
  */
 public class CommonURIResolverTestCase extends TestCase {
 
-	/**
-	 * Test the DataURIResolver with correct values.
-	 * 
-	 * @throws TransformerException
-	 * @throws IOException
-	 *
-	 * @throws Exception
-	 *             if an error occurs
-	 */
-	@Test
-	public void testDataURLHandling() throws IOException, TransformerException {
-		final URIResolver resolver = CommonURIResolver.getDefaultURIResolver();
-		DataURIResolverTestCase.actualURLHAndlingTest(resolver);
-	}
+    /**
+     * Test the DataURIResolver with correct values.
+     * 
+     * @throws TransformerException
+     * @throws IOException
+     *
+     * @throws Exception
+     *             if an error occurs
+     */
+    @Test
+    public void testDataURLHandling() throws IOException, TransformerException {
+        final URIResolver resolver = CommonURIResolver.getDefaultURIResolver();
+        DataURIResolverTestCase.actualURLHAndlingTest(resolver);
+    }
 
 }

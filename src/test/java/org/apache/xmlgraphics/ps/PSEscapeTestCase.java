@@ -28,39 +28,39 @@ import org.junit.Test;
  */
 public class PSEscapeTestCase extends TestCase {
 
-	@Test
-	public void testBasics() {
-		final StringBuffer sb = new StringBuffer();
+    @Test
+    public void testBasics() {
+        final StringBuilder sb = new StringBuilder();
 
-		PSGenerator.escapeChar('a', sb);
-		PSGenerator.escapeChar('b', sb);
-		PSGenerator.escapeChar('c', sb);
-		PSGenerator.escapeChar('!', sb);
-		assertEquals("abc!", sb.toString());
+        PSGenerator.escapeChar('a', sb);
+        PSGenerator.escapeChar('b', sb);
+        PSGenerator.escapeChar('c', sb);
+        PSGenerator.escapeChar('!', sb);
+        assertEquals("abc!", sb.toString());
 
-		sb.setLength(0);
-		PSGenerator.escapeChar('0', sb);
-		PSGenerator.escapeChar('\t', sb);
-		PSGenerator.escapeChar('(', sb);
-		PSGenerator.escapeChar('x', sb);
-		PSGenerator.escapeChar(')', sb);
-		PSGenerator.escapeChar('\n', sb);
-		PSGenerator.escapeChar('\u001E', sb); // <RS>
-		PSGenerator.escapeChar('\u00E4', sb); // a umlaut
-		PSGenerator.escapeChar('\u20AC', sb); // EURO Sign
-		assertEquals("0\\t\\(x\\)\\n\\036\\344?", sb.toString());
-	}
+        sb.setLength(0);
+        PSGenerator.escapeChar('0', sb);
+        PSGenerator.escapeChar('\t', sb);
+        PSGenerator.escapeChar('(', sb);
+        PSGenerator.escapeChar('x', sb);
+        PSGenerator.escapeChar(')', sb);
+        PSGenerator.escapeChar('\n', sb);
+        PSGenerator.escapeChar('\u001E', sb); // <RS>
+        PSGenerator.escapeChar('\u00E4', sb); // a umlaut
+        PSGenerator.escapeChar('\u20AC', sb); // EURO Sign
+        assertEquals("0\\t\\(x\\)\\n\\036\\344?", sb.toString());
+    }
 
-	@Test
-	public void testStringToDSC() {
-		String escaped;
-		escaped = PSGenerator.convertStringToDSC("0\t(x)\n\u001E\u00E4\u20AC");
-		assertEquals("0\\t\\(x\\)\\n\\036\\344?", escaped);
-		escaped = PSGenerator.convertStringToDSC("0\t(x)\n\u001E\u00E4 \u20AC");
-		assertEquals("(0\\t\\(x\\)\\n\\036\\344 ?)", escaped);
-		escaped = PSGenerator.convertStringToDSC("0\t(x)\n\u001E\u00E4\u20AC",
-				true);
-		assertEquals("(0\\t\\(x\\)\\n\\036\\344?)", escaped);
-	}
+    @Test
+    public void testStringToDSC() {
+        String escaped;
+        escaped = PSGenerator.convertStringToDSC("0\t(x)\n\u001E\u00E4\u20AC");
+        assertEquals("0\\t\\(x\\)\\n\\036\\344?", escaped);
+        escaped = PSGenerator.convertStringToDSC("0\t(x)\n\u001E\u00E4 \u20AC");
+        assertEquals("(0\\t\\(x\\)\\n\\036\\344 ?)", escaped);
+        escaped = PSGenerator.convertStringToDSC("0\t(x)\n\u001E\u00E4\u20AC",
+                true);
+        assertEquals("(0\\t\\(x\\)\\n\\036\\344?)", escaped);
+    }
 
 }

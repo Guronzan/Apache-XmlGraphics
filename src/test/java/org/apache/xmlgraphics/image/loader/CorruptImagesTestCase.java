@@ -30,28 +30,28 @@ import org.junit.Test;
  */
 public class CorruptImagesTestCase extends TestCase {
 
-	private final MockImageContext imageContext = MockImageContext
-			.getInstance();
+    private final MockImageContext imageContext = MockImageContext
+            .getInstance();
 
-	public CorruptImagesTestCase(final String name) {
-		super(name);
-	}
+    public CorruptImagesTestCase(final String name) {
+        super(name);
+    }
 
-	@Test
-	public void testCorruptPNG() throws IOException {
-		final String uri = "corrupt-image.png";
+    @Test
+    public void testCorruptPNG() throws IOException {
+        final String uri = "corrupt-image.png";
 
-		final ImageSessionContext sessionContext = this.imageContext
-				.newSessionContext();
-		final ImageManager manager = this.imageContext.getImageManager();
+        final ImageSessionContext sessionContext = this.imageContext
+                .newSessionContext();
+        final ImageManager manager = this.imageContext.getImageManager();
 
-		try {
-			manager.preloadImage(uri, sessionContext);
-			fail("Expected an ImageException!");
-		} catch (final ImageException ie) {
-			// Expected exception
-			assertNotNull(ie.getMessage());
-		}
-	}
+        try {
+            manager.preloadImage(uri, sessionContext);
+            fail("Expected an ImageException!");
+        } catch (final ImageException ie) {
+            // Expected exception
+            assertNotNull(ie.getMessage());
+        }
+    }
 
 }

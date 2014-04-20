@@ -38,84 +38,85 @@ import org.apache.xmlgraphics.util.MimeConstants;
  */
 public class MockImageLoaderFactoryTIFF extends AbstractImageLoaderFactory {
 
-	/** {@inheritDoc} */
-	@Override
-	public ImageFlavor[] getSupportedFlavors(final String mime) {
-		return new ImageFlavor[] { ImageFlavor.BUFFERED_IMAGE,
-				ImageFlavor.RENDERED_IMAGE };
-	}
+    /** {@inheritDoc} */
+    @Override
+    public ImageFlavor[] getSupportedFlavors(final String mime) {
+        return new ImageFlavor[] { ImageFlavor.BUFFERED_IMAGE,
+                ImageFlavor.RENDERED_IMAGE };
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public String[] getSupportedMIMETypes() {
-		return new String[] { MimeConstants.MIME_TIFF };
-	}
+    /** {@inheritDoc} */
+    @Override
+    public String[] getSupportedMIMETypes() {
+        return new String[] { MimeConstants.MIME_TIFF };
+    }
 
-	private void checkSuppportedFlavor(final String mime,
-			final ImageFlavor flavor) {
-		final ImageFlavor[] flavors = getSupportedFlavors(mime);
-		boolean found = false;
-		for (final ImageFlavor flavor2 : flavors) {
-			if (flavor2.equals(flavor)) {
-				found = true;
-				break;
-			}
-		}
-		assertTrue(found);
-	}
+    private void checkSuppportedFlavor(final String mime,
+            final ImageFlavor flavor) {
+        final ImageFlavor[] flavors = getSupportedFlavors(mime);
+        boolean found = false;
+        for (final ImageFlavor flavor2 : flavors) {
+            if (flavor2.equals(flavor)) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public boolean isAvailable() {
+        return true;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean isSupported(final ImageInfo imageInfo) {
-		return MimeConstants.MIME_TIFF.equals(imageInfo.getMimeType());
-	}
+    /** {@inheritDoc} */
+    @Override
+    public boolean isSupported(final ImageInfo imageInfo) {
+        return MimeConstants.MIME_TIFF.equals(imageInfo.getMimeType());
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public ImageLoader newImageLoader(final ImageFlavor targetFlavor) {
-		checkSuppportedFlavor(MimeConstants.MIME_TIFF, targetFlavor);
-		return new ImageLoaderImpl(targetFlavor);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public ImageLoader newImageLoader(final ImageFlavor targetFlavor) {
+        checkSuppportedFlavor(MimeConstants.MIME_TIFF, targetFlavor);
+        return new ImageLoaderImpl(targetFlavor);
+    }
 
-	/** Mock image loader implementation. */
-	private static class ImageLoaderImpl implements ImageLoader {
+    /** Mock image loader implementation. */
+    private static class ImageLoaderImpl implements ImageLoader {
 
-		private final ImageFlavor flavor;
+        private final ImageFlavor flavor;
 
-		public ImageLoaderImpl(final ImageFlavor flavor) {
-			this.flavor = flavor;
-		}
+        public ImageLoaderImpl(final ImageFlavor flavor) {
+            this.flavor = flavor;
+        }
 
-		@Override
-		public ImageFlavor getTargetFlavor() {
-			return this.flavor;
-		}
+        @Override
+        public ImageFlavor getTargetFlavor() {
+            return this.flavor;
+        }
 
-		@Override
-		public int getUsagePenalty() {
-			return 0;
-		}
+        @Override
+        public int getUsagePenalty() {
+            return 0;
+        }
 
-		@Override
-		public Image loadImage(final ImageInfo info, final Map hints,
-				final ImageSessionContext session) throws ImageException,
-				IOException {
-			throw new UnsupportedOperationException("not implemented");
-		}
+        @Override
+        public Image loadImage(final ImageInfo info,
+                final Map<String, Object> hints,
+                final ImageSessionContext session) throws ImageException,
+                IOException {
+            throw new UnsupportedOperationException("not implemented");
+        }
 
-		@Override
-		public Image loadImage(final ImageInfo info,
-				final ImageSessionContext session) throws ImageException,
-				IOException {
-			throw new UnsupportedOperationException("not implemented");
-		}
+        @Override
+        public Image loadImage(final ImageInfo info,
+                final ImageSessionContext session) throws ImageException,
+                IOException {
+            throw new UnsupportedOperationException("not implemented");
+        }
 
-	}
+    }
 
 }

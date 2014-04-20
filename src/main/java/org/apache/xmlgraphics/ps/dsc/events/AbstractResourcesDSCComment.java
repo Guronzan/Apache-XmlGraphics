@@ -22,9 +22,11 @@ package org.apache.xmlgraphics.ps.dsc.events;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.xmlgraphics.ps.PSGenerator;
 import org.apache.xmlgraphics.ps.PSProcSet;
@@ -36,7 +38,7 @@ import org.apache.xmlgraphics.ps.PSResource;
  */
 public abstract class AbstractResourcesDSCComment extends AbstractDSCComment {
 
-    private Set resources;
+    private Set<PSResource> resources;
 
     /**
      * Creates a new instance.
@@ -47,37 +49,44 @@ public abstract class AbstractResourcesDSCComment extends AbstractDSCComment {
 
     /**
      * Creates a new instance.
-     * @param resources a Collection of PSResource instances
+     *
+     * @param resources
+     *            a Collection of PSResource instances
      */
-    public AbstractResourcesDSCComment(Collection resources) {
+    public AbstractResourcesDSCComment(final Collection<PSResource> resources) {
         addResources(resources);
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean hasValues() {
         return true;
     }
 
     private void prepareResourceSet() {
         if (this.resources == null) {
-            this.resources = new java.util.TreeSet();
+            this.resources = new TreeSet<>();
         }
     }
 
     /**
      * Adds a new resource.
-     * @param res the resource
+     *
+     * @param res
+     *            the resource
      */
-    public void addResource(PSResource res) {
+    public void addResource(final PSResource res) {
         prepareResourceSet();
         this.resources.add(res);
     }
 
     /**
      * Adds a collection of resources.
-     * @param resources a Collection of PSResource instances.
+     *
+     * @param resources
+     *            a Collection of PSResource instances.
      */
-    public void addResources(Collection resources) {
+    public void addResources(final Collection<PSResource> resources) {
         if (resources != null) {
             prepareResourceSet();
             this.resources.addAll(resources);
@@ -86,16 +95,17 @@ public abstract class AbstractResourcesDSCComment extends AbstractDSCComment {
 
     /**
      * Returns the set of resources associated with this DSC comment.
+     *
      * @return the set of resources
      */
-    public Set getResources() {
+    public Set<PSResource> getResources() {
         return Collections.unmodifiableSet(this.resources);
     }
 
     /**
      * Defines the known resource types (font, procset, file, pattern etc.).
      */
-    protected static final Set RESOURCE_TYPES = new java.util.HashSet();
+    protected static final Set<String> RESOURCE_TYPES = new HashSet<>();
 
     static {
         RESOURCE_TYPES.add(PSResource.TYPE_FONT);
@@ -107,56 +117,60 @@ public abstract class AbstractResourcesDSCComment extends AbstractDSCComment {
     }
 
     /** {@inheritDoc} */
-    public void parseValue(String value) {
-        List params = splitParams(value);
+    @Override
+    public void parseValue(final String value) {
+        final List<String> params = splitParams(value);
         String currentResourceType = null;
-        Iterator iter = params.iterator();
+        final Iterator<String> iter = params.iterator();
         while (iter.hasNext()) {
-            String name = (String)iter.next();
+            final String name = iter.next();
             if (RESOURCE_TYPES.contains(name)) {
                 currentResourceType = name;
             }
             if (currentResourceType == null) {
                 throw new IllegalArgumentException(
-                        "<resources> must begin with a resource type. Found: " + name);
+                        "<resources> must begin with a resource type. Found: "
+                                + name);
             }
             if (PSResource.TYPE_FONT.equals(currentResourceType)) {
-                String fontname = (String)iter.next();
+                final String fontname = iter.next();
                 addResource(new PSResource(name, fontname));
             } else if (PSResource.TYPE_FORM.equals(currentResourceType)) {
-                String formname = (String)iter.next();
+                final String formname = iter.next();
                 addResource(new PSResource(name, formname));
             } else if (PSResource.TYPE_PROCSET.equals(currentResourceType)) {
-                String procname = (String)iter.next();
-                String version = (String)iter.next();
-                String revision = (String)iter.next();
-                addResource(new PSProcSet(procname,
-                        Float.parseFloat(version), Integer.parseInt(revision)));
+                final String procname = iter.next();
+                final String version = iter.next();
+                final String revision = iter.next();
+                addResource(new PSProcSet(procname, Float.parseFloat(version),
+                        Integer.parseInt(revision)));
             } else if (PSResource.TYPE_FILE.equals(currentResourceType)) {
-                String filename = (String)iter.next();
+                final String filename = iter.next();
                 addResource(new PSResource(name, filename));
             } else {
-                throw new IllegalArgumentException("Invalid resource type: " + currentResourceType);
+                throw new IllegalArgumentException("Invalid resource type: "
+                        + currentResourceType);
             }
         }
     }
 
     /** {@inheritDoc} */
-    public void generate(PSGenerator gen) throws IOException {
-        if (resources == null || resources.size() == 0) {
+    @Override
+    public void generate(final PSGenerator gen) throws IOException {
+        if (this.resources == null || this.resources.isEmpty()) {
             return;
         }
-        StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
         sb.append("%%").append(getName()).append(": ");
         boolean first = true;
-        Iterator i = resources.iterator();
+        final Iterator<PSResource> i = this.resources.iterator();
         while (i.hasNext()) {
             if (!first) {
                 gen.writeln(sb.toString());
                 sb.setLength(0);
                 sb.append("%%+ ");
             }
-            PSResource res = (PSResource)i.next();
+            final PSResource res = i.next();
             sb.append(res.getResourceSpecification());
             first = false;
         }

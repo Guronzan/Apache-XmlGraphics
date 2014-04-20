@@ -37,27 +37,27 @@ import org.junit.Test;
 
 public class ImageLoaderPNGTestCase {
 
-	private final ImageLoaderPNG ilpng = new ImageLoaderPNG();
+    private final ImageLoaderPNG ilpng = new ImageLoaderPNG();
 
-	@Test
-	public void testGetUsagePenalty() {
-		assertEquals(1000, this.ilpng.getUsagePenalty());
-	}
+    @Test
+    public void testGetUsagePenalty() {
+        assertEquals(1000, this.ilpng.getUsagePenalty());
+    }
 
-	@Test
-	public void testLoadImageImageInfoMapImageSessionContext()
-			throws ImageException, IOException {
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		final ImageInfo info = new ImageInfo("basn2c08.png",
-				MimeConstants.MIME_PNG);
-		final Image im = this.ilpng.loadImage(info, null, session);
-		assertTrue(im instanceof ImageRendered);
-	}
+    @Test
+    public void testLoadImageImageInfoMapImageSessionContext()
+            throws ImageException, IOException {
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        final ImageInfo info = new ImageInfo("basn2c08.png",
+                MimeConstants.MIME_PNG);
+        final Image im = this.ilpng.loadImage(info, null, session);
+        assertTrue(im instanceof ImageRendered);
+    }
 
-	@Test
-	public void testGetTargetFlavor() {
-		assertEquals(ImageFlavor.RENDERED_IMAGE, this.ilpng.getTargetFlavor());
-	}
+    @Test
+    public void testGetTargetFlavor() {
+        assertEquals(ImageFlavor.RENDERED_IMAGE, this.ilpng.getTargetFlavor());
+    }
 
 }

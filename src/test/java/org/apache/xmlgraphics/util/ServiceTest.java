@@ -31,89 +31,89 @@ import org.junit.Test;
  */
 public class ServiceTest extends TestCase {
 
-	/**
-	 * Tests the mode where Service returns instances.
-	 * 
-	 * @in case of an error
-	 */
-	@Test
-	public void testWithInstances() {
-		final Class cls = ImageWriter.class;
-		boolean found = false;
-		Object writer1 = null;
-		Object writer2 = null;
+    /**
+     * Tests the mode where Service returns instances.
+     * 
+     * @in case of an error
+     */
+    @Test
+    public void testWithInstances() {
+        final Class<ImageWriter> cls = ImageWriter.class;
+        boolean found = false;
+        Object writer1 = null;
+        Object writer2 = null;
 
-		// First run: Find a writer implementation (one of the two must be
-		// available)
-		Iterator iter = Service.providers(cls);
-		while (iter.hasNext()) {
-			final Object obj = iter.next();
-			assertNotNull(obj);
-			final String className = obj.getClass().getName();
-			if ("org.apache.xmlgraphics.image.writer.internal.PNGImageWriter"
-					.equals(className)) {
-				writer1 = obj;
-				found = true;
-				break;
-			} else if ("org.apache.xmlgraphics.image.writer.imageio.ImageIOPNGImageWriter"
-					.equals(className)) {
-				writer2 = obj;
-				found = true;
-				break;
-			}
-		}
-		assertTrue("None of the expected classes found", found);
+        // First run: Find a writer implementation (one of the two must be
+        // available)
+        Iterator<ImageWriter> iter = Service.providers(cls);
+        while (iter.hasNext()) {
+            final Object obj = iter.next();
+            assertNotNull(obj);
+            final String className = obj.getClass().getName();
+            if ("org.apache.xmlgraphics.image.writer.internal.PNGImageWriter"
+                    .equals(className)) {
+                writer1 = obj;
+                found = true;
+                break;
+            } else if ("org.apache.xmlgraphics.image.writer.imageio.ImageIOPNGImageWriter"
+                    .equals(className)) {
+                writer2 = obj;
+                found = true;
+                break;
+            }
+        }
+        assertTrue("None of the expected classes found", found);
 
-		// Second run: verify that the same instances are returned
-		iter = Service.providers(cls);
-		while (iter.hasNext()) {
-			final Object obj = iter.next();
-			assertNotNull(obj);
-			final String className = obj.getClass().getName();
-			if ("org.apache.xmlgraphics.image.writer.internal.PNGImageWriter"
-					.equals(className)) {
-				assertTrue(obj == writer1);
-				break;
-			} else if ("org.apache.xmlgraphics.image.writer.imageio.ImageIOPNGImageWriter"
-					.equals(className)) {
-				assertTrue(obj == writer2);
-				break;
-			}
-		}
-	}
+        // Second run: verify that the same instances are returned
+        iter = Service.providers(cls);
+        while (iter.hasNext()) {
+            final Object obj = iter.next();
+            assertNotNull(obj);
+            final String className = obj.getClass().getName();
+            if ("org.apache.xmlgraphics.image.writer.internal.PNGImageWriter"
+                    .equals(className)) {
+                assertTrue(obj == writer1);
+                break;
+            } else if ("org.apache.xmlgraphics.image.writer.imageio.ImageIOPNGImageWriter"
+                    .equals(className)) {
+                assertTrue(obj == writer2);
+                break;
+            }
+        }
+    }
 
-	/**
-	 * Tests the mode where Service returns class names.
-	 * 
-	 * @in case of an error
-	 */
-	@Test
-	public void testWithClassNames() {
-		final Class cls = ImageWriter.class;
-		boolean found = true;
-		Iterator iter = Service.providerNames(cls);
-		while (iter.hasNext()) {
-			final Object obj = iter.next();
-			assertNotNull(obj);
-			assertTrue("Returned object must be a class name",
-					obj instanceof String);
-			if ("org.apache.xmlgraphics.image.writer.internal.PNGImageWriter"
-					.equals(obj)
-					|| "org.apache.xmlgraphics.image.writer.imageio.ImageIOPNGImageWriter"
-							.equals(obj)) {
-				found = true;
-			}
-		}
-		assertTrue("None of the expected classes found", found);
+    /**
+     * Tests the mode where Service returns class names.
+     * 
+     * @in case of an error
+     */
+    @Test
+    public void testWithClassNames() {
+        final Class<ImageWriter> cls = ImageWriter.class;
+        boolean found = true;
+        Iterator<String> iter = Service.providerNames(cls);
+        while (iter.hasNext()) {
+            final Object obj = iter.next();
+            assertNotNull(obj);
+            assertTrue("Returned object must be a class name",
+                    obj instanceof String);
+            if ("org.apache.xmlgraphics.image.writer.internal.PNGImageWriter"
+                    .equals(obj)
+                    || "org.apache.xmlgraphics.image.writer.imageio.ImageIOPNGImageWriter"
+                            .equals(obj)) {
+                found = true;
+            }
+        }
+        assertTrue("None of the expected classes found", found);
 
-		// Do it a second time to make sure the cache works as expected
-		iter = Service.providerNames(cls);
-		while (iter.hasNext()) {
-			final Object obj = iter.next();
-			assertNotNull(obj);
-			assertTrue("Returned object must be a class name",
-					obj instanceof String);
-		}
-	}
+        // Do it a second time to make sure the cache works as expected
+        iter = Service.providerNames(cls);
+        while (iter.hasNext()) {
+            final Object obj = iter.next();
+            assertNotNull(obj);
+            assertTrue("Returned object must be a class name",
+                    obj instanceof String);
+        }
+    }
 
 }

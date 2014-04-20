@@ -71,8 +71,8 @@ public class TilingPatternExample {
      * @throws IOException In case of an I/O error
      */
     public void generatePSusingJava2D(File outputFile) throws IOException {
-        OutputStream out = new java.io.FileOutputStream(outputFile);
-        out = new java.io.BufferedOutputStream(out);
+        OutputStream out = FileOutputStream(outputFile);
+        out = BufferedOutputStream(out);
         try {
             //Instantiate the PSDocumentGraphics2D instance
             PSDocumentGraphics2D g2d = new PSDocumentGraphics2D(false);
@@ -144,15 +144,15 @@ public class TilingPatternExample {
                 targetDir = new File(".");
             }
             if (!targetDir.exists()) {
-                System.err.println("Target Directory does not exist: " + targetDir);
+                log.error("Target Directory does not exist: " + targetDir);
             }
             File outputFile = new File(targetDir, "tiling-example.ps");
             File pngFile = new File(targetDir, "tiling-example.png");
             TilingPatternExample app = new TilingPatternExample();
             app.generatePSusingJava2D(outputFile);
-            System.out.println("File written: " + outputFile.getCanonicalPath());
+            log.info("File written: " + outputFile.getCanonicalPath());
             app.generatePNGusingJava2D(pngFile);
-            System.out.println("File written: " + pngFile.getCanonicalPath());
+            log.info("File written: " + pngFile.getCanonicalPath());
         } catch (Exception e) {
             e.printStackTrace();
         }

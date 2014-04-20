@@ -42,8 +42,8 @@ public class EPSExample1 {
      * @throws IOException In case of an I/O error
      */
     public static void generateEPSusingJava2D(File outputFile) throws IOException {
-        OutputStream out = new java.io.FileOutputStream(outputFile);
-        out = new java.io.BufferedOutputStream(out);
+        OutputStream out = FileOutputStream(outputFile);
+        out = BufferedOutputStream(out);
         try {
             //Instantiate the EPSDocumentGraphics2D instance
             EPSDocumentGraphics2D g2d = new EPSDocumentGraphics2D(false);
@@ -96,7 +96,7 @@ public class EPSExample1 {
                 targetDir = new File(".");
             }
             if (!targetDir.exists()) {
-                System.err.println("Target Directory does not exist: " + targetDir);
+                log.error("Target Directory does not exist: " + targetDir);
             }
             generateEPSusingJava2D(new File(targetDir, "eps-example1.eps"));
         } catch (Exception e) {

@@ -39,84 +39,84 @@ import org.junit.Test;
 
 public class PNGFileTestCase implements PNGConstants {
 
-	@Test
-	public void testColorTypeTwoPNG() throws ImageException, IOException {
-		testColorTypePNG("basn2c08.png", PNG_COLOR_RGB);
-	}
+    @Test
+    public void testColorTypeTwoPNG() throws ImageException, IOException {
+        testColorTypePNG("basn2c08.png", PNG_COLOR_RGB);
+    }
 
-	@Test
-	public void testColorTypeZeroPNG() throws ImageException, IOException {
-		testColorTypePNG("basn0g08.png", PNG_COLOR_GRAY);
-	}
+    @Test
+    public void testColorTypeZeroPNG() throws ImageException, IOException {
+        testColorTypePNG("basn0g08.png", PNG_COLOR_GRAY);
+    }
 
-	@Test
-	public void testColorTypeSixPNG() throws ImageException, IOException {
-		testColorTypePNG("basn6a08.png", PNG_COLOR_RGB_ALPHA);
-	}
+    @Test
+    public void testColorTypeSixPNG() throws ImageException, IOException {
+        testColorTypePNG("basn6a08.png", PNG_COLOR_RGB_ALPHA);
+    }
 
-	@Test
-	public void testColorTypeThreePNG() throws ImageException, IOException {
-		testColorTypePNG("basn3p08.png", PNG_COLOR_PALETTE);
-	}
+    @Test
+    public void testColorTypeThreePNG() throws ImageException, IOException {
+        testColorTypePNG("basn3p08.png", PNG_COLOR_PALETTE);
+    }
 
-	@Test
-	public void testColorTypeFourPNG() throws ImageException, IOException {
-		testColorTypePNG("basn4a08.png", PNG_COLOR_GRAY_ALPHA);
-	}
+    @Test
+    public void testColorTypeFourPNG() throws ImageException, IOException {
+        testColorTypePNG("basn4a08.png", PNG_COLOR_GRAY_ALPHA);
+    }
 
-	@Test
-	public void testTransparentPNG() throws ImageException, IOException {
-		testColorTypePNG("tbbn3p08.png", PNG_COLOR_PALETTE, true);
-		testColorTypePNG("tbrn2c08.png", PNG_COLOR_RGB, true);
-	}
+    @Test
+    public void testTransparentPNG() throws ImageException, IOException {
+        testColorTypePNG("tbbn3p08.png", PNG_COLOR_PALETTE, true);
+        testColorTypePNG("tbrn2c08.png", PNG_COLOR_RGB, true);
+    }
 
-	@Test
-	public void testCorruptPNG() {
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		final ImageInfo info = new ImageInfo("corrupt-image.png",
-				MimeConstants.MIME_PNG);
-		final ImageLoaderRawPNG ilrpng = new ImageLoaderRawPNG();
-		try {
-			final ImageRawPNG irpng = (ImageRawPNG) ilrpng.loadImage(info,
-					null, session);
-			fail("An exception should have been thrown above");
-		} catch (final Exception e) {
-			// do nothing; this was expected
-		}
-	}
+    @Test
+    public void testCorruptPNG() {
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        final ImageInfo info = new ImageInfo("corrupt-image.png",
+                MimeConstants.MIME_PNG);
+        final ImageLoaderRawPNG ilrpng = new ImageLoaderRawPNG();
+        try {
+            final ImageRawPNG irpng = (ImageRawPNG) ilrpng.loadImage(info,
+                    null, session);
+            fail("An exception should have been thrown above");
+        } catch (final Exception e) {
+            // do nothing; this was expected
+        }
+    }
 
-	private void testColorTypePNG(final String imageName, final int colorType)
-			throws ImageException, IOException {
-		testColorTypePNG(imageName, colorType, false);
-	}
+    private void testColorTypePNG(final String imageName, final int colorType)
+            throws ImageException, IOException {
+        testColorTypePNG(imageName, colorType, false);
+    }
 
-	private void testColorTypePNG(final String imageName, final int colorType,
-			final boolean isTransparent) throws ImageException, IOException {
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		final ImageInfo info = new ImageInfo(imageName, MimeConstants.MIME_PNG);
-		final ImageLoaderRawPNG ilrpng = new ImageLoaderRawPNG();
-		final ImageRawPNG irpng = (ImageRawPNG) ilrpng.loadImage(info, null,
-				session);
-		final ColorModel cm = irpng.getColorModel();
-		if (colorType == PNG_COLOR_PALETTE) {
-			assertTrue(cm instanceof IndexColorModel);
-		} else {
-			assertTrue(cm instanceof ComponentColorModel);
-			int numComponents = 3;
-			if (colorType == PNG_COLOR_GRAY) {
-				numComponents = 1;
-			} else if (colorType == PNG_COLOR_GRAY_ALPHA) {
-				numComponents = 2;
-			} else if (colorType == PNG_COLOR_RGB_ALPHA) {
-				numComponents = 4;
-			}
-			assertEquals(numComponents, cm.getNumComponents());
-		}
-		if (isTransparent) {
-			assertTrue(irpng.isTransparent());
-		}
-	}
+    private void testColorTypePNG(final String imageName, final int colorType,
+            final boolean isTransparent) throws ImageException, IOException {
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        final ImageInfo info = new ImageInfo(imageName, MimeConstants.MIME_PNG);
+        final ImageLoaderRawPNG ilrpng = new ImageLoaderRawPNG();
+        final ImageRawPNG irpng = (ImageRawPNG) ilrpng.loadImage(info, null,
+                session);
+        final ColorModel cm = irpng.getColorModel();
+        if (colorType == PNG_COLOR_PALETTE) {
+            assertTrue(cm instanceof IndexColorModel);
+        } else {
+            assertTrue(cm instanceof ComponentColorModel);
+            int numComponents = 3;
+            if (colorType == PNG_COLOR_GRAY) {
+                numComponents = 1;
+            } else if (colorType == PNG_COLOR_GRAY_ALPHA) {
+                numComponents = 2;
+            } else if (colorType == PNG_COLOR_RGB_ALPHA) {
+                numComponents = 4;
+            }
+            assertEquals(numComponents, cm.getNumComponents());
+        }
+        if (isTransparent) {
+            assertTrue(irpng.isTransparent());
+        }
+    }
 
 }

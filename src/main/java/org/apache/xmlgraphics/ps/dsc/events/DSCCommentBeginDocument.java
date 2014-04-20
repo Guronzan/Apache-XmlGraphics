@@ -20,6 +20,7 @@
 package org.apache.xmlgraphics.ps.dsc.events;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,22 +46,31 @@ public class DSCCommentBeginDocument extends AbstractDSCComment {
 
     /**
      * Creates a new instance for a given PSResource instance
-     * @param resource the resource
+     * 
+     * @param resource
+     *            the resource
      */
-    public DSCCommentBeginDocument(PSResource resource) {
+    public DSCCommentBeginDocument(final PSResource resource) {
         this.resource = resource;
-        if (resource != null && !PSResource.TYPE_FILE.equals(resource.getType())) {
-            throw new IllegalArgumentException("Resource must be of type 'file'");
+        if (resource != null
+                && !PSResource.TYPE_FILE.equals(resource.getType())) {
+            throw new IllegalArgumentException(
+                    "Resource must be of type 'file'");
         }
     }
 
     /**
      * Creates a new instance for a given PSResource instance
-     * @param resource the resource
-     * @param version the version of the resource (or null)
-     * @param type the type of resource (or null)
+     * 
+     * @param resource
+     *            the resource
+     * @param version
+     *            the version of the resource (or null)
+     * @param type
+     *            the type of resource (or null)
      */
-    public DSCCommentBeginDocument(PSResource resource, Float version, String type) {
+    public DSCCommentBeginDocument(final PSResource resource,
+            final Float version, final String type) {
         this(resource);
         this.version = version;
         this.type = type;
@@ -68,6 +78,7 @@ public class DSCCommentBeginDocument extends AbstractDSCComment {
 
     /**
      * Returns the resource version.
+     * 
      * @return the resource version (or null if not applicable)
      */
     public Float getVersion() {
@@ -76,6 +87,7 @@ public class DSCCommentBeginDocument extends AbstractDSCComment {
 
     /**
      * Returns the resource type
+     * 
      * @return the resource type (or null if not applicable)
      */
     public String getType() {
@@ -83,12 +95,14 @@ public class DSCCommentBeginDocument extends AbstractDSCComment {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return DSCConstants.BEGIN_DOCUMENT;
     }
 
     /**
      * Returns the associated PSResource.
+     * 
      * @return the resource
      */
     public PSResource getResource() {
@@ -96,28 +110,31 @@ public class DSCCommentBeginDocument extends AbstractDSCComment {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean hasValues() {
         return true;
     }
 
     /** {@inheritDoc} */
-    public void parseValue(String value) {
-        List params = splitParams(value);
-        Iterator iter = params.iterator();
-        String name = (String)iter.next();
+    @Override
+    public void parseValue(final String value) {
+        final List<String> params = splitParams(value);
+        final Iterator<String> iter = params.iterator();
+        final String name = iter.next();
         this.resource = new PSResource(PSResource.TYPE_FILE, name);
         if (iter.hasNext()) {
-            this.version = new Float(iter.next().toString());
+            this.version = Float.valueOf(iter.next());
             this.type = null;
             if (iter.hasNext()) {
-                this.type = (String)iter.next();
+                this.type = iter.next();
             }
         }
     }
 
     /** {@inheritDoc} */
-    public void generate(PSGenerator gen) throws IOException {
-        List params = new java.util.ArrayList();
+    @Override
+    public void generate(final PSGenerator gen) throws IOException {
+        final List<Comparable<?>> params = new ArrayList<>();
         params.add(getResource().getName());
         if (getVersion() != null) {
             params.add(getVersion());

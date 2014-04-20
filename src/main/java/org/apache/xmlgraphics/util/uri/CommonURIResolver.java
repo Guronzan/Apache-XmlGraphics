@@ -27,6 +27,8 @@ import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.xmlgraphics.util.Service;
 
 /**
@@ -37,9 +39,11 @@ import org.apache.xmlgraphics.util.Service;
  * class. For proper operation, the registers URIResolvers must return null if
  * they cannot handle the given URI and fail fast.
  */
+@Slf4j
 public class CommonURIResolver implements URIResolver {
 
-    private final List uriResolvers = new LinkedList();
+    @SuppressWarnings("unused")
+    private final List<URIResolver> uriResolvers = new LinkedList<URIResolver>();
 
     private static final class DefaultInstanceHolder {
         private static final CommonURIResolver INSTANCE = new CommonURIResolver();
@@ -48,12 +52,13 @@ public class CommonURIResolver implements URIResolver {
     /**
      * Creates a new CommonURIResolver. Use this if you need support for
      * resolvers in the current context.
+     *
      * @see CommonURIResolver#getDefaultURIResolver()
      */
     public CommonURIResolver() {
-        Iterator iter = Service.providers(URIResolver.class);
+        final Iterator<URIResolver> iter = Service.providers(URIResolver.class);
         while (iter.hasNext()) {
-            URIResolver resolver = (URIResolver) iter.next();
+            final URIResolver resolver = iter.next();
             register(resolver);
         }
     }
@@ -68,17 +73,19 @@ public class CommonURIResolver implements URIResolver {
     }
 
     /** {@inheritDoc} */
-    public Source resolve(String href, String base) {
-        synchronized (uriResolvers) {
-            Iterator it = uriResolvers.iterator();
+    @Override
+    public Source resolve(final String href, final String base) {
+        synchronized (this.uriResolvers) {
+            final Iterator<URIResolver> it = this.uriResolvers.iterator();
             while (it.hasNext()) {
-                final URIResolver currentResolver = (URIResolver) it.next();
+                final URIResolver currentResolver = it.next();
                 try {
                     final Source result = currentResolver.resolve(href, base);
                     if (result != null) {
                         return result;
                     }
-                } catch (TransformerException e) {
+                } catch (final TransformerException e) {
+                    log.error("TransformerException", e);
                     // Ignore.
                 }
             }
@@ -92,9 +99,9 @@ public class CommonURIResolver implements URIResolver {
      * @param uriResolver
      *            the resolver to register.
      */
-    public void register(URIResolver uriResolver) {
-        synchronized (uriResolvers) {
-            uriResolvers.add(uriResolver);
+    public void register(final URIResolver uriResolver) {
+        synchronized (this.uriResolvers) {
+            this.uriResolvers.add(uriResolver);
         }
     }
 
@@ -104,9 +111,9 @@ public class CommonURIResolver implements URIResolver {
      * @param uriResolver
      *            the resolver to unregister.
      */
-    public void unregister(URIResolver uriResolver) {
-        synchronized (uriResolvers) {
-            uriResolvers.remove(uriResolver);
+    public void unregister(final URIResolver uriResolver) {
+        synchronized (this.uriResolvers) {
+            this.uriResolvers.remove(uriResolver);
         }
     }
 

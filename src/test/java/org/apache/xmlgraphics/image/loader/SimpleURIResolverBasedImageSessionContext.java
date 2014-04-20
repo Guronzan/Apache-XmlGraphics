@@ -25,34 +25,44 @@ import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.xmlgraphics.image.loader.impl.DefaultImageSessionContext;
 
 /**
  * ImageSessionContext which uses a URIResolver to resolve URIs.
  */
-public class SimpleURIResolverBasedImageSessionContext
-            extends DefaultImageSessionContext {
+@Slf4j
+public class SimpleURIResolverBasedImageSessionContext extends
+        DefaultImageSessionContext {
 
-    private URIResolver resolver;
+    private final URIResolver resolver;
 
     /**
      * Main constructor
-     * @param context the parent image context
-     * @param baseDir the base directory
-     * @param resolver the URI resolver
+     * 
+     * @param context
+     *            the parent image context
+     * @param baseDir
+     *            the base directory
+     * @param resolver
+     *            the URI resolver
      */
-    public SimpleURIResolverBasedImageSessionContext(ImageContext context,
-            File baseDir, URIResolver resolver) {
+    public SimpleURIResolverBasedImageSessionContext(
+            final ImageContext context, final File baseDir,
+            final URIResolver resolver) {
         super(context, baseDir);
         this.resolver = resolver;
     }
 
     /** {@inheritDoc} */
-    protected Source resolveURI(String uri) {
+    @Override
+    protected Source resolveURI(final String uri) {
         try {
-            return this.resolver.resolve(uri, getBaseDir().toURI().toASCIIString());
-        } catch (TransformerException e) {
-            e.printStackTrace();
+            return this.resolver.resolve(uri, getBaseDir().toURI()
+                    .toASCIIString());
+        } catch (final TransformerException e) {
+            log.error("Exception", e);
             return null;
         }
     }

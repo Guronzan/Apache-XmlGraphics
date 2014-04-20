@@ -30,30 +30,30 @@ import org.junit.Test;
 
 public class DSCToolsTestCase extends TestCase {
 
-	@Test
-	public void testEndComment() {
-		DSCEvent event;
+    @Test
+    public void testEndComment() {
+        DSCEvent event;
 
-		event = new DSCCommentEndComments();
-		assertTrue(DSCTools.headerCommentsEndHere(event));
+        event = new DSCCommentEndComments();
+        assertTrue(DSCTools.headerCommentsEndHere(event));
 
-		event = new PostScriptComment("FOPTest");
-		assertFalse(DSCTools.headerCommentsEndHere(event));
+        event = new PostScriptComment("FOPTest");
+        assertFalse(DSCTools.headerCommentsEndHere(event));
 
-		event = new DSCCommentPages(7);
-		assertFalse(DSCTools.headerCommentsEndHere(event));
+        event = new DSCCommentPages(7);
+        assertFalse(DSCTools.headerCommentsEndHere(event));
 
-		event = new PostScriptComment(null);
-		assertTrue(DSCTools.headerCommentsEndHere(event));
+        event = new PostScriptComment(null);
+        assertTrue(DSCTools.headerCommentsEndHere(event));
 
-		event = new PostScriptComment("\t");
-		assertTrue(DSCTools.headerCommentsEndHere(event));
+        event = new PostScriptComment("\t");
+        assertTrue(DSCTools.headerCommentsEndHere(event));
 
-		event = new PostScriptComment(" ***");
-		assertTrue(DSCTools.headerCommentsEndHere(event));
+        event = new PostScriptComment(" ***");
+        assertTrue(DSCTools.headerCommentsEndHere(event));
 
-		event = new PostScriptLine("/pgsave save def");
-		assertTrue(DSCTools.headerCommentsEndHere(event));
-	}
+        event = new PostScriptLine("/pgsave save def");
+        assertTrue(DSCTools.headerCommentsEndHere(event));
+    }
 
 }

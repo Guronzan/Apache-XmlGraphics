@@ -32,75 +32,76 @@ import org.junit.Test;
  */
 public class ASCII85OutputStreamTestCase extends TestCase {
 
-	/** Test data */
-	public static final byte[] DATA = new byte[100];
+    /** Test data */
+    public static final byte[] DATA = new byte[100];
 
-	static {
-		// Fill in some data
-		for (int i = 0; i < 100; i++) {
-			DATA[i] = (byte) i;
-		}
-	}
+    static {
+        // Fill in some data
+        for (int i = 0; i < 100; i++) {
+            DATA[i] = (byte) i;
+        }
+    }
 
-	/**
-	 * @see junit.framework.TestCase#TestCase(String)
-	 */
-	public ASCII85OutputStreamTestCase(final String name) {
-		super(name);
-	}
+    /**
+     * @see junit.framework.TestCase#TestCase(String)
+     */
+    public ASCII85OutputStreamTestCase(final String name) {
+        super(name);
+    }
 
-	private String encode(final int count) throws IOException {
-		return encode(DATA, count);
-	}
+    private String encode(final int count) throws IOException {
+        return encode(DATA, count);
+    }
 
-	private String encode(final byte[] data, final int len) throws IOException {
-		final ByteArrayOutputStream baout = new ByteArrayOutputStream();
-		final OutputStream out = new ASCII85OutputStream(baout);
-		out.write(data, 0, len);
-		out.close();
-		return new String(baout.toByteArray(), "US-ASCII");
-	}
+    private String encode(final byte[] data, final int len) throws IOException {
+        try (final ByteArrayOutputStream baout = new ByteArrayOutputStream()) {
+            try (final OutputStream out = new ASCII85OutputStream(baout)) {
+                out.write(data, 0, len);
+                return new String(baout.toByteArray(), "US-ASCII");
+            }
+        }
+    }
 
-	/**
-	 * Tests the output of ASCII85.
-	 * 
-	 * @throws IOException
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testOutput() throws IOException {
-		final String sz = encode(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }, 8);
-		assertEquals("zz~>", sz);
+    /**
+     * Tests the output of ASCII85.
+     * 
+     * @throws IOException
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testOutput() throws IOException {
+        final String sz = encode(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }, 8);
+        assertEquals("zz~>", sz);
 
-		final String s3 = encode(3);
-		// System.out.println(">>>" + s3 + "<<<");
-		assertEquals("!!*-~>", s3);
+        final String s3 = encode(3);
+        // log.info(">>>" + s3 + "<<<");
+        assertEquals("!!*-~>", s3);
 
-		final String s10 = encode(10);
-		// System.out.println(">>>" + s10 + "<<<");
-		assertEquals("!!*-'\"9eu7#RL~>", s10);
+        final String s10 = encode(10);
+        // log.info(">>>" + s10 + "<<<");
+        assertEquals("!!*-'\"9eu7#RL~>", s10);
 
-		final String s62 = encode(62);
-		// System.out.println(">>>" + s62 + "<<<");
-		assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
-				+ "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?W~>", s62);
+        final String s62 = encode(62);
+        // log.info(">>>" + s62 + "<<<");
+        assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
+                + "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?W~>", s62);
 
-		final String s63 = encode(63);
-		// System.out.println(">>>" + s63 + "<<<");
-		assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
-				+ "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?Yk\n~>", s63);
+        final String s63 = encode(63);
+        // log.info(">>>" + s63 + "<<<");
+        assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
+                + "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?Yk\n~>", s63);
 
-		final String s64 = encode(64);
-		// System.out.println(">>>" + s64 + "<<<");
-		assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
-				+ "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?Ykm\n~>", s64);
+        final String s64 = encode(64);
+        // log.info(">>>" + s64 + "<<<");
+        assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
+                + "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?Ykm\n~>", s64);
 
-		final String s65 = encode(65);
-		// System.out.println(">>>" + s65 + "<<<");
-		assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
-				+ "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?Ykm\n5Q~>", s65);
+        final String s65 = encode(65);
+        // log.info(">>>" + s65 + "<<<");
+        assertEquals("!!*-'\"9eu7#RLhG$k3[W&.oNg'GVB\"(`=52*$$(B+<_pR,"
+                + "UFcb-n-Vr/1iJ-0JP==1c70M3&s#]4?Ykm\n5Q~>", s65);
 
-	}
+    }
 
 }

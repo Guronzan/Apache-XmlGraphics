@@ -19,37 +19,43 @@
 
 package org.apache.xmlgraphics.ps.dsc.events;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Abstract base class for DSC comments.
  */
-public abstract class AbstractDSCComment extends AbstractEvent implements DSCComment {
+public abstract class AbstractDSCComment extends AbstractEvent implements
+        DSCComment {
 
-    private boolean isWhitespace(char c) {
+    private boolean isWhitespace(final char c) {
         return c == ' ' || c == '\t';
     }
 
-    private int parseNextParam(String value, int pos, List lst) {
-        int startPos = pos;
-        pos++;
+    private int parseNextParam(final String value, final int inPos,
+            final List<String> lst) {
+        final int startPos = inPos;
+        int pos = inPos;
+        ++pos;
         while (pos < value.length() && !isWhitespace(value.charAt(pos))) {
-            pos++;
+            ++pos;
         }
-        String param = value.substring(startPos, pos);
+        final String param = value.substring(startPos, pos);
         lst.add(param);
         return pos;
     }
 
-    private int parseNextParentheseString(String value, int pos, List lst) {
+    private int parseNextParentheseString(final String value, final int inPos,
+            final List<String> lst) {
         int nestLevel = 1;
-        pos++;
-        StringBuffer sb = new StringBuffer();
+        int pos = inPos;
+        ++pos;
+        final StringBuilder sb = new StringBuilder();
         while (pos < value.length() && nestLevel > 0) {
             final char c = value.charAt(pos);
             switch (c) {
             case '(':
-                nestLevel++;
+                ++nestLevel;
                 if (nestLevel > 1) {
                     sb.append(c);
                 }
@@ -58,11 +64,11 @@ public abstract class AbstractDSCComment extends AbstractEvent implements DSCCom
                 if (nestLevel > 1) {
                     sb.append(c);
                 }
-                nestLevel--;
+                --nestLevel;
                 break;
             case '\\':
-                pos++;
-                char cnext = value.charAt(pos);
+                ++pos;
+                final char cnext = value.charAt(pos);
                 switch (cnext) {
                 case '\\':
                     sb.append(cnext);
@@ -89,33 +95,36 @@ public abstract class AbstractDSCComment extends AbstractEvent implements DSCCom
                     sb.append(')');
                     break;
                 default:
-                    int code = Integer.parseInt(value.substring(pos, pos + 3), 8);
-                    sb.append((char)code);
+                    final int code = Integer.parseInt(
+                            value.substring(pos, pos + 3), 8);
+                    sb.append((char) code);
                     pos += 2;
                 }
                 break;
             default:
                 sb.append(c);
             }
-            pos++;
+            ++pos;
         }
         lst.add(sb.toString());
-        pos++;
+        ++pos;
         return pos;
     }
 
     /**
      * Splits the params of the DSC comment value in to a List.
-     * @param value the DSC comment value
+     * 
+     * @param value
+     *            the DSC comment value
      * @return the List of values
      */
-    protected List splitParams(String value) {
-        List lst = new java.util.ArrayList();
+    protected List<String> splitParams(final String inValue) {
+        final List<String> lst = new ArrayList<>();
         int pos = 0;
-        value = value.trim();
+        final String value = inValue.trim();
         while (pos < value.length()) {
             if (isWhitespace(value.charAt(pos))) {
-                pos++;
+                ++pos;
                 continue;
             }
             if (value.charAt(pos) == '(') {
@@ -130,6 +139,7 @@ public abstract class AbstractDSCComment extends AbstractEvent implements DSCCom
     /**
      * @see org.apache.xmlgraphics.ps.dsc.events.DSCComment#isAtend()
      */
+    @Override
     public boolean isAtend() {
         return false;
     }
@@ -137,6 +147,7 @@ public abstract class AbstractDSCComment extends AbstractEvent implements DSCCom
     /**
      * @see org.apache.xmlgraphics.ps.dsc.events.AbstractEvent#asDSCComment()
      */
+    @Override
     public DSCComment asDSCComment() {
         return this;
     }
@@ -144,6 +155,7 @@ public abstract class AbstractDSCComment extends AbstractEvent implements DSCCom
     /**
      * @see org.apache.xmlgraphics.ps.dsc.events.AbstractEvent#isDSCComment()
      */
+    @Override
     public boolean isDSCComment() {
         return true;
     }
@@ -151,6 +163,7 @@ public abstract class AbstractDSCComment extends AbstractEvent implements DSCCom
     /**
      * @see org.apache.xmlgraphics.ps.dsc.events.DSCEvent#getEventType()
      */
+    @Override
     public int getEventType() {
         return DSC_COMMENT;
     }

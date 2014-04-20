@@ -27,6 +27,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.xmlgraphics.image.loader.ImageException;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.ImageInfo;
@@ -41,6 +43,7 @@ import org.apache.xmlgraphics.java2d.Graphics2DImagePainter;
 /**
  * Very simple image viewer application that demonstrates the use of the image loader framework.
  */
+@Slf4j
 public class ImageViewer {
 
     private ImageManager imageManager;
@@ -68,7 +71,7 @@ public class ImageViewer {
                     info, ImageFlavor.GRAPHICS2D, sessionContext);
 
         } catch (ImageException e) {
-            e.printStackTrace();
+            log.error("ImageException", e);
 
             //Create "error image" if the image cannot be displayed
             g2dImage = createErrorImage();
@@ -131,7 +134,7 @@ public class ImageViewer {
             }
             app.display(new File(args[0]));
         } catch (Throwable t) {
-            t.printStackTrace();
+        	log.error("Exception", e);
             System.exit(-1);
         }
     }

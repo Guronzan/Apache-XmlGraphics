@@ -26,6 +26,8 @@ import java.nio.ByteOrder;
 import javax.imageio.stream.ImageInputStream;
 import javax.xml.transform.Source;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.xmlgraphics.image.loader.ImageContext;
 import org.apache.xmlgraphics.image.loader.ImageInfo;
 import org.apache.xmlgraphics.image.loader.ImageSize;
@@ -43,70 +45,80 @@ import org.apache.xmlgraphics.util.MimeConstants;
 /**
  * Image preloader for EPS images (Encapsulated PostScript).
  */
+@Slf4j
 public class PreloaderEPS extends AbstractImagePreloader {
 
-    /** Key for binary header object used in custom objects of the ImageInfo class. */
-    public static final Object EPS_BINARY_HEADER = EPSBinaryFileHeader.class;
+    /**
+     * Key for binary header object used in custom objects of the ImageInfo
+     * class.
+     */
+    public static final Class<EPSBinaryFileHeader> EPS_BINARY_HEADER = EPSBinaryFileHeader.class;
     /** Key for bounding box used in custom objects of the ImageInfo class. */
-    public static final Object EPS_BOUNDING_BOX = Rectangle2D.class;
+    public static final Class<Rectangle2D> EPS_BOUNDING_BOX = Rectangle2D.class;
 
     /** {@inheritDoc} */
-    public ImageInfo preloadImage(String uri, Source src, ImageContext context)
-            throws IOException {
+    @Override
+    public ImageInfo preloadImage(final String uri, final Source src,
+            final ImageContext context) throws IOException {
         if (!ImageUtil.hasImageInputStream(src)) {
             return null;
         }
-        ImageInputStream in = ImageUtil.needImageInputStream(src);
-        in.mark();
-        ByteOrder originalByteOrder = in.getByteOrder();
-        in.setByteOrder(ByteOrder.LITTLE_ENDIAN);
-        EPSBinaryFileHeader binaryHeader = null;
-        try {
-            long magic = in.readUnsignedInt();
-            magic &= 0xFFFFFFFFL; //Work-around for bug in Java 1.4.2
-            // Check if binary header
-            boolean supported = false;
-            if (magic == 0xC6D3D0C5L) {
-                supported = true; //binary EPS
+        try (final ImageInputStream in = ImageUtil.needImageInputStream(src)) {
+            in.mark();
+            final ByteOrder originalByteOrder = in.getByteOrder();
+            in.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+            EPSBinaryFileHeader binaryHeader = null;
+            try {
+                long magic = in.readUnsignedInt();
+                magic &= 0xFFFFFFFFL; // Work-around for bug in Java 1.4.2
+                // Check if binary header
+                boolean supported = false;
+                if (magic == 0xC6D3D0C5L) {
+                    supported = true; // binary EPS
 
-                binaryHeader = readBinaryFileHeader(in);
-                in.reset();
-                in.mark(); //Mark start of file again
-                in.seek(binaryHeader.psStart);
+                    binaryHeader = readBinaryFileHeader(in);
+                    in.reset();
+                    in.mark(); // Mark start of file again
+                    in.seek(binaryHeader.psStart);
 
-            } else if (magic == 0x53502125L) { //"%!PS" in little endian
-                supported = true; //ascii EPS
-                in.reset();
-                in.mark(); //Mark start of file again
-            } else {
-                in.reset();
-            }
+                } else if (magic == 0x53502125L) { // "%!PS" in little endian
+                    supported = true; // ascii EPS
+                    in.reset();
+                    in.mark(); // Mark start of file again
+                } else {
+                    in.reset();
+                }
 
-            if (supported) {
-                ImageInfo info = new ImageInfo(uri, MimeConstants.MIME_EPS);
-                boolean success = determineSize(in, context, info);
-                in.reset(); //Need to go back to start of file
-                if (!success) {
-                    //No BoundingBox found, so probably no EPS
+                if (supported) {
+                    final ImageInfo info = new ImageInfo(uri,
+                            MimeConstants.MIME_EPS);
+                    final boolean success = determineSize(in, context, info);
+                    in.reset(); // Need to go back to start of file
+                    if (!success) {
+                        // No BoundingBox found, so probably no EPS
+                        return null;
+                    }
+                    if (in.getStreamPosition() != 0) {
+                        throw new IllegalStateException(
+                                "Need to be at the start of the file here");
+                    }
+                    if (binaryHeader != null) {
+                        info.getCustomObjects().put(EPS_BINARY_HEADER,
+                                binaryHeader);
+                    }
+                    return info;
+                } else {
                     return null;
                 }
-                if (in.getStreamPosition() != 0) {
-                    throw new IllegalStateException("Need to be at the start of the file here");
-                }
-                if (binaryHeader != null) {
-                    info.getCustomObjects().put(EPS_BINARY_HEADER, binaryHeader);
-                }
-                return info;
-            } else {
-                return null;
+            } finally {
+                in.setByteOrder(originalByteOrder);
             }
-        } finally {
-            in.setByteOrder(originalByteOrder);
         }
     }
 
-    private EPSBinaryFileHeader readBinaryFileHeader(ImageInputStream in) throws IOException {
-        EPSBinaryFileHeader offsets = new EPSBinaryFileHeader();
+    private EPSBinaryFileHeader readBinaryFileHeader(final ImageInputStream in)
+            throws IOException {
+        final EPSBinaryFileHeader offsets = new EPSBinaryFileHeader();
         offsets.psStart = in.readUnsignedInt();
         offsets.psLength = in.readUnsignedInt();
         offsets.wmfStart = in.readUnsignedInt();
@@ -116,7 +128,8 @@ public class PreloaderEPS extends AbstractImagePreloader {
         return offsets;
     }
 
-    private boolean determineSize(ImageInputStream in, ImageContext context, ImageInfo info)
+    private boolean determineSize(final ImageInputStream in,
+            final ImageContext context, final ImageInfo info)
             throws IOException {
 
         in.mark();
@@ -125,44 +138,49 @@ public class PreloaderEPS extends AbstractImagePreloader {
             DSCParser parser;
             try {
                 parser = new DSCParser(new ImageInputStreamAdapter(in));
-                outerLoop:
-                while (parser.hasNext()) {
-                    DSCEvent event = parser.nextEvent();
+                outerLoop: while (parser.hasNext()) {
+                    final DSCEvent event = parser.nextEvent();
                     switch (event.getEventType()) {
                     case DSCParserConstants.HEADER_COMMENT:
                     case DSCParserConstants.COMMENT:
-                        //ignore
+                        // ignore
                         break;
                     case DSCParserConstants.DSC_COMMENT:
-                        DSCComment comment = event.asDSCComment();
+                        final DSCComment comment = event.asDSCComment();
                         if (comment instanceof DSCCommentBoundingBox) {
-                            DSCCommentBoundingBox bboxComment = (DSCCommentBoundingBox)comment;
-                            if (DSCConstants.BBOX.equals(bboxComment.getName()) && bbox == null) {
-                                bbox = (Rectangle2D)bboxComment.getBoundingBox().clone();
-                                //BoundingBox is good but HiRes is better so continue
-                            } else if (DSCConstants.HIRES_BBOX.equals(bboxComment.getName())) {
-                                bbox = (Rectangle2D)bboxComment.getBoundingBox().clone();
-                                //HiRefBBox is great so stop
+                            final DSCCommentBoundingBox bboxComment = (DSCCommentBoundingBox) comment;
+                            if (DSCConstants.BBOX.equals(bboxComment.getName())
+                                    && bbox == null) {
+                                bbox = (Rectangle2D) bboxComment
+                                        .getBoundingBox().clone();
+                                // BoundingBox is good but HiRes is better so
+                                // continue
+                            } else if (DSCConstants.HIRES_BBOX
+                                    .equals(bboxComment.getName())) {
+                                bbox = (Rectangle2D) bboxComment
+                                        .getBoundingBox().clone();
+                                // HiRefBBox is great so stop
                                 break outerLoop;
                             }
                         }
                         break;
                     default:
-                        //No more header so stop
+                        // No more header so stop
                         break outerLoop;
                     }
                 }
                 if (bbox == null) {
                     return false;
                 }
-            } catch (DSCException e) {
-                throw new IOException("Error while parsing EPS file: " + e.getMessage());
+            } catch (final DSCException e) {
+                log.error("DSCException", e);
+                throw new IOException("Error while parsing EPS file: "
+                        + e.getMessage());
             }
 
-            ImageSize size = new ImageSize();
-            size.setSizeInMillipoints(
-                    (int)Math.round(bbox.getWidth() * 1000),
-                    (int)Math.round(bbox.getHeight() * 1000));
+            final ImageSize size = new ImageSize();
+            size.setSizeInMillipoints((int) Math.round(bbox.getWidth() * 1000),
+                    (int) Math.round(bbox.getHeight() * 1000));
             size.setResolution(context.getSourceResolution());
             size.calcPixelsFromSize();
             info.setSize(size);
@@ -187,66 +205,74 @@ public class PreloaderEPS extends AbstractImagePreloader {
 
         /**
          * Returns the start offset of the PostScript section.
+         * 
          * @return the start offset
          */
         public long getPSStart() {
-            return psStart;
+            return this.psStart;
         }
 
         /**
          * Returns the length of the PostScript section.
+         * 
          * @return the length of the PostScript section (in bytes)
          */
         public long getPSLength() {
-            return psLength;
+            return this.psLength;
         }
 
         /**
          * Indicates whether the EPS has a WMF preview.
+         * 
          * @return true if there is a WMF preview
          */
         public boolean hasWMFPreview() {
-            return (wmfStart != 0);
+            return this.wmfStart != 0;
         }
 
         /**
          * Returns the start offset of the WMF preview.
+         * 
          * @return the start offset (or 0 if there's no WMF preview)
          */
         public long getWMFStart() {
-            return wmfStart;
+            return this.wmfStart;
         }
 
         /**
          * Returns the length of the WMF preview.
+         * 
          * @return the length of the WMF preview (in bytes)
          */
         public long getWMFLength() {
-            return wmfLength;
+            return this.wmfLength;
         }
 
         /**
          * Indicates whether the EPS has a TIFF preview.
+         * 
          * @return true if there is a TIFF preview
          */
         public boolean hasTIFFPreview() {
-            return (tiffStart != 0);
+            return this.tiffStart != 0;
         }
 
         /**
          * Returns the start offset of the TIFF preview.
+         * 
          * @return the start offset (or 0 if there's no TIFF preview)
          */
         public long getTIFFStart() {
-            return tiffStart;
+            return this.tiffStart;
         }
 
         /**
          * Returns the length of the TIFF preview.
+         * 
          * @return the length of the TIFF preview (in bytes)
          */
         public long getTIFFLength() {
-            return tiffLength;
+            return this.tiffLength;
         }
 
     }

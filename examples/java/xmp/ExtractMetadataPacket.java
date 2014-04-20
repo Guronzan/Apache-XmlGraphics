@@ -42,7 +42,7 @@ public class ExtractMetadataPacket {
         try {
             Metadata meta = XMPPacketParser.parse(in);
             if (meta == null) {
-                System.err.println("No XMP packet found!");
+                log.error("No XMP packet found!");
             } else {
                 dumpSomeMetadata(meta);
             }
@@ -58,28 +58,28 @@ public class ExtractMetadataPacket {
             XMPArray array;
             array = prop.getArrayValue();
             for (int i = 0, c = array.getSize(); i < c; i++) {
-                System.out.println("Creator: " + array.getValue(i));
+                log.info("Creator: " + array.getValue(i));
             }
         }
         prop = meta.getProperty(XMPConstants.DUBLIN_CORE_NAMESPACE, "title");
         if (prop != null) {
-            System.out.println("Title: " + prop.getValue());
+            log.info("Title: " + prop.getValue());
         }
         prop = meta.getProperty(XMPConstants.XMP_BASIC_NAMESPACE, "CreateDate");
         if (prop != null) {
-            System.out.println("Creation Date: " + prop.getValue());
+            log.info("Creation Date: " + prop.getValue());
         }
         prop = meta.getProperty(XMPConstants.XMP_BASIC_NAMESPACE, "CreatorTool");
         if (prop != null) {
-            System.out.println("Creator Tool: " + prop.getValue());
+            log.info("Creator Tool: " + prop.getValue());
         }
         prop = meta.getProperty(XMPConstants.ADOBE_PDF_NAMESPACE, "Producer");
         if (prop != null) {
-            System.out.println("Producer: " + prop.getValue());
+            log.info("Producer: " + prop.getValue());
         }
         prop = meta.getProperty(XMPConstants.ADOBE_PDF_NAMESPACE, "PDFVersion");
         if (prop != null) {
-            System.out.println("PDF version: " + prop.getValue());
+            log.info("PDF version: " + prop.getValue());
         }
     }
 

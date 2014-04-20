@@ -48,24 +48,24 @@ public class ParseMetadata {
         XMPArray array;
         array = prop.getArrayValue();
         for (int i = 0, c = array.getSize(); i < c; i++) {
-            System.out.println("Creator: " + array.getValue(i));
+            log.info("Creator: " + array.getValue(i));
         }
         prop = meta.getProperty(XMPConstants.DUBLIN_CORE_NAMESPACE, "title");
         array = prop.getArrayValue();
-        System.out.println("Default Title: " + array.getSimpleValue());
-        System.out.println("German Title: " + array.getLangValue("de"));
+        log.info("Default Title: " + array.getSimpleValue());
+        log.info("German Title: " + array.getLangValue("de"));
         prop = meta.getProperty(XMPConstants.XMP_BASIC_NAMESPACE, "CreateDate");
-        System.out.println("Creation Date: " + prop.getValue());
+        log.info("Creation Date: " + prop.getValue());
         prop = meta.getProperty(XMPConstants.XMP_BASIC_NAMESPACE, "CreatorTool");
-        System.out.println("Creator Tool: " + prop.getValue());
+        log.info("Creator Tool: " + prop.getValue());
         prop = meta.getProperty(XMPConstants.ADOBE_PDF_NAMESPACE, "Producer");
-        System.out.println("Producer: " + prop.getValue());
+        log.info("Producer: " + prop.getValue());
         prop = meta.getProperty(XMPConstants.ADOBE_PDF_NAMESPACE, "PDFVersion");
-        System.out.println("PDF version: " + prop.getValue());
+        log.info("PDF version: " + prop.getValue());
 
         DublinCoreAdapter dc = DublinCoreSchema.getAdapter(meta);
-        System.out.println("Default title: " + dc.getTitle());
-        System.out.println("German title: " + dc.getTitle("de"));
+        log.info("Default title: " + dc.getTitle());
+        log.info("German title: " + dc.getTitle("de"));
 
         StreamResult res = new StreamResult(System.out);
         XMPSerializer.writeXML(meta, res);

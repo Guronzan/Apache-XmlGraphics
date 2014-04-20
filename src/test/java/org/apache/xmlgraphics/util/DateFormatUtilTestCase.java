@@ -34,92 +34,92 @@ import org.junit.Test;
  */
 public class DateFormatUtilTestCase extends TestCase {
 
-	/**
-	 * Checks date formatting for XMP.
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testDateFormattingISO8601() {
-		final Date dt = createTestDate();
+    /**
+     * Checks date formatting for XMP.
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testDateFormattingISO8601() {
+        final Date dt = createTestDate();
 
-		String s = XMPSchemaAdapter.formatISO8601Date(dt,
-				TimeZone.getTimeZone("GMT"));
-		assertEquals("2008-02-07T15:11:07Z", s);
-		assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
+        String s = XMPSchemaAdapter.formatISO8601Date(dt,
+                TimeZone.getTimeZone("GMT"));
+        assertEquals("2008-02-07T15:11:07Z", s);
+        assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
 
-		s = XMPSchemaAdapter.formatISO8601Date(dt,
-				TimeZone.getTimeZone("GMT+02:00"));
-		assertEquals("2008-02-07T17:11:07+02:00", s);
-		assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
+        s = XMPSchemaAdapter.formatISO8601Date(dt,
+                TimeZone.getTimeZone("GMT+02:00"));
+        assertEquals("2008-02-07T17:11:07+02:00", s);
+        assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
 
-		s = XMPSchemaAdapter.formatISO8601Date(dt,
-				TimeZone.getTimeZone("GMT+02:30"));
-		assertEquals("2008-02-07T17:41:07+02:30", s);
-		assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
+        s = XMPSchemaAdapter.formatISO8601Date(dt,
+                TimeZone.getTimeZone("GMT+02:30"));
+        assertEquals("2008-02-07T17:41:07+02:30", s);
+        assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
 
-		s = XMPSchemaAdapter.formatISO8601Date(dt,
-				TimeZone.getTimeZone("GMT-08:00"));
-		assertEquals("2008-02-07T07:11:07-08:00", s);
-		assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
+        s = XMPSchemaAdapter.formatISO8601Date(dt,
+                TimeZone.getTimeZone("GMT-08:00"));
+        assertEquals("2008-02-07T07:11:07-08:00", s);
+        assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
 
-		s = XMPSchemaAdapter.formatISO8601Date(dt,
-				TimeZone.getTimeZone("GMT-11:00"));
-		assertEquals("2008-02-07T04:11:07-11:00", s);
-		assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
-	}
+        s = XMPSchemaAdapter.formatISO8601Date(dt,
+                TimeZone.getTimeZone("GMT-11:00"));
+        assertEquals("2008-02-07T04:11:07-11:00", s);
+        assertEquals(dt, DateFormatUtil.parseISO8601Date(s));
+    }
 
-	private Date createTestDate() {
-		final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"),
-				Locale.ENGLISH);
-		cal.set(2008, Calendar.FEBRUARY, 07, 15, 11, 07);
-		cal.set(Calendar.MILLISECOND, 0);
-		final Date dt = cal.getTime();
-		return dt;
-	}
+    private Date createTestDate() {
+        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"),
+                Locale.ENGLISH);
+        cal.set(2008, Calendar.FEBRUARY, 07, 15, 11, 07);
+        cal.set(Calendar.MILLISECOND, 0);
+        final Date dt = cal.getTime();
+        return dt;
+    }
 
-	@Test
-	public void testDateFormattingPDF() {
-		final Date dt = createTestDate();
+    @Test
+    public void testDateFormattingPDF() {
+        final Date dt = createTestDate();
 
-		String s = DateFormatUtil
-				.formatPDFDate(dt, TimeZone.getTimeZone("GMT"));
-		assertEquals("D:20080207151107Z", s);
+        String s = DateFormatUtil
+                .formatPDFDate(dt, TimeZone.getTimeZone("GMT"));
+        assertEquals("D:20080207151107Z", s);
 
-		s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT+02:00"));
-		assertEquals("D:20080207171107+02'00'", s);
+        s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT+02:00"));
+        assertEquals("D:20080207171107+02'00'", s);
 
-		s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT+02:30"));
-		assertEquals("D:20080207174107+02'30'", s);
+        s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT+02:30"));
+        assertEquals("D:20080207174107+02'30'", s);
 
-		s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT-08:00"));
-		assertEquals("D:20080207071107-08'00'", s);
+        s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT-08:00"));
+        assertEquals("D:20080207071107-08'00'", s);
 
-		s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT-11:00"));
-		assertEquals("D:20080207041107-11'00'", s);
-	}
+        s = DateFormatUtil.formatPDFDate(dt, TimeZone.getTimeZone("GMT-11:00"));
+        assertEquals("D:20080207041107-11'00'", s);
+    }
 
-	@Test
-	public void testParseInvalidDateNoColonUTC() {
-		testInvalidDate("2008-02-07T151107Z");
-	}
+    @Test
+    public void testParseInvalidDateNoColonUTC() {
+        testInvalidDate("2008-02-07T151107Z");
+    }
 
-	@Test
-	public void testParseInvalidDateNoColonLocal() {
-		testInvalidDate("2008-02-07T151107+0000");
-	}
+    @Test
+    public void testParseInvalidDateNoColonLocal() {
+        testInvalidDate("2008-02-07T151107+0000");
+    }
 
-	@Test
-	public void testParseInvalidDateColonLast() {
-		testInvalidDate("2008-02-07T151107Z:");
-	}
+    @Test
+    public void testParseInvalidDateColonLast() {
+        testInvalidDate("2008-02-07T151107Z:");
+    }
 
-	private void testInvalidDate(final String date) {
-		try {
-			DateFormatUtil.parseISO8601Date(date);
-			fail();
-		} catch (final IllegalArgumentException e) {
-			// Expected
-		}
-	}
+    private void testInvalidDate(final String date) {
+        try {
+            DateFormatUtil.parseISO8601Date(date);
+            fail();
+        } catch (final IllegalArgumentException e) {
+            // Expected
+        }
+    }
 }

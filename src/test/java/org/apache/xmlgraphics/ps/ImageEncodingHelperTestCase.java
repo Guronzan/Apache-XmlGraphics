@@ -33,53 +33,56 @@ import org.junit.Test;
 
 public class ImageEncodingHelperTestCase extends TestCase {
 
-	private BufferedImage prepareImage(final BufferedImage image) {
-		final Graphics2D ig = image.createGraphics();
-		ig.scale(.5, .5);
-		ig.setPaint(new Color(128, 0, 0));
-		ig.fillRect(0, 0, 100, 50);
-		ig.setPaint(Color.orange);
-		ig.fillRect(100, 0, 100, 50);
-		ig.setPaint(Color.yellow);
-		ig.fillRect(0, 50, 100, 50);
-		ig.setPaint(Color.red);
-		ig.fillRect(100, 50, 100, 50);
-		ig.setPaint(new Color(255, 127, 127));
-		ig.fillRect(0, 100, 100, 50);
-		ig.setPaint(Color.black);
-		ig.draw(new Rectangle2D.Double(0.5, 0.5, 199, 149));
-		ig.dispose();
-		return image;
-	}
+    private BufferedImage prepareImage(final BufferedImage image) {
+        final Graphics2D ig = image.createGraphics();
+        ig.scale(.5, .5);
+        ig.setPaint(new Color(128, 0, 0));
+        ig.fillRect(0, 0, 100, 50);
+        ig.setPaint(Color.orange);
+        ig.fillRect(100, 0, 100, 50);
+        ig.setPaint(Color.yellow);
+        ig.fillRect(0, 50, 100, 50);
+        ig.setPaint(Color.red);
+        ig.fillRect(100, 50, 100, 50);
+        ig.setPaint(new Color(255, 127, 127));
+        ig.fillRect(0, 100, 100, 50);
+        ig.setPaint(Color.black);
+        ig.draw(new Rectangle2D.Double(0.5, 0.5, 199, 149));
+        ig.dispose();
+        return image;
+    }
 
-	/**
-	 * Tests a BGR versus RBG image. Debugging shows the BGR follows the
-	 * optimizeWriteTo() (which is intended). The bytes are compared with the
-	 * RBG image, which happens to follow the writeRGBTo().
-	 * 
-	 * @throws IOException
-	 */
-	@Test
-	public void testRGBAndBGRImages() throws IOException {
-		BufferedImage imageBGR = new BufferedImage(100, 75,
-				BufferedImage.TYPE_3BYTE_BGR);
-		imageBGR = prepareImage(imageBGR);
-		BufferedImage imageRGB = new BufferedImage(100, 75,
-				BufferedImage.TYPE_INT_BGR);
-		imageRGB = prepareImage(imageRGB);
+    /**
+     * Tests a BGR versus RBG image. Debugging shows the BGR follows the
+     * optimizeWriteTo() (which is intended). The bytes are compared with the
+     * RBG image, which happens to follow the writeRGBTo().
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testRGBAndBGRImages() throws IOException {
+        BufferedImage imageBGR = new BufferedImage(100, 75,
+                BufferedImage.TYPE_3BYTE_BGR);
+        imageBGR = prepareImage(imageBGR);
+        BufferedImage imageRGB = new BufferedImage(100, 75,
+                BufferedImage.TYPE_INT_BGR);
+        imageRGB = prepareImage(imageRGB);
 
-		final ImageEncodingHelper imageEncodingHelperBGR = new ImageEncodingHelper(
-				imageBGR);
-		final ImageEncodingHelper imageEncodingHelperRGB = new ImageEncodingHelper(
-				imageRGB);
+        final ImageEncodingHelper imageEncodingHelperBGR = new ImageEncodingHelper(
+                imageBGR);
+        final ImageEncodingHelper imageEncodingHelperRGB = new ImageEncodingHelper(
+                imageRGB);
 
-		final ByteArrayOutputStream baosBGR = new ByteArrayOutputStream();
-		imageEncodingHelperBGR.encode(baosBGR);
+        try (final ByteArrayOutputStream baosBGR = new ByteArrayOutputStream()) {
+            imageEncodingHelperBGR.encode(baosBGR);
 
-		final ByteArrayOutputStream baosRGB = new ByteArrayOutputStream();
-		imageEncodingHelperRGB.encode(baosRGB);
+            try (final ByteArrayOutputStream baosRGB = new ByteArrayOutputStream()) {
+                imageEncodingHelperRGB.encode(baosRGB);
 
-		assertTrue(Arrays.equals(baosBGR.toByteArray(), baosRGB.toByteArray()));
-	}
+                assertTrue(Arrays.equals(baosBGR.toByteArray(),
+                        baosRGB.toByteArray()));
+            }
+        }
+    }
 
 }

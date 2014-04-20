@@ -55,19 +55,19 @@ public class MergeMetadata {
         dc = new DublinCoreAdapter(meta);
         String[] creators = dc.getCreators();
         for (int i = 0, c = creators.length; i < c; i++) {
-            System.out.println("Creator: " + creators[i]);
+            log.info("Creator: " + creators[i]);
         }
-        System.out.println("Title: " + dc.getTitle());
-        System.out.println("Title de: " + dc.getTitle("de"));
-        System.out.println("Title en: " + dc.getTitle("en"));
+        log.info("Title: " + dc.getTitle());
+        log.info("Title de: " + dc.getTitle("de"));
+        log.info("Title en: " + dc.getTitle("en"));
         prop = meta.getProperty(XMPConstants.XMP_BASIC_NAMESPACE, "CreateDate");
-        System.out.println("Creation Date: " + prop.getValue());
+        log.info("Creation Date: " + prop.getValue());
         prop = meta.getProperty(XMPConstants.XMP_BASIC_NAMESPACE, "CreatorTool");
-        System.out.println("Creator Tool: " + prop.getValue());
+        log.info("Creator Tool: " + prop.getValue());
         prop = meta.getProperty(XMPConstants.ADOBE_PDF_NAMESPACE, "Producer");
-        System.out.println("Producer: " + prop.getValue());
+        log.info("Producer: " + prop.getValue());
         prop = meta.getProperty(XMPConstants.ADOBE_PDF_NAMESPACE, "PDFVersion");
-        System.out.println("PDF version: " + prop.getValue());
+        log.info("PDF version: " + prop.getValue());
 
         XMPSerializer.writeXMPPacket(meta, System.out, false);
     }

@@ -29,55 +29,55 @@ import org.junit.Test;
  */
 public class PenaltyTestCase extends TestCase {
 
-	/**
-	 * Tests for penalty handling.
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testTruncatePenalty() {
-		assertEquals(0, Penalty.truncate(0));
-		long penalty = Integer.MAX_VALUE;
-		assertEquals(Integer.MAX_VALUE, Penalty.truncate(penalty));
+    /**
+     * Tests for penalty handling.
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testTruncatePenalty() {
+        assertEquals(0, Penalty.truncate(0));
+        long penalty = Integer.MAX_VALUE;
+        assertEquals(Integer.MAX_VALUE, Penalty.truncate(penalty));
 
-		// Force integer wrap-around
-		penalty++;
-		assertEquals(Integer.MAX_VALUE, Penalty.truncate(penalty));
-		// For comparison, normal casting does this
-		assertEquals(Integer.MIN_VALUE, (int) penalty);
+        // Force integer wrap-around
+        penalty++;
+        assertEquals(Integer.MAX_VALUE, Penalty.truncate(penalty));
+        // For comparison, normal casting does this
+        assertEquals(Integer.MIN_VALUE, (int) penalty);
 
-		// Now on the other end of the spectrum...
-		penalty = Integer.MIN_VALUE;
-		assertEquals(Integer.MIN_VALUE, Penalty.truncate(penalty));
+        // Now on the other end of the spectrum...
+        penalty = Integer.MIN_VALUE;
+        assertEquals(Integer.MIN_VALUE, Penalty.truncate(penalty));
 
-		// Force integer wrap-around
-		penalty -= 500;
-		assertEquals(Integer.MIN_VALUE, Penalty.truncate(penalty));
-		// For comparison, normal casting does this
-		assertEquals(Integer.MAX_VALUE - 499, (int) penalty);
-	}
+        // Force integer wrap-around
+        penalty -= 500;
+        assertEquals(Integer.MIN_VALUE, Penalty.truncate(penalty));
+        // For comparison, normal casting does this
+        assertEquals(Integer.MAX_VALUE - 499, (int) penalty);
+    }
 
-	/**
-	 * Tests for the {@link Penalty} class.
-	 * 
-	 * @if an error occurs
-	 */
-	@Test
-	public void testPenalty() {
-		Penalty p1 = Penalty.toPenalty(100);
-		assertEquals(100, p1.getValue());
-		Penalty p2 = p1.add(Penalty.toPenalty(50));
-		assertEquals(150, p2.getValue());
+    /**
+     * Tests for the {@link Penalty} class.
+     * 
+     * @if an error occurs
+     */
+    @Test
+    public void testPenalty() {
+        Penalty p1 = Penalty.toPenalty(100);
+        assertEquals(100, p1.getValue());
+        Penalty p2 = p1.add(Penalty.toPenalty(50));
+        assertEquals(150, p2.getValue());
 
-		p1 = Penalty.toPenalty(0);
-		assertEquals(0, p1.getValue());
+        p1 = Penalty.toPenalty(0);
+        assertEquals(0, p1.getValue());
 
-		p1 = Penalty.INFINITE_PENALTY;
-		assertEquals(Integer.MAX_VALUE, p1.getValue());
-		assertTrue(p1.isInfinitePenalty());
-		p2 = p1.add(p2);
-		assertEquals(Integer.MAX_VALUE, p2.getValue());
-		assertTrue(p2.isInfinitePenalty());
-	}
+        p1 = Penalty.INFINITE_PENALTY;
+        assertEquals(Integer.MAX_VALUE, p1.getValue());
+        assertTrue(p1.isInfinitePenalty());
+        p2 = p1.add(p2);
+        assertEquals(Integer.MAX_VALUE, p2.getValue());
+        assertTrue(p2.isInfinitePenalty());
+    }
 
 }

@@ -29,28 +29,28 @@ import org.junit.Test;
 
 public class DSCCommentBoundingBoxTestCase extends TestCase {
 
-	@Test
-	public void testBoundingBox() {
-		DSCComment comment = DSCCommentFactory
-				.createDSCCommentFor("BoundingBox");
-		DSCCommentBoundingBox bbox = (DSCCommentBoundingBox) comment;
-		bbox.parseValue("289 412 306 429");
-		final Rectangle refRect = new Rectangle(289, 412, 306 - 289, 429 - 412);
-		assertEquals(refRect, bbox.getBoundingBox());
+    @Test
+    public void testBoundingBox() {
+        DSCComment comment = DSCCommentFactory
+                .createDSCCommentFor("BoundingBox");
+        DSCCommentBoundingBox bbox = (DSCCommentBoundingBox) comment;
+        bbox.parseValue("289 412 306 429");
+        final Rectangle refRect = new Rectangle(289, 412, 306 - 289, 429 - 412);
+        assertEquals(refRect, bbox.getBoundingBox());
 
-		comment = DSCCommentFactory.createDSCCommentFor("BoundingBox");
-		bbox = (DSCCommentBoundingBox) comment;
-		bbox.parseValue("289.12 412.2 306.777 429.11");
-		Rectangle2D refRect2D = new Rectangle2D.Double(289.12, 412.2,
-				306.777 - 289.12, 429.11 - 412.2);
-		assertEquals(refRect2D, bbox.getBoundingBox());
+        comment = DSCCommentFactory.createDSCCommentFor("BoundingBox");
+        bbox = (DSCCommentBoundingBox) comment;
+        bbox.parseValue("289.12 412.2 306.777 429.11");
+        Rectangle2D refRect2D = new Rectangle2D.Double(289.12, 412.2,
+                306.777 - 289.12, 429.11 - 412.2);
+        assertEquals(refRect2D, bbox.getBoundingBox());
 
-		comment = DSCCommentFactory.createDSCCommentFor("HiResBoundingBox");
-		bbox = (DSCCommentHiResBoundingBox) comment;
-		bbox.parseValue("289.12 412.2 306.777 429.11");
-		refRect2D = new Rectangle2D.Double(289.12, 412.2, 306.777 - 289.12,
-				429.11 - 412.2);
-		assertEquals(refRect2D, bbox.getBoundingBox());
-	}
+        comment = DSCCommentFactory.createDSCCommentFor("HiResBoundingBox");
+        bbox = (DSCCommentHiResBoundingBox) comment;
+        bbox.parseValue("289.12 412.2 306.777 429.11");
+        refRect2D = new Rectangle2D.Double(289.12, 412.2, 306.777 - 289.12,
+                429.11 - 412.2);
+        assertEquals(refRect2D, bbox.getBoundingBox());
+    }
 
 }

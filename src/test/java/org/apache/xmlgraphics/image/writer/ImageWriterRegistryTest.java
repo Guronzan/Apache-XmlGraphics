@@ -33,51 +33,51 @@ import org.junit.Test;
  */
 public class ImageWriterRegistryTest extends TestCase {
 
-	@Test
-	public void testRegistry() {
-		final ImageWriterRegistry registry = new ImageWriterRegistry();
+    @Test
+    public void testRegistry() {
+        final ImageWriterRegistry registry = new ImageWriterRegistry();
 
-		ImageWriter writer;
-		writer = registry.getWriterFor("image/something");
-		assertNull(writer);
+        ImageWriter writer;
+        writer = registry.getWriterFor("image/something");
+        assertNull(writer);
 
-		writer = registry.getWriterFor("image/png");
-		assertTrue(writer instanceof ImageIOPNGImageWriter);
+        writer = registry.getWriterFor("image/png");
+        assertTrue(writer instanceof ImageIOPNGImageWriter);
 
-		registry.register(new DummyPNGWriter());
+        registry.register(new DummyPNGWriter());
 
-		ImageWriter dummy = registry.getWriterFor("image/png");
-		assertEquals(DummyPNGWriter.class, dummy.getClass());
+        ImageWriter dummy = registry.getWriterFor("image/png");
+        assertEquals(DummyPNGWriter.class, dummy.getClass());
 
-		registry.register(new OtherPNGWriter(), 50);
+        registry.register(new OtherPNGWriter(), 50);
 
-		dummy = registry.getWriterFor("image/png");
-		assertEquals(OtherPNGWriter.class, dummy.getClass());
-	}
+        dummy = registry.getWriterFor("image/png");
+        assertEquals(OtherPNGWriter.class, dummy.getClass());
+    }
 
-	private static class DummyPNGWriter extends AbstractImageWriter {
+    private static class DummyPNGWriter extends AbstractImageWriter {
 
-		@Override
-		public String getMIMEType() {
-			return "image/png";
-		}
+        @Override
+        public String getMIMEType() {
+            return "image/png";
+        }
 
-		@Override
-		public void writeImage(final RenderedImage image, final OutputStream out)
-				throws IOException {
-			// nop
-		}
+        @Override
+        public void writeImage(final RenderedImage image, final OutputStream out)
+                throws IOException {
+            // nop
+        }
 
-		@Override
-		public void writeImage(final RenderedImage image,
-				final OutputStream out, final ImageWriterParams params)
-				throws IOException {
-			// nop
-		}
+        @Override
+        public void writeImage(final RenderedImage image,
+                final OutputStream out, final ImageWriterParams params)
+                throws IOException {
+            // nop
+        }
 
-	}
+    }
 
-	private static class OtherPNGWriter extends DummyPNGWriter {
+    private static class OtherPNGWriter extends DummyPNGWriter {
 
-	}
+    }
 }

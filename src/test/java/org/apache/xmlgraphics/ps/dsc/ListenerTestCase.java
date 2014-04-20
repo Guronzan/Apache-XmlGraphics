@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.xmlgraphics.ps.DSCConstants;
@@ -36,104 +37,105 @@ import org.junit.Test;
 /**
  * Tests the listener functionality on the DSC parser.
  */
+@Slf4j
 public class ListenerTestCase extends TestCase {
 
-	/**
-	 * Tests {@link DSCParser#setFilter(DSCFilter)}.
-	 * 
-	 * @throws DSCException
-	 * @throws IOException
-	 * @if an error occurs
-	 */
-	@Test
-	public void testFilter() throws IOException, DSCException {
-		final InputStream in = getClass().getResourceAsStream("test1.txt");
-		try {
-			final DSCParser parser = new DSCParser(in);
-			parser.setFilter(new DSCFilter() {
+    /**
+     * Tests {@link DSCParser#setFilter(DSCFilter)}.
+     * 
+     * @throws DSCException
+     * @throws IOException
+     * @if an error occurs
+     */
+    @Test
+    public void testFilter() throws IOException, DSCException {
+        final InputStream in = getClass().getResourceAsStream("test1.txt");
+        try {
+            final DSCParser parser = new DSCParser(in);
+            parser.setFilter(new DSCFilter() {
 
-				@Override
-				public boolean accept(final DSCEvent event) {
-					// Filter out all non-DSC comments
-					return !event.isComment();
-				}
+                @Override
+                public boolean accept(final DSCEvent event) {
+                    // Filter out all non-DSC comments
+                    return !event.isComment();
+                }
 
-			});
-			while (parser.hasNext()) {
-				final DSCEvent event = parser.nextEvent();
+            });
+            while (parser.hasNext()) {
+                final DSCEvent event = parser.nextEvent();
 
-				if (parser.getCurrentEvent().isComment()) {
-					fail("Filter failed. Comment found.");
-				}
-			}
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-	}
+                if (parser.getCurrentEvent().isComment()) {
+                    fail("Filter failed. Comment found.");
+                }
+            }
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+    }
 
-	/**
-	 * Tests listeners on DSCParser.
-	 * 
-	 * @throws DSCException
-	 * @throws IOException
-	 * @if an error occurs
-	 */
-	@Test
-	public void testListeners() throws IOException, DSCException {
-		final InputStream in = getClass().getResourceAsStream("test1.txt");
-		try {
-			final Map<String, Integer> results = new HashMap<>();
-			final DSCParser parser = new DSCParser(in);
+    /**
+     * Tests listeners on DSCParser.
+     * 
+     * @throws DSCException
+     * @throws IOException
+     * @if an error occurs
+     */
+    @Test
+    public void testListeners() throws IOException, DSCException {
+        final InputStream in = getClass().getResourceAsStream("test1.txt");
+        try {
+            final Map<String, Integer> results = new HashMap<>();
+            final DSCParser parser = new DSCParser(in);
 
-			// Filter the prolog
-			parser.addListener(new DSCListener() {
-				@Override
-				public void processEvent(final DSCEvent event,
-						final DSCParser parser) throws IOException,
-						DSCException {
-					if (event.isDSCComment()) {
-						final DSCComment comment = event.asDSCComment();
-						if (DSCConstants.BEGIN_PROLOG.equals(comment.getName())) {
-							// Skip until end of prolog
-							while (parser.hasNext()) {
-								final DSCEvent e = parser.nextEvent();
-								if (e.isDSCComment()) {
-									if (DSCConstants.END_PROLOG.equals(e
-											.asDSCComment().getName())) {
-										parser.next();
-										break;
-									}
-								}
+            // Filter the prolog
+            parser.addListener(new DSCListener() {
+                @Override
+                public void processEvent(final DSCEvent event,
+                        final DSCParser parser) throws IOException,
+                        DSCException {
+                    if (event.isDSCComment()) {
+                        final DSCComment comment = event.asDSCComment();
+                        if (DSCConstants.BEGIN_PROLOG.equals(comment.getName())) {
+                            // Skip until end of prolog
+                            while (parser.hasNext()) {
+                                final DSCEvent e = parser.nextEvent();
+                                if (e.isDSCComment()) {
+                                    if (DSCConstants.END_PROLOG.equals(e
+                                            .asDSCComment().getName())) {
+                                        parser.next();
+                                        break;
+                                    }
+                                }
 
-							}
-						}
-					}
-				}
-			});
+                            }
+                        }
+                    }
+                }
+            });
 
-			// Listener for the language level
-			parser.addListener(new DSCListener() {
-				@Override
-				public void processEvent(final DSCEvent event,
-						final DSCParser parser) throws IOException,
-						DSCException {
-					if (event instanceof DSCCommentLanguageLevel) {
-						final DSCCommentLanguageLevel level = (DSCCommentLanguageLevel) event;
-						results.put("level", level.getLanguageLevel());
-					}
-				}
-			});
-			int count = 0;
-			while (parser.hasNext()) {
-				final DSCEvent event = parser.nextEvent();
-				System.out.println(event);
-				count++;
-			}
-			assertEquals(12, count);
-			assertEquals((Integer) 1, results.get("level"));
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-	}
+            // Listener for the language level
+            parser.addListener(new DSCListener() {
+                @Override
+                public void processEvent(final DSCEvent event,
+                        final DSCParser parser) throws IOException,
+                        DSCException {
+                    if (event instanceof DSCCommentLanguageLevel) {
+                        final DSCCommentLanguageLevel level = (DSCCommentLanguageLevel) event;
+                        results.put("level", level.getLanguageLevel());
+                    }
+                }
+            });
+            int count = 0;
+            while (parser.hasNext()) {
+                final DSCEvent event = parser.nextEvent();
+                log.info(event.toString());
+                ++count;
+            }
+            assertEquals(12, count);
+            assertEquals((Integer) 1, results.get("level"));
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+    }
 
 }

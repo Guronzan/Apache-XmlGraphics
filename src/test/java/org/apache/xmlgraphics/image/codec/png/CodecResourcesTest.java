@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.xmlgraphics.image.codec.util.MemoryCacheSeekableStream;
@@ -33,30 +34,31 @@ import org.junit.Test;
 /**
  * Checks for the presence of message resources for the internal codecs.
  */
+@Slf4j
 public class CodecResourcesTest extends TestCase {
 
-	@Test
-	public void testResources() throws IOException {
+    @Test
+    public void testResources() throws IOException {
 
-		final InputStream in = new FileInputStream("test/images/barcode.eps");
-		final SeekableStream seekStream = new MemoryCacheSeekableStream(in);
-		try {
-			new PNGImage(seekStream, null);
-			fail("Exception expected");
-		} catch (final RuntimeException re) {
-			final String msg = re.getMessage();
-			if ("PNGImageDecoder0".equals(msg)) {
-				re.printStackTrace();
-				fail("Message resource don't seem to be present! Message is: "
-						+ msg);
-			} else if (msg.toLowerCase().indexOf("magic") < 0) {
-				fail("Message not as expected! Message is: " + msg);
-			}
-		} finally {
-			IOUtils.closeQuietly(seekStream);
-			IOUtils.closeQuietly(in);
-		}
+        final InputStream in = new FileInputStream("test/images/barcode.eps");
+        final SeekableStream seekStream = new MemoryCacheSeekableStream(in);
+        try {
+            new PNGImage(seekStream, null);
+            fail("Exception expected");
+        } catch (final RuntimeException re) {
+            final String msg = re.getMessage();
+            if ("PNGImageDecoder0".equals(msg)) {
+                log.error("Exception", re);
+                fail("Message resource don't seem to be present! Message is: "
+                        + msg);
+            } else if (msg.toLowerCase().indexOf("magic") < 0) {
+                fail("Message not as expected! Message is: " + msg);
+            }
+        } finally {
+            IOUtils.closeQuietly(seekStream);
+            IOUtils.closeQuietly(in);
+        }
 
-	}
+    }
 
 }

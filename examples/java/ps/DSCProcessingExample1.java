@@ -44,11 +44,11 @@ public class DSCProcessingExample1 {
      * @throws IOException In case of an I/O error
      */
     public void extractPages(File srcFile, File tgtFile, int from, int to) throws IOException {
-        InputStream in = new java.io.FileInputStream(srcFile);
-        in = new java.io.BufferedInputStream(in);
+        InputStream in = FileInputStream(srcFile);
+        in = BufferedInputStream(in);
         try {
-            OutputStream out = new java.io.FileOutputStream(tgtFile);
-            out = new java.io.BufferedOutputStream(out);
+            OutputStream out = FileOutputStream(tgtFile);
+            out = BufferedOutputStream(out);
             try {
                 PageExtractor.extractPages(in, out, from, to);
             } catch (DSCException e) {
@@ -62,7 +62,7 @@ public class DSCProcessingExample1 {
     }
 
     private static void showInfo() {
-        System.out.println(
+        log.info(
                 "Call: DSCProcessingExample1 <source-file> <target-file> <from-page> <to-page>");
     }
 
@@ -87,9 +87,9 @@ public class DSCProcessingExample1 {
             }
             DSCProcessingExample1 app = new DSCProcessingExample1();
             app.extractPages(srcFile, tgtFile, from, to);
-            System.out.println("File written: " + tgtFile.getCanonicalPath());
+            log.info("File written: " + tgtFile.getCanonicalPath());
         } catch (IllegalArgumentException iae) {
-            System.err.println(iae.getMessage());
+            log.error(iae.getMessage());
             showInfo();
             System.exit(1);
         } catch (Exception e) {

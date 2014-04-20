@@ -67,8 +67,8 @@ public class ImageWriterExample2 extends ImageWriterExample1 {
         //String compression = "CCITT T.6";
         String compression = "PackBits";
 
-        OutputStream out = new java.io.FileOutputStream(outputFile);
-        out = new java.io.BufferedOutputStream(out);
+        OutputStream out = FileOutputStream(outputFile);
+        out = BufferedOutputStream(out);
         try {
 
             ImageWriter writer = ImageWriterRegistry.getInstance().getWriterFor(format);
@@ -104,12 +104,12 @@ public class ImageWriterExample2 extends ImageWriterExample1 {
                 targetDir = new File(".");
             }
             if (!targetDir.exists()) {
-                System.err.println("Target Directory does not exist: " + targetDir);
+                log.error("Target Directory does not exist: " + targetDir);
             }
             File outputFile = new File(targetDir, "eps-example2.tif");
             ImageWriterExample2 app = new ImageWriterExample2();
             app.generateBitmapUsingJava2D(outputFile, "image/tiff");
-            System.out.println("File written: " + outputFile.getCanonicalPath());
+            log.info("File written: " + outputFile.getCanonicalPath());
         } catch (Exception e) {
             e.printStackTrace();
         }

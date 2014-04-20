@@ -24,10 +24,16 @@ import java.io.Serializable;
 /**
  * A class representing the fields of a PNG suggested palette entry.
  *
- * <p><b> This class is not a committed part of the JAI API.  It may
- * be removed or changed in future releases of JAI.</b>
+ * <p>
+ * <b> This class is not a committed part of the JAI API. It may be removed or
+ * changed in future releases of JAI.</b>
  */
 public class PNGSuggestedPaletteEntry implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8718480055883536195L;
 
     /** The name of the entry. */
     public String name;

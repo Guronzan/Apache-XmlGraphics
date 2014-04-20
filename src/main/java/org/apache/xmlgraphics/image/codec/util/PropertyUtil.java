@@ -21,26 +21,27 @@ package org.apache.xmlgraphics.image.codec.util;
 
 import java.util.MissingResourceException;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.xmlgraphics.util.i18n.LocalizableSupport;
 
+@Slf4j
 public final class PropertyUtil {
 
     private PropertyUtil() {
     }
 
-    protected static final String RESOURCES =
-        "org.apache.xmlgraphics.image.codec.Messages";
+    protected static final String RESOURCES = "org.apache.xmlgraphics.image.codec.Messages";
 
+    protected static LocalizableSupport localizableSupport = new LocalizableSupport(
+            RESOURCES, PropertyUtil.class.getClassLoader());
 
-    protected static LocalizableSupport localizableSupport =
-        new LocalizableSupport
-        (RESOURCES, PropertyUtil.class.getClassLoader());
-
-    public static String getString(String key) {
+    public static String getString(final String key) {
         try {
             return localizableSupport.formatMessage(key, null);
-        } catch (MissingResourceException e) {
+        } catch (final MissingResourceException e) {
+            log.error("MissingResourceException", e);
             return key;
         }
-   }
+    }
 }

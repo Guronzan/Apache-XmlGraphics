@@ -22,11 +22,13 @@ package org.apache.xmlgraphics.ps.dsc.events;
 import java.util.Collection;
 
 import org.apache.xmlgraphics.ps.DSCConstants;
+import org.apache.xmlgraphics.ps.PSResource;
 
 /**
  * Represents a %%DocumentNeededResources DSC comment.
  */
-public class DSCCommentDocumentNeededResources extends AbstractResourcesDSCComment {
+public class DSCCommentDocumentNeededResources extends
+        AbstractResourcesDSCComment {
 
     /**
      * Creates a new instance.
@@ -37,15 +39,19 @@ public class DSCCommentDocumentNeededResources extends AbstractResourcesDSCComme
 
     /**
      * Creates a new instance.
-     * @param resources a Collection of PSResource instances
+     * 
+     * @param resources
+     *            a Collection of PSResource instances
      */
-    public DSCCommentDocumentNeededResources(Collection resources) {
+    public DSCCommentDocumentNeededResources(
+            final Collection<PSResource> resources) {
         super(resources);
     }
 
     /**
      * @see org.apache.xmlgraphics.ps.dsc.events.DSCComment#getName()
      */
+    @Override
     public String getName() {
         return DSCConstants.DOCUMENT_NEEDED_RESOURCES;
     }

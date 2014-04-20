@@ -37,25 +37,25 @@ import org.junit.Test;
  * Test case for {@link ImageLoaderRawCCITTFax}.
  */
 public class ImageLoaderRawCCITTFaxTestCase extends TestCase {
-	private ImageLoaderRawCCITTFax sut;
+    private ImageLoaderRawCCITTFax sut;
 
-	@Test
-	public void testLoadImage() throws ImageException, IOException {
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		// This image file is NOT a valid tif! It is the directory table ONLY.
-		final ImageInfo info = new ImageInfo("dirOnly.tif",
-				MimeConstants.MIME_TIFF);
-		final ImageSize size = new ImageSize();
-		// Size data can be retrieve by parsing the directory table in the TIFF
-		size.setSizeInPixels(1728, 2266);
-		size.setResolution(203, 192);
-		size.calcSizeFromPixels();
-		info.setSize(size);
+    @Test
+    public void testLoadImage() throws ImageException, IOException {
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        // This image file is NOT a valid tif! It is the directory table ONLY.
+        final ImageInfo info = new ImageInfo("dirOnly.tif",
+                MimeConstants.MIME_TIFF);
+        final ImageSize size = new ImageSize();
+        // Size data can be retrieve by parsing the directory table in the TIFF
+        size.setSizeInPixels(1728, 2266);
+        size.setResolution(203, 192);
+        size.calcSizeFromPixels();
+        info.setSize(size);
 
-		this.sut = new ImageLoaderRawCCITTFax();
-		final ImageRawCCITTFax rawImage = (ImageRawCCITTFax) this.sut
-				.loadImage(info, null, session);
-		assertEquals(2, rawImage.getCompression());
-	}
+        this.sut = new ImageLoaderRawCCITTFax();
+        final ImageRawCCITTFax rawImage = (ImageRawCCITTFax) this.sut
+                .loadImage(info, null, session);
+        assertEquals(2, rawImage.getCompression());
+    }
 }

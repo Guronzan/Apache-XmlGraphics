@@ -27,6 +27,7 @@ import javax.xml.transform.Source;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.xmlgraphics.image.codec.tiff.TIFFImage;
 import org.apache.xmlgraphics.image.codec.util.ImageInputStreamSeekableStreamAdapter;
 import org.apache.xmlgraphics.image.codec.util.SeekableStream;
 import org.apache.xmlgraphics.image.loader.Image;
@@ -42,43 +43,49 @@ import org.apache.xmlgraphics.image.loader.util.ImageUtil;
 @Slf4j
 public class ImageLoaderInternalTIFF extends AbstractImageLoader {
 
-	/**
-	 * Main constructor.
-	 */
-	public ImageLoaderInternalTIFF() {
-		// nop
-	}
+    /**
+     * Main constructor.
+     */
+    public ImageLoaderInternalTIFF() {
+        // nop
+    }
 
-	/** {@inheritDoc} */
-	public ImageFlavor getTargetFlavor() {
-		return ImageFlavor.RENDERED_IMAGE;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public ImageFlavor getTargetFlavor() {
+        return ImageFlavor.RENDERED_IMAGE;
+    }
 
-	/** {@inheritDoc} */
-	public Image loadImage(final ImageInfo info, final Map hints,
-			final ImageSessionContext session) throws ImageException,
-			IOException {
+    /** {@inheritDoc} */
+    @Override
+    public Image loadImage(final ImageInfo info,
+            final Map<String, Object> hints, final ImageSessionContext session)
+            throws ImageException, IOException {
 
-		final Source src = session.needSource(info.getOriginalURI());
-		final ImageInputStream imgStream = ImageUtil.needImageInputStream(src);
+        final Source src = session.needSource(info.getOriginalURI());
+        try (final ImageInputStream imgStream = ImageUtil
+                .needImageInputStream(src)) {
 
-		final SeekableStream seekStream = new ImageInputStreamSeekableStreamAdapter(
-				imgStream);
-		try {
-			final org.apache.xmlgraphics.image.codec.tiff.TIFFImage img = new org.apache.xmlgraphics.image.codec.tiff.TIFFImage(
-					seekStream, null, 0);
-			// TODO: This may ignore ICC Profiles stored in TIFF images.
-			return new ImageRendered(info, img, null);
-		} catch (final RuntimeException e) {
-			throw new ImageException(
-					"Could not load image with internal TIFF codec", e);
-		}
-	}
+            try (final SeekableStream seekStream = new ImageInputStreamSeekableStreamAdapter(
+                    imgStream)) {
+                try {
+                    final TIFFImage img = new TIFFImage(seekStream, null, 0);
+                    // TODO: This may ignore ICC Profiles stored in TIFF images.
 
-	/** {@inheritDoc} */
-	@Override
-	public int getUsagePenalty() {
-		return 1000; // Provide this only as a fallback
-	}
+                    return new ImageRendered(info, img, null);
+                } catch (final RuntimeException e) {
+                    log.error("RuntimeException", e);
+                    throw new ImageException(
+                            "Could not load image with internal TIFF codec", e);
+                }
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getUsagePenalty() {
+        return 1000; // Provide this only as a fallback
+    }
 
 }

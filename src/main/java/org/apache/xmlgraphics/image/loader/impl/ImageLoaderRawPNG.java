@@ -39,47 +39,51 @@ import org.apache.xmlgraphics.util.MimeConstants;
 
 public class ImageLoaderRawPNG extends AbstractImageLoader {
 
-	/**
-	 * Main constructor.
-	 */
-	public ImageLoaderRawPNG() {
-	}
+    /**
+     * Main constructor.
+     */
+    public ImageLoaderRawPNG() {
+    }
 
-	/** {@inheritDoc} */
-	public ImageFlavor getTargetFlavor() {
-		return ImageFlavor.RAW_PNG;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public ImageFlavor getTargetFlavor() {
+        return ImageFlavor.RAW_PNG;
+    }
 
-	/** {@inheritDoc} */
-	public Image loadImage(final ImageInfo info, final Map hints,
-			final ImageSessionContext session) throws ImageException,
-			IOException {
-		if (!MimeConstants.MIME_PNG.equals(info.getMimeType())) {
-			throw new IllegalArgumentException(
-					"ImageInfo must be from a image with MIME type: "
-							+ MimeConstants.MIME_PNG);
-		}
+    /** {@inheritDoc} */
+    @Override
+    public Image loadImage(final ImageInfo info,
+            final Map<String, Object> hints, final ImageSessionContext session)
+            throws ImageException, IOException {
+        if (!MimeConstants.MIME_PNG.equals(info.getMimeType())) {
+            throw new IllegalArgumentException(
+                    "ImageInfo must be from a image with MIME type: "
+                            + MimeConstants.MIME_PNG);
+        }
 
-		final Source src = session.needSource(info.getOriginalURI());
-		final ImageInputStream in = ImageUtil.needImageInputStream(src);
-		// Remove streams as we do things with them at some later time.
-		ImageUtil.removeStreams(src);
-		final SeekableStream seekStream = new ImageInputStreamSeekableStreamAdapter(
-				in);
-		final PNGFile im = new PNGFile(seekStream);
-		final ImageRawPNG irpng = im.getImageRawPNG(info);
-		return irpng;
-	}
+        final Source src = session.needSource(info.getOriginalURI());
+        try (final ImageInputStream in = ImageUtil.needImageInputStream(src)) {
+            // Remove streams as we do things with them at some later time.
+            ImageUtil.removeStreams(src);
+            try (final SeekableStream seekStream = new ImageInputStreamSeekableStreamAdapter(
+                    in)) {
+                final PNGFile im = new PNGFile(seekStream);
+                final ImageRawPNG irpng = im.getImageRawPNG(info);
+                return irpng;
+            }
+        }
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public int getUsagePenalty() {
-		// since this image loader does not handle all kinds of PNG images then
-		// we add some penalty to it
-		// so that it is not chosen by default; instead, users need to give it a
-		// negative penalty in
-		// fop.xconf so that it is used
-		return 1000;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public int getUsagePenalty() {
+        // since this image loader does not handle all kinds of PNG images then
+        // we add some penalty to it
+        // so that it is not chosen by default; instead, users need to give it a
+        // negative penalty in
+        // fop.xconf so that it is used
+        return 1000;
+    }
 
 }

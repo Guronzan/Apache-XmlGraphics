@@ -43,29 +43,29 @@ import org.junit.Test;
  */
 public class ImageLoaderImageIOTestCase {
 
-	/**
-	 * Tests a grayscale PNG that has a CMYK color profile. ImageLoaderImageIO
-	 * used to fail on that with an IllegalArgumentException.
-	 * 
-	 * @throws IOException
-	 * @throws ImageException
-	 * @throws URISyntaxException
-	 * @if an error occurs
-	 */
-	@Test
-	public void testGrayPNGWithCMYKProfile() throws ImageException,
-	IOException, URISyntaxException {
-		final URL imageURL = getClass().getResource("gray-vs-cmyk-profile.png");
-		assertNotNull(imageURL);
-		final String uri = imageURL.toURI().toASCIIString();
+    /**
+     * Tests a grayscale PNG that has a CMYK color profile. ImageLoaderImageIO
+     * used to fail on that with an IllegalArgumentException.
+     * 
+     * @throws IOException
+     * @throws ImageException
+     * @throws URISyntaxException
+     * @if an error occurs
+     */
+    @Test
+    public void testGrayPNGWithCMYKProfile() throws ImageException,
+            IOException, URISyntaxException {
+        final URL imageURL = getClass().getResource("gray-vs-cmyk-profile.png");
+        assertNotNull(imageURL);
+        final String uri = imageURL.toURI().toASCIIString();
 
-		final ImageLoaderImageIO loader = new ImageLoaderImageIO(
-				ImageFlavor.RENDERED_IMAGE);
-		final ImageContext context = MockImageContext.newSafeInstance();
-		final ImageSessionContext session = new MockImageSessionContext(context);
-		final ImageInfo info = new ImageInfo(uri, MimeConstants.MIME_PNG);
-		final Image im = loader.loadImage(info, null, session);
-		assertTrue(im instanceof ImageRendered);
-	}
+        final ImageLoaderImageIO loader = new ImageLoaderImageIO(
+                ImageFlavor.RENDERED_IMAGE);
+        final ImageContext context = MockImageContext.newSafeInstance();
+        final ImageSessionContext session = new MockImageSessionContext(context);
+        final ImageInfo info = new ImageInfo(uri, MimeConstants.MIME_PNG);
+        final Image im = loader.loadImage(info, null, session);
+        assertTrue(im instanceof ImageRendered);
+    }
 
 }

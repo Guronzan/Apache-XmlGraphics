@@ -34,84 +34,87 @@ import org.slf4j.LoggerFactory;
  */
 public interface ObservableStream {
 
-	/**
-	 * Indicates whether the stream has been closed.
-	 * 
-	 * @return true if the stream is closed
-	 */
-	boolean isClosed();
+    /**
+     * Indicates whether the stream has been closed.
+     *
+     * @return true if the stream is closed
+     */
+    boolean isClosed();
 
-	/**
-	 * Returns the system ID for the stream being observed.
-	 * 
-	 * @return the system ID
-	 */
-	String getSystemID();
+    /**
+     * Returns the system ID for the stream being observed.
+     *
+     * @return the system ID
+     */
+    String getSystemID();
 
-	public static class Factory {
+    public static class Factory {
 
-		public static ImageInputStream observe(final ImageInputStream iin,
-				final String systemID) {
-			return (ImageInputStream) Proxy.newProxyInstance(Factory.class
-					.getClassLoader(), new Class[] { ImageInputStream.class,
-				ObservableStream.class },
-				new ObservingImageInputStreamInvocationHandler(iin,
-						systemID));
-		}
+        public static ImageInputStream observe(final ImageInputStream iin,
+                final String systemID) {
+            return (ImageInputStream) Proxy.newProxyInstance(Factory.class
+                    .getClassLoader(), new Class[] { ImageInputStream.class,
+                    ObservableStream.class },
+                    new ObservingImageInputStreamInvocationHandler(iin,
+                            systemID));
+        }
 
-	}
+    }
 
-	public static class ObservingImageInputStreamInvocationHandler implements
-	InvocationHandler, ObservableStream {
+    public static class ObservingImageInputStreamInvocationHandler implements
+            InvocationHandler, ObservableStream {
 
-		/** logger */
-		protected static Logger log = LoggerFactory
-				.getLogger(ObservableInputStream.class);
+        /** logger */
+        protected static Logger log = LoggerFactory
+                .getLogger(ObservableInputStream.class);
 
-		private final ImageInputStream iin;
-		private boolean closed;
-		private final String systemID;
+        private final ImageInputStream iin;
+        private boolean closed;
+        private final String systemID;
 
-		public ObservingImageInputStreamInvocationHandler(
-				final ImageInputStream iin, final String systemID) {
-			this.iin = iin;
-			this.systemID = systemID;
-		}
+        public ObservingImageInputStreamInvocationHandler(
+                final ImageInputStream iin, final String systemID) {
+            this.iin = iin;
+            this.systemID = systemID;
+        }
 
-		/** {@inheritDoc} */
-		public Object invoke(final Object proxy, final Method method,
-				final Object[] args) throws Throwable {
-			if (method.getDeclaringClass().equals(ObservableStream.class)) {
-				return method.invoke(this, args);
-			} else if ("close".equals(method.getName())) {
-				if (!closed) {
-					log.debug("Stream is being closed: " + getSystemID());
-					closed = true;
-					try {
-						return method.invoke(iin, args);
-					} catch (final InvocationTargetException ite) {
-						log.error("Error while closing underlying stream: "
-								+ ite.getMessage());
-						throw ite;
-					}
-				} else {
-					throw new IllegalStateException("Stream is already closed!");
-				}
-			} else {
-				return method.invoke(iin, args);
-			}
-		}
+        /** {@inheritDoc} */
+        @Override
+        public Object invoke(final Object proxy, final Method method,
+                final Object[] args) throws Throwable {
+            if (method.getDeclaringClass().equals(ObservableStream.class)) {
+                return method.invoke(this, args);
+            } else if ("close".equals(method.getName())) {
+                if (!this.closed) {
+                    log.debug("Stream is being closed: " + getSystemID());
+                    this.closed = true;
+                    try {
+                        return method.invoke(this.iin, args);
+                    } catch (final InvocationTargetException ite) {
+                        log.error("Error while closing underlying stream: "
+                                + ite.getMessage());
+                        throw ite;
+                    }
+                } else {
+                    throw new IllegalStateException("Stream is already closed!");
+                }
+            } else {
+                return method.invoke(this.iin, args);
+            }
+        }
 
-		/** {@inheritDoc} */
-		public String getSystemID() {
-			return this.systemID;
-		}
+        /** {@inheritDoc} */
+        @Override
+        public String getSystemID() {
+            return this.systemID;
+        }
 
-		/** {@inheritDoc} */
-		public boolean isClosed() {
-			return this.closed;
-		}
+        /** {@inheritDoc} */
+        @Override
+        public boolean isClosed() {
+            return this.closed;
+        }
 
-	}
+    }
 
 }

@@ -30,36 +30,36 @@ import org.junit.Test;
 
 public class ImageLoaderFactoryPNGTestCase {
 
-	private final ImageLoaderFactoryPNG ilfpng = new ImageLoaderFactoryPNG();
+    private final ImageLoaderFactoryPNG ilfpng = new ImageLoaderFactoryPNG();
 
-	@Test
-	public void testGetSupportedMIMETypes() {
-		assertArrayEquals(new String[] { MimeConstants.MIME_PNG },
-				this.ilfpng.getSupportedMIMETypes());
-	}
+    @Test
+    public void testGetSupportedMIMETypes() {
+        assertArrayEquals(new String[] { MimeConstants.MIME_PNG },
+                this.ilfpng.getSupportedMIMETypes());
+    }
 
-	@Test
-	public void testGetSupportedFlavors() {
-		assertArrayEquals(new ImageFlavor[] { ImageFlavor.RENDERED_IMAGE },
-				this.ilfpng.getSupportedFlavors(MimeConstants.MIME_PNG));
-		try {
-			this.ilfpng.getSupportedFlavors(MimeConstants.MIME_JPEG);
-			fail("An exception should have been thrown above....");
-		} catch (final IllegalArgumentException e) {
-			// do nothing; this is expected
-		}
-	}
+    @Test
+    public void testGetSupportedFlavors() {
+        assertArrayEquals(new ImageFlavor[] { ImageFlavor.RENDERED_IMAGE },
+                this.ilfpng.getSupportedFlavors(MimeConstants.MIME_PNG));
+        try {
+            this.ilfpng.getSupportedFlavors(MimeConstants.MIME_JPEG);
+            fail("An exception should have been thrown above....");
+        } catch (final IllegalArgumentException e) {
+            // do nothing; this is expected
+        }
+    }
 
-	@Test
-	public void testNewImageLoader() {
-		final ImageLoader il = this.ilfpng
-				.newImageLoader(ImageFlavor.RENDERED_IMAGE);
-		assertTrue(il instanceof ImageLoaderPNG);
-	}
+    @Test
+    public void testNewImageLoader() {
+        final ImageLoader il = this.ilfpng
+                .newImageLoader(ImageFlavor.RENDERED_IMAGE);
+        assertTrue(il instanceof ImageLoaderPNG);
+    }
 
-	@Test
-	public void testIsAvailable() {
-		assertTrue(this.ilfpng.isAvailable());
-	}
+    @Test
+    public void testIsAvailable() {
+        assertTrue(this.ilfpng.isAvailable());
+    }
 
 }

@@ -32,59 +32,60 @@ import org.junit.Test;
  */
 public class SubInputStreamTestCase extends TestCase {
 
-	/**
-	 * Main constructor.
-	 * 
-	 * @param name
-	 *            the test case's name
-	 * @see junit.framework.TestCase#TestCase(String)
-	 */
-	public SubInputStreamTestCase(final String name) {
-		super(name);
-	}
+    /**
+     * Main constructor.
+     * 
+     * @param name
+     *            the test case's name
+     * @see junit.framework.TestCase#TestCase(String)
+     */
+    public SubInputStreamTestCase(final String name) {
+        super(name);
+    }
 
-	/**
-	 * Tests SubInputStream.
-	 * 
-	 * @throws IOException
-	 * @if an error occurs
-	 */
-	@Test
-	public void testMain() throws IOException {
-		// Initialize test data
-		final byte[] data = new byte[256];
-		for (int i = 0; i < data.length; i++) {
-			data[i] = (byte) (i & 0xff);
-		}
+    /**
+     * Tests SubInputStream.
+     * 
+     * @throws IOException
+     * @if an error occurs
+     */
+    @Test
+    public void testMain() throws IOException {
+        // Initialize test data
+        final byte[] data = new byte[256];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (byte) (i & 0xff);
+        }
 
-		int v, c;
-		byte[] buf;
-		String s;
+        int v, c;
+        byte[] buf;
+        String s;
 
-		final SubInputStream subin = new SubInputStream(
-				new ByteArrayInputStream(data), 10);
-		v = subin.read();
-		assertEquals(0, v);
-		v = subin.read();
-		assertEquals(1, v);
+        try (final SubInputStream subin = new SubInputStream(
+                new ByteArrayInputStream(data), 10)) {
+            v = subin.read();
+            assertEquals(0, v);
+            v = subin.read();
+            assertEquals(1, v);
 
-		buf = new byte[4];
-		c = subin.read(buf);
-		assertEquals(4, c);
-		s = new String(buf, "US-ASCII");
-		assertEquals("\u0002\u0003\u0004\u0005", s);
+            buf = new byte[4];
+            c = subin.read(buf);
+            assertEquals(4, c);
+            s = new String(buf, "US-ASCII");
+            assertEquals("\u0002\u0003\u0004\u0005", s);
 
-		Arrays.fill(buf, (byte) 0);
-		c = subin.read(buf, 2, 2);
-		assertEquals(2, c);
-		s = new String(buf, "US-ASCII");
-		assertEquals("\u0000\u0000\u0006\u0007", s);
+            Arrays.fill(buf, (byte) 0);
+            c = subin.read(buf, 2, 2);
+            assertEquals(2, c);
+            s = new String(buf, "US-ASCII");
+            assertEquals("\u0000\u0000\u0006\u0007", s);
 
-		Arrays.fill(buf, (byte) 0);
-		c = subin.read(buf);
-		assertEquals(2, c);
-		s = new String(buf, "US-ASCII");
-		assertEquals("\u0008\u0009\u0000\u0000", s);
-	}
+            Arrays.fill(buf, (byte) 0);
+            c = subin.read(buf);
+            assertEquals(2, c);
+            s = new String(buf, "US-ASCII");
+            assertEquals("\u0008\u0009\u0000\u0000", s);
+        }
+    }
 
 }
