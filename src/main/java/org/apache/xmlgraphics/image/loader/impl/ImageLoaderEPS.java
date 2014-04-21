@@ -54,8 +54,8 @@ public class ImageLoaderEPS extends AbstractImageLoader {
     /** {@inheritDoc} */
     @Override
     public Image loadImage(final ImageInfo info,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws ImageException, IOException {
         if (!MimeConstants.MIME_EPS.equals(info.getMimeType())) {
             throw new IllegalArgumentException(
                     "ImageInfo must be from a image with MIME type: "

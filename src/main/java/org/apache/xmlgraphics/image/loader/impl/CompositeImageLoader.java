@@ -42,7 +42,7 @@ public class CompositeImageLoader extends AbstractImageLoader {
 
     /**
      * Main constructor.
-     * 
+     *
      * @param loaders
      *            the contained image loaders
      */
@@ -81,8 +81,8 @@ public class CompositeImageLoader extends AbstractImageLoader {
     /** {@inheritDoc} */
     @Override
     public Image loadImage(final ImageInfo info,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws ImageException, IOException {
         ImageException firstException = null;
         for (final ImageLoader loader : this.loaders) {
             try {

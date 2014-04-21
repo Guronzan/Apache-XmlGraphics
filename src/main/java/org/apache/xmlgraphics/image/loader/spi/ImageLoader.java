@@ -48,7 +48,7 @@ public interface ImageLoader {
 
     /**
      * Loads and returns an image.
-     * 
+     *
      * @param info
      *            the image info object indicating the image
      * @param hints
@@ -62,13 +62,13 @@ public interface ImageLoader {
      * @throws IOException
      *             if an I/O error occurs while loading the image
      */
-    Image loadImage(final ImageInfo info, final Map<String, Object> hints,
+    Image loadImage(final ImageInfo info, final Map<Object, Object> hints,
             final ImageSessionContext session) throws ImageException,
             IOException;
 
     /**
      * Loads and returns an image.
-     * 
+     *
      * @param info
      *            the image info object indicating the image
      * @param session
@@ -85,7 +85,7 @@ public interface ImageLoader {
     /**
      * Returns the image flavor that is returned by this ImageLoader
      * implementation.
-     * 
+     *
      * @return the target image flavor
      */
     ImageFlavor getTargetFlavor();
@@ -93,7 +93,7 @@ public interface ImageLoader {
     /**
      * Returns the penalty assigned to using this image loader. The value is
      * used to select the best processing chain for images.
-     * 
+     *
      * @return the usage penalty (must be a non-negative integer)
      */
     int getUsagePenalty();

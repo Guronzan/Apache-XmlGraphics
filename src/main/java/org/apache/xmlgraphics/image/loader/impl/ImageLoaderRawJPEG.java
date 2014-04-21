@@ -48,7 +48,7 @@ import org.apache.xmlgraphics.util.MimeConstants;
  */
 @Slf4j
 public class ImageLoaderRawJPEG extends AbstractImageLoader implements
-        JPEGConstants {
+JPEGConstants {
 
     /**
      * Main constructor.
@@ -65,8 +65,8 @@ public class ImageLoaderRawJPEG extends AbstractImageLoader implements
     /** {@inheritDoc} */
     @Override
     public Image loadImage(final ImageInfo info,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws ImageException, IOException {
         if (!MimeConstants.MIME_JPEG.equals(info.getMimeType())) {
             throw new IllegalArgumentException(
                     "ImageInfo must be from a image with MIME type: "
@@ -246,7 +246,7 @@ public class ImageLoaderRawJPEG extends AbstractImageLoader implements
 
     private ICC_Profile buildICCProfile(final ImageInfo info,
             final ColorSpace colorSpace, final ByteArrayOutputStream iccStream)
-            throws IOException {
+                    throws IOException {
         if (iccStream != null && iccStream.size() > 0) {
             log.debug("Effective ICC profile size: {}", iccStream.size());
             final int alignment = 4;

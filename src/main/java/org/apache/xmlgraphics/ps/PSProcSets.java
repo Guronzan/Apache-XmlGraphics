@@ -21,6 +21,7 @@ package org.apache.xmlgraphics.ps;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -61,7 +62,7 @@ public final class PSProcSets {
         private static final Map<String, String> STANDARD_MACROS;
 
         static {
-            final Map<String, String> macros = new java.util.HashMap<String, String>();
+            final Map<String, String> macros = new HashMap<>();
             macros.put("moveto", "M");
             macros.put("rmoveto", "RM");
             macros.put("curveto", "C");
@@ -321,7 +322,7 @@ public final class PSProcSets {
     /**
      * Generates a resource defining standard procset with operations used by
      * the XML Graphics project.
-     * 
+     *
      * @param gen
      *            PSGenerator to use for output
      * @throws IOException
@@ -335,7 +336,7 @@ public final class PSProcSets {
     /**
      * Generates a resource defining standard procset with operations used by
      * the XML Graphics project.
-     * 
+     *
      * @param gen
      *            PSGenerator to use for output
      * @throws IOException
@@ -350,7 +351,7 @@ public final class PSProcSets {
 
     /**
      * Generates a resource defining a procset for including EPS graphics.
-     * 
+     *
      * @param gen
      *            PSGenerator to use for output
      * @throws IOException
@@ -363,7 +364,7 @@ public final class PSProcSets {
 
     /**
      * Generates a resource defining a procset for including EPS graphics.
-     * 
+     *
      * @param gen
      *            PSGenerator to use for output
      * @throws IOException

@@ -32,7 +32,7 @@ public class ImageConverterBuffered2Rendered extends AbstractImageConverter {
 
     /** {@inheritDoc} */
     @Override
-    public Image convert(final Image src, final Map<String, Object> hints) {
+    public Image convert(final Image src, final Map<Object, Object> hints) {
         checkSourceFlavor(src);
         final ImageBuffered buffered = (ImageBuffered) src;
         return new ImageRendered(buffered.getInfo(),

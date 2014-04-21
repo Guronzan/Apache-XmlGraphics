@@ -212,7 +212,7 @@ public abstract class AbstractRed implements CachableRed {
     protected void init(final CachableRed src, final Rectangle inBounds,
             ColorModel cm, SampleModel sm, final int tileGridXOff,
             final int tileGridYOff, final Map<String, Object> props) {
-        this.srcs = new Vector<RenderedImage>(1);
+        this.srcs = new Vector<>(1);
         final Rectangle bounds;
         if (src != null) {
             this.srcs.add(src);
@@ -361,7 +361,7 @@ public abstract class AbstractRed implements CachableRed {
     protected void init(final List<RenderedImage> srcs, Rectangle bounds,
             ColorModel cm, SampleModel sm, final int tileGridXOff,
             final int tileGridYOff, final Map<String, Object> props) {
-        this.srcs = new Vector<RenderedImage>();
+        this.srcs = new Vector<>();
         if (srcs != null) {
             this.srcs.addAll(srcs);
         }

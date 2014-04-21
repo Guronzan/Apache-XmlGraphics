@@ -55,7 +55,7 @@ public class ImageManager {
 
     /**
      * Main constructor.
-     * 
+     *
      * @param context
      *            the session-independent context information
      */
@@ -65,7 +65,7 @@ public class ImageManager {
 
     /**
      * Constructor for testing purposes.
-     * 
+     *
      * @param registry
      *            the implementation registry with all plug-ins
      * @param context
@@ -79,7 +79,7 @@ public class ImageManager {
 
     /**
      * Returns the ImageImplRegistry in use by the ImageManager.
-     * 
+     *
      * @return the ImageImplRegistry
      */
     public ImageImplRegistry getRegistry() {
@@ -88,7 +88,7 @@ public class ImageManager {
 
     /**
      * Returns the ImageContext in use by the ImageManager.
-     * 
+     *
      * @return the ImageContext
      */
     public ImageContext getImageContext() {
@@ -97,7 +97,7 @@ public class ImageManager {
 
     /**
      * Returns the ImageCache in use by the ImageManager.
-     * 
+     *
      * @return the ImageCache
      */
     public ImageCache getCache() {
@@ -106,7 +106,7 @@ public class ImageManager {
 
     /**
      * Returns the PipelineFactory in use by the ImageManager.
-     * 
+     *
      * @return the PipelineFactory
      */
     public PipelineFactory getPipelineFactory() {
@@ -117,7 +117,7 @@ public class ImageManager {
      * Returns an ImageInfo object containing its intrinsic size for a given
      * URI. The ImageInfo is retrieved from an image cache if it has been
      * requested before.
-     * 
+     *
      * @param uri
      *            the URI of the image
      * @param session
@@ -152,7 +152,7 @@ public class ImageManager {
      * image's intrinsic size during layout. Only when the document is rendered
      * to the final format does FOP need to load the full image. Like this a lot
      * of memory can be saved.
-     * 
+     *
      * @param uri
      *            the original URI of the image
      * @param session
@@ -185,7 +185,7 @@ public class ImageManager {
      * image's intrinsic size during layout. Only when the document is rendered
      * to the final format does FOP need to load the full image. Like this a lot
      * of memory can be saved.
-     * 
+     *
      * @param uri
      *            the original URI of the image
      * @param src
@@ -214,9 +214,9 @@ public class ImageManager {
                         + uri);
     }
 
-    private Map<String, Object> prepareHints(final Map<String, Object> hints,
+    private Map<Object, Object> prepareHints(final Map<Object, Object> hints,
             final ImageSessionContext sessionContext) {
-        final Map<String, Object> newHints = new HashMap<>();
+        final Map<Object, Object> newHints = new HashMap<>();
         if (hints != null) {
             newHints.putAll(hints); // Copy in case an unmodifiable map is
             // passed in
@@ -243,7 +243,7 @@ public class ImageManager {
      * used by ImageLoaders and ImageConverters to act on the image. See
      * {@link ImageProcessingHints} for common hints used by the bundled
      * implementations. You can, of course, define your own hints.
-     * 
+     *
      * @param info
      *            the ImageInfo instance for the image (obtained by
      *            {@link #getImageInfo(String, ImageSessionContext)})
@@ -262,9 +262,9 @@ public class ImageManager {
      *             If an I/O error occurs
      */
     public Image getImage(final ImageInfo info, final ImageFlavor flavor,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
-        final Map<String, Object> preparedHints = prepareHints(hints, session);
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws ImageException, IOException {
+        final Map<Object, Object> preparedHints = prepareHints(hints, session);
 
         Image img = null;
         final ImageProviderPipeline pipeline = getPipelineFactory()
@@ -292,7 +292,7 @@ public class ImageManager {
      * used by ImageLoaders and ImageConverters to act on the image. See
      * {@link ImageProcessingHints} for common hints used by the bundled
      * implementations. You can, of course, define your own hints.
-     * 
+     *
      * @param info
      *            the ImageInfo instance for the image (obtained by
      *            {@link #getImageInfo(String, ImageSessionContext)})
@@ -311,9 +311,9 @@ public class ImageManager {
      *             If an I/O error occurs
      */
     public Image getImage(final ImageInfo info, final ImageFlavor[] flavors,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
-        final Map<String, Object> preparedHints = prepareHints(hints, session);
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws ImageException, IOException {
+        final Map<Object, Object> preparedHints = prepareHints(hints, session);
 
         Image img = null;
         final ImageProviderPipeline[] candidates = getPipelineFactory()
@@ -336,7 +336,7 @@ public class ImageManager {
      * Loads an image with no hints. See
      * {@link #getImage(ImageInfo, ImageFlavor, Map, ImageSessionContext)} for
      * more information.
-     * 
+     *
      * @param info
      *            the ImageInfo instance for the image (obtained by
      *            {@link #getImageInfo(String, ImageSessionContext)})
@@ -363,7 +363,7 @@ public class ImageManager {
      * Loads an image with no hints. See
      * {@link #getImage(ImageInfo, ImageFlavor[], Map, ImageSessionContext)} for
      * more information.
-     * 
+     *
      * @param info
      *            the ImageInfo instance for the image (obtained by
      *            {@link #getImageInfo(String, ImageSessionContext)})
@@ -397,7 +397,7 @@ public class ImageManager {
      * used by ImageConverters to act on the image. See
      * {@link ImageProcessingHints} for common hints used by the bundled
      * implementations. You can, of course, define your own hints.
-     * 
+     *
      * @param image
      *            the image to convert
      * @param flavors
@@ -413,8 +413,8 @@ public class ImageManager {
      *             If an I/O error occurs
      */
     public Image convertImage(final Image image, final ImageFlavor[] flavors,
-            final Map<String, Object> hints) throws ImageException, IOException {
-        final Map<String, Object> preparedHints = prepareHints(hints, null);
+            final Map<Object, Object> hints) throws ImageException, IOException {
+        final Map<Object, Object> preparedHints = prepareHints(hints, null);
         final ImageInfo info = image.getInfo();
 
         Image img = null;
@@ -443,7 +443,7 @@ public class ImageManager {
     /**
      * Converts an image with no hints. See
      * {@link #convertImage(Image, ImageFlavor[], Map)} for more information.
-     * 
+     *
      * @param image
      *            the image to convert
      * @param flavors
@@ -463,7 +463,7 @@ public class ImageManager {
 
     /**
      * Chooses the best {@link ImageProviderPipeline} from a set of candidates.
-     * 
+     *
      * @param candidates
      *            the candidates
      * @return the best pipeline

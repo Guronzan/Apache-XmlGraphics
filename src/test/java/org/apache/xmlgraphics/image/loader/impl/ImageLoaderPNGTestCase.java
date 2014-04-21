@@ -26,7 +26,6 @@ import java.io.IOException;
 
 import org.apache.xmlgraphics.image.loader.Image;
 import org.apache.xmlgraphics.image.loader.ImageContext;
-import org.apache.xmlgraphics.image.loader.ImageException;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.ImageInfo;
 import org.apache.xmlgraphics.image.loader.ImageSessionContext;
@@ -46,7 +45,7 @@ public class ImageLoaderPNGTestCase {
 
     @Test
     public void testLoadImageImageInfoMapImageSessionContext()
-            throws ImageException, IOException {
+            throws IOException {
         final ImageContext context = MockImageContext.newSafeInstance();
         final ImageSessionContext session = new MockImageSessionContext(context);
         final ImageInfo info = new ImageInfo("basn2c08.png",

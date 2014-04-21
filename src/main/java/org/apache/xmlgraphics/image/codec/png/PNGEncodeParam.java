@@ -1362,7 +1362,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
      * images.
      */
     public synchronized void removeUnsafeToCopyPrivateChunks() {
-        final List<String> newChunkType = new ArrayList<String>();
+        final List<String> newChunkType = new ArrayList<>();
         final List<byte[]> newChunkData = new ArrayList<>();
 
         final int len = getNumPrivateChunks();
@@ -1549,13 +1549,13 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
                             diff = curr - upleft;
                         }
                     } else
-                    // pc is negative and less than or equal to pa,
-                    // but since pa is greater than pb this isn't an issue...
-                    if (pb <= -pc) {
-                        diff = curr - up;
-                    } else {
-                        diff = curr - upleft;
-                    }
+                        // pc is negative and less than or equal to pa,
+                        // but since pa is greater than pb this isn't an issue...
+                        if (pb <= -pc) {
+                            diff = curr - up;
+                        } else {
+                            diff = curr - upleft;
+                        }
                 }
             } else {
                 if (pb < 0) {

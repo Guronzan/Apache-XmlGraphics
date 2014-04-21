@@ -104,7 +104,7 @@ public class MockImageLoaderFactoryTIFF extends AbstractImageLoaderFactory {
 
         @Override
         public Image loadImage(final ImageInfo info,
-                final Map<String, Object> hints,
+                final Map<Object, Object> hints,
                 final ImageSessionContext session) throws ImageException,
                 IOException {
             throw new UnsupportedOperationException("not implemented");

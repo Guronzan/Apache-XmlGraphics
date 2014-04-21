@@ -39,7 +39,7 @@ public class ImageConverterRendered2PNG extends AbstractImageConverter {
 
     /** {@inheritDoc} */
     @Override
-    public Image convert(final Image src, final Map<String, Object> hints)
+    public Image convert(final Image src, final Map<Object, Object> hints)
             throws ImageException, IOException {
         checkSourceFlavor(src);
         final ImageRendered rendered = (ImageRendered) src;

@@ -48,7 +48,7 @@ public class ImageConverterG2D2Bitmap extends AbstractImageConverter {
 
     /** {@inheritDoc} */
     @Override
-    public Image convert(final Image src, final Map<String, Object> hints) {
+    public Image convert(final Image src, final Map<Object, Object> hints) {
         checkSourceFlavor(src);
         final ImageGraphics2D g2dImage = (ImageGraphics2D) src;
 
@@ -87,7 +87,7 @@ public class ImageConverterG2D2Bitmap extends AbstractImageConverter {
 
     /**
      * Paints a Graphics2D image on a BufferedImage and returns this bitmap.
-     * 
+     *
      * @param g2dImage
      *            the Graphics2D image
      * @param bitsPerPixel
@@ -191,7 +191,7 @@ public class ImageConverterG2D2Bitmap extends AbstractImageConverter {
      * Sets rendering hints on the Graphics2D created for painting to a
      * BufferedImage. Subclasses can modify the settings to customize the
      * behaviour.
-     * 
+     *
      * @param g2d
      *            the Graphics2D instance
      */

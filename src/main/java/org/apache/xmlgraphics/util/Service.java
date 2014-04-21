@@ -56,8 +56,8 @@ public final class Service {
     }
 
     // Remember providers we have looked up before.
-    static Map<String, List<String>> classMap = new HashMap<String, List<String>>();
-    static Map<String, List<Object>> instanceMap = new HashMap<String, List<Object>>();
+    static Map<String, List<String>> classMap = new HashMap<>();
+    static Map<String, List<Object>> instanceMap = new HashMap<>();
 
     /**
      * Returns an iterator where each element should implement the interface (or
@@ -82,7 +82,7 @@ public final class Service {
             return l.iterator();
         }
 
-        l = new ArrayList<T>();
+        l = new ArrayList<>();
         instanceMap.put(serviceFile, (List<Object>) l);
 
         final ClassLoader cl = getClassLoader(cls);

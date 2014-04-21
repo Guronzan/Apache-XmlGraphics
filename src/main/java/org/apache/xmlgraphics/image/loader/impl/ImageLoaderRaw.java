@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.xml.transform.Source;
 
 import org.apache.xmlgraphics.image.loader.Image;
-import org.apache.xmlgraphics.image.loader.ImageException;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.ImageInfo;
 import org.apache.xmlgraphics.image.loader.ImageSessionContext;
@@ -42,7 +41,7 @@ public class ImageLoaderRaw extends AbstractImageLoader {
 
     /**
      * Main constructor.
-     * 
+     *
      * @param targetFlavor
      *            the target flavor
      */
@@ -60,8 +59,8 @@ public class ImageLoaderRaw extends AbstractImageLoader {
     /** {@inheritDoc} */
     @Override
     public Image loadImage(final ImageInfo info,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
+            final Map<Object, Object> hints, final ImageSessionContext session)
+            throws IOException {
         if (!this.mime.equals(info.getMimeType())) {
             throw new IllegalArgumentException(
                     "ImageInfo must be from a image with MIME type: "

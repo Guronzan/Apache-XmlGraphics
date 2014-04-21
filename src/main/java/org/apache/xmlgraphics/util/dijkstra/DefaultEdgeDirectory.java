@@ -35,14 +35,14 @@ public class DefaultEdgeDirectory implements EdgeDirectory {
 
     /**
      * Adds a new edge between two vertices.
-     * 
+     *
      * @param edge
      *            the new edge
      */
     public void addEdge(final Edge edge) {
         Map<Vertex, Edge> directEdges = this.edges.get(edge.getStart());
         if (directEdges == null) {
-            directEdges = new HashMap<Vertex, Edge>();
+            directEdges = new HashMap<>();
             this.edges.put(edge.getStart(), directEdges);
         }
         directEdges.put(edge.getEnd(), edge);
@@ -79,7 +79,7 @@ public class DefaultEdgeDirectory implements EdgeDirectory {
 
     /**
      * Returns an iterator over all edges with the given origin.
-     * 
+     *
      * @param origin
      *            the origin
      * @return an iterator over Edge instances
@@ -96,7 +96,7 @@ public class DefaultEdgeDirectory implements EdgeDirectory {
     /**
      * Returns the best edge (the edge with the lowest penalty) between two
      * given vertices.
-     * 
+     *
      * @param start
      *            the start vertex
      * @param end

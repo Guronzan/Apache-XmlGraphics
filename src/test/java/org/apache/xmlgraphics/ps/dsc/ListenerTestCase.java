@@ -42,7 +42,7 @@ public class ListenerTestCase extends TestCase {
 
     /**
      * Tests {@link DSCParser#setFilter(DSCFilter)}.
-     * 
+     *
      * @throws DSCException
      * @throws IOException
      * @if an error occurs
@@ -75,7 +75,7 @@ public class ListenerTestCase extends TestCase {
 
     /**
      * Tests listeners on DSCParser.
-     * 
+     *
      * @throws DSCException
      * @throws IOException
      * @if an error occurs
@@ -117,8 +117,7 @@ public class ListenerTestCase extends TestCase {
             parser.addListener(new DSCListener() {
                 @Override
                 public void processEvent(final DSCEvent event,
-                        final DSCParser parser) throws IOException,
-                        DSCException {
+                        final DSCParser parser) {
                     if (event instanceof DSCCommentLanguageLevel) {
                         final DSCCommentLanguageLevel level = (DSCCommentLanguageLevel) event;
                         results.put("level", level.getLanguageLevel());

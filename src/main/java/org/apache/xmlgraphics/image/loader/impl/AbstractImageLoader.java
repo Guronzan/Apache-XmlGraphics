@@ -50,13 +50,13 @@ public abstract class AbstractImageLoader implements ImageLoader {
 
     /**
      * Indicates whether an embedded color profile should be ignored.
-     * 
+     *
      * @param hints
      *            a Map of hints that can be used by implementations to
      *            customize the loading process (may be null).
      * @return true if any color profile should be ignored
      */
-    protected boolean ignoreColorProfile(final Map<String, Object> hints) {
+    protected boolean ignoreColorProfile(final Map<Object, Object> hints) {
         if (hints == null) {
             return false;
         }

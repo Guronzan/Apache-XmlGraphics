@@ -57,7 +57,7 @@ public final class ImageUtil {
 
     /**
      * Returns the InputStream of a Source object.
-     * 
+     *
      * @param src
      *            the Source object
      * @return the InputStream (or null if there's not InputStream available)
@@ -79,7 +79,7 @@ public final class ImageUtil {
 
     /**
      * Returns the ImageInputStream of a Source object.
-     * 
+     *
      * @param src
      *            the Source object
      * @return the ImageInputStream (or null if there's not ImageInputStream
@@ -97,7 +97,7 @@ public final class ImageUtil {
      * Returns the InputStream of a Source object. This method throws an
      * IllegalArgumentException if there's no InputStream instance available
      * from the Source object.
-     * 
+     *
      * @param src
      *            the Source object
      * @return the InputStream
@@ -117,7 +117,7 @@ public final class ImageUtil {
      * Returns the ImageInputStream of a Source object. This method throws an
      * IllegalArgumentException if there's no ImageInputStream instance
      * available from the Source object.
-     * 
+     *
      * @param src
      *            the Source object
      * @return the ImageInputStream
@@ -137,7 +137,7 @@ public final class ImageUtil {
 
     /**
      * Indicates whether the Source object has an InputStream instance.
-     * 
+     *
      * @param src
      *            the Source object
      * @return true if an InputStream is available
@@ -161,7 +161,7 @@ public final class ImageUtil {
 
     /**
      * Indicates whether the Source object has a Reader instance.
-     * 
+     *
      * @param src
      *            the Source object
      * @return true if an Reader is available
@@ -183,7 +183,7 @@ public final class ImageUtil {
 
     /**
      * Indicates whether the Source object has an ImageInputStream instance.
-     * 
+     *
      * @param src
      *            the Source object
      * @return true if an ImageInputStream is available
@@ -205,7 +205,7 @@ public final class ImageUtil {
     /**
      * Removes any references to InputStreams or Readers from the given Source
      * to prohibit accidental/unwanted use by a component further downstream.
-     * 
+     *
      * @param src
      *            the Source object
      */
@@ -229,7 +229,7 @@ public final class ImageUtil {
     /**
      * Closes the InputStreams or ImageInputStreams of Source objects. Any
      * exception occurring while closing the stream is ignored.
-     * 
+     *
      * @param src
      *            the Source object
      */
@@ -266,7 +266,7 @@ public final class ImageUtil {
     /**
      * Decorates an ImageInputStream so the flush*() methods are ignored and
      * have no effect. The decoration is implemented using a dynamic proxy.
-     * 
+     *
      * @param in
      *            the ImageInputStream
      * @return the decorated ImageInputStream
@@ -304,7 +304,7 @@ public final class ImageUtil {
     /**
      * Indicates whether an InputStream is GZIP compressed. The InputStream must
      * support mark()/reset().
-     * 
+     *
      * @param in
      *            the InputStream (must return true on markSupported())
      * @return true if the InputStream is GZIP compressed
@@ -327,7 +327,7 @@ public final class ImageUtil {
     /**
      * Decorates an InputStream with a BufferedInputStream if it doesn't support
      * mark()/reset().
-     * 
+     *
      * @param in
      *            the InputStream
      * @return the decorated InputStream
@@ -344,7 +344,7 @@ public final class ImageUtil {
      * Automatically decorates an InputStream so it is buffered. Furthermore, it
      * makes sure it is decorated with a GZIPInputStream if the stream is GZIP
      * compressed.
-     * 
+     *
      * @param in
      *            the InputStream
      * @return the decorated InputStream
@@ -362,14 +362,14 @@ public final class ImageUtil {
 
     /**
      * Creates a new hint Map with values from the FOUserAgent.
-     * 
+     *
      * @param session
      *            the session context
      * @return a Map of hints
      */
-    public static Map<String, Object> getDefaultHints(
+    public static Map<Object, Object> getDefaultHints(
             final ImageSessionContext session) {
-        final Map<String, Object> hints = new HashMap<>();
+        final Map<Object, Object> hints = new HashMap<>();
         hints.put(ImageProcessingHints.SOURCE_RESOLUTION, new Float(session
                 .getParentContext().getSourceResolution()));
         hints.put(ImageProcessingHints.TARGET_RESOLUTION,
@@ -390,7 +390,7 @@ public final class ImageUtil {
      * <p>
      * If no page index information is found in the URI or if the URI cannot be
      * parsed, the method returns null.
-     * 
+     *
      * @param uri
      *            the URI that should be inspected
      * @return the page index (0 is the first page) or null if there's no page
@@ -442,7 +442,7 @@ public final class ImageUtil {
      * <p>
      * If no page index information is found in the URI, the method just returns
      * 0 which indicates the first page.
-     * 
+     *
      * @param uri
      *            the URI that should be inspected
      * @return the page index (0 is the first page)

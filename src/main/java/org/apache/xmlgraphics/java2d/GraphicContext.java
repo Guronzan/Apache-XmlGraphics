@@ -77,13 +77,13 @@ public class GraphicContext implements Cloneable {
     /**
      * Transform stack
      */
-    protected List<Object> transformStack = new ArrayList<>();
+    protected List<TransformStackElement> transformStack = new ArrayList<>();
 
     /**
      * Defines whether the transform stack is valid or not. This is for use by
      * the class clients. The client should validate the stack every time it
      * starts using it. The stack becomes invalid when a new transform is set.
-     * 
+     *
      * @see #invalidateTransformStack()
      * @see #isTransformStackValid
      * @see #setTransform
@@ -156,7 +156,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Copy constructor.
-     * 
+     *
      * @param template
      *            the instance to make a copy of
      */
@@ -173,12 +173,10 @@ public class GraphicContext implements Cloneable {
         this.transform = new AffineTransform(template.transform);
 
         // Transform stack
-        this.transformStack = new ArrayList<Object>(
-                template.transformStack.size());
-        for (int i = 0; i < template.transformStack.size(); ++i) {
-            final TransformStackElement stackElement = (TransformStackElement) template.transformStack
-                    .get(i);
-            this.transformStack.add(stackElement.clone());
+        this.transformStack = new ArrayList<>(template.transformStack.size());
+        for (final TransformStackElement stackElement : template.transformStack) {
+            this.transformStack.add((TransformStackElement) stackElement
+                    .clone());
         }
 
         // Transform stack validity
@@ -221,7 +219,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Gets this graphics context's current color.
-     * 
+     *
      * @return this graphics context's current color.
      * @see java.awt.Color
      * @see java.awt.Graphics#setColor
@@ -234,7 +232,7 @@ public class GraphicContext implements Cloneable {
      * Sets this graphics context's current color to the specified color. All
      * subsequent graphics operations using this graphics context use this
      * specified color.
-     * 
+     *
      * @param c
      *            the new rendering color.
      * @see java.awt.Color
@@ -252,7 +250,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Gets the current font.
-     * 
+     *
      * @return this graphics context's current font.
      * @see java.awt.Font
      * @see java.awt.Graphics#setFont
@@ -264,7 +262,7 @@ public class GraphicContext implements Cloneable {
     /**
      * Sets this graphics context's font to the specified font. All subsequent
      * text operations using this graphics context use this font.
-     * 
+     *
      * @param font
      *            the font.
      * @see java.awt.Graphics#getFont
@@ -282,7 +280,7 @@ public class GraphicContext implements Cloneable {
      * set, or if the clip has been cleared using <code>setClip(null)</code>,
      * this method returns <code>null</code>. The coordinates in the rectangle
      * are relative to the coordinate system origin of this graphics context.
-     * 
+     *
      * @return the bounding rectangle of the current clipping area, or
      *         <code>null</code> if no clip is set.
      * @see java.awt.Graphics#getClip
@@ -311,7 +309,7 @@ public class GraphicContext implements Cloneable {
      * be used to make the current clip smaller. To set the current clip larger,
      * use any of the setClip methods. Rendering operations have no effect
      * outside of the clipping area.
-     * 
+     *
      * @param x
      *            the x coordinate of the rectangle to intersect the clip with
      * @param y
@@ -333,7 +331,7 @@ public class GraphicContext implements Cloneable {
      * coordinates. This method sets the user clip, which is independent of the
      * clipping associated with device bounds and window visibility. Rendering
      * operations have no effect outside of the clipping area.
-     * 
+     *
      * @param x
      *            the <i>x</i> coordinate of the new clip rectangle.
      * @param y
@@ -357,7 +355,7 @@ public class GraphicContext implements Cloneable {
      * visibility. If no clip has previously been set, or if the clip has been
      * cleared using <code>setClip(null)</code>, this method returns
      * <code>null</code>.
-     * 
+     *
      * @return a <code>Shape</code> object representing the current clipping
      *         area, or <code>null</code> if no clip is set.
      * @see java.awt.Graphics#getClipBounds()
@@ -384,7 +382,7 @@ public class GraphicContext implements Cloneable {
      * <code>getClip</code> method and via <code>Rectangle</code> objects. This
      * method sets the user clip, which is independent of the clipping
      * associated with device bounds and window visibility.
-     * 
+     *
      * @param clip
      *            the <code>Shape</code> to use to set the clip
      * @see java.awt.Graphics#getClip()
@@ -434,7 +432,7 @@ public class GraphicContext implements Cloneable {
      * context. Calling this method with a <code>null</code> <code>Paint</code>
      * object does not have any effect on the current <code>Paint</code>
      * attribute of this <code>Graphics2D</code>.
-     * 
+     *
      * @param paint
      *            the <code>Paint</code> object to be used to generate color
      *            during the rendering process, or <code>null</code>
@@ -455,7 +453,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Sets the <code>Stroke</code> for the <code>Graphics2D</code> context.
-     * 
+     *
      * @param s
      *            the <code>Stroke</code> object to be used to stroke a
      *            <code>Shape</code> during the rendering process
@@ -471,7 +469,7 @@ public class GraphicContext implements Cloneable {
      * time/quality trade-off in the rendering process. Refer to the
      * <code>RenderingHints</code> class for definitions of some common keys and
      * values.
-     * 
+     *
      * @param hintKey
      *            the key of the hint to be set.
      * @param hintValue
@@ -490,7 +488,7 @@ public class GraphicContext implements Cloneable {
      * time/quality trade-off in the rendering process. Refer to the
      * <code>RenderingHints</code> class for definitions of some common keys and
      * values.
-     * 
+     *
      * @param hintKey
      *            the key corresponding to the hint to get.
      * @return an object representing the value for the specified hint key. Some
@@ -510,7 +508,7 @@ public class GraphicContext implements Cloneable {
      * include controls for rendering quality and overall time/quality trade-off
      * in the rendering process. Refer to the <code>RenderingHints</code> class
      * for definitions of some common keys and values.
-     * 
+     *
      * @param hints
      *            the rendering hints to be set
      * @see RenderingHints
@@ -527,7 +525,7 @@ public class GraphicContext implements Cloneable {
      * include controls for rendering quality and overall time/quality trade-off
      * in the rendering process. Refer to the <code>RenderingHints</code> class
      * for definitions of some common keys and values.
-     * 
+     *
      * @param hints
      *            the rendering hints to be set
      * @see RenderingHints
@@ -543,7 +541,7 @@ public class GraphicContext implements Cloneable {
      * were ever specified in one operation. Refer to the
      * <code>RenderingHints</code> class for definitions of some common keys and
      * values.
-     * 
+     *
      * @return a reference to an instance of <code>RenderingHints</code> that
      *         contains the current preferences.
      * @see RenderingHints
@@ -559,7 +557,7 @@ public class GraphicContext implements Cloneable {
      * (<i>x</i>,&nbsp;<i>y</i>) in this graphics context's original coordinate
      * system. All coordinates used in subsequent rendering operations on this
      * graphics context will be relative to this new origin.
-     * 
+     *
      * @param x
      *            the <i>x</i> coordinate.
      * @param y
@@ -579,13 +577,13 @@ public class GraphicContext implements Cloneable {
      * specified distance relative to the previous position. This is equivalent
      * to calling transform(T), where T is an <code>AffineTransform</code>
      * represented by the following matrix:
-     * 
+     *
      * <pre>
      *          [   1    0    tx  ]
      *          [   0    1    ty  ]
      *          [   0    0    1   ]
      * </pre>
-     * 
+     *
      * @param tx
      *            the distance to translate along the x-axis
      * @param ty
@@ -603,16 +601,16 @@ public class GraphicContext implements Cloneable {
      * specified radians relative to the previous origin. This is equivalent to
      * calling <code>transform(R)</code>, where R is an
      * <code>AffineTransform</code> represented by the following matrix:
-     * 
+     *
      * <pre>
      *          [   cos(theta)    -sin(theta)    0   ]
      *          [   sin(theta)     cos(theta)    0   ]
      *          [       0              0         1   ]
      * </pre>
-     * 
+     *
      * Rotating with a positive angle theta rotates points on the positive x
      * axis toward the positive y axis.
-     * 
+     *
      * @param theta
      *            the angle of rotation in radians
      */
@@ -629,16 +627,16 @@ public class GraphicContext implements Cloneable {
      * location, rotating by the specified radians, and translating back by the
      * same amount as the original translation. This is equivalent to the
      * following sequence of calls:
-     * 
+     *
      * <pre>
      * translate(x, y);
      * rotate(theta);
      * translate(-x, -y);
      * </pre>
-     * 
+     *
      * Rotating with a positive angle theta rotates points on the positive x
      * axis toward the positive y axis.
-     * 
+     *
      * @param theta
      *            the angle of rotation in radians
      * @param x
@@ -662,13 +660,13 @@ public class GraphicContext implements Cloneable {
      * to the specified scaling factors relative to the previous scaling. This
      * is equivalent to calling <code>transform(S)</code>, where S is an
      * <code>AffineTransform</code> represented by the following matrix:
-     * 
+     *
      * <pre>
      *          [   sx   0    0   ]
      *          [   0    sy   0   ]
      *          [   0    0    1   ]
      * </pre>
-     * 
+     *
      * @param sx
      *            the amount by which X coordinates in subsequent rendering
      *            operations are multiplied relative to previous rendering
@@ -690,13 +688,13 @@ public class GraphicContext implements Cloneable {
      * specified multiplier relative to the previous position. This is
      * equivalent to calling <code>transform(SH)</code>, where SH is an
      * <code>AffineTransform</code> represented by the following matrix:
-     * 
+     *
      * <pre>
      *          [   1   shx   0   ]
      *          [  shy   1    0   ]
      *          [   0    0    1   ]
      * </pre>
-     * 
+     *
      * @param shx
      *            the multiplier by which coordinates are shifted in the
      *            positive X axis direction as a function of their Y coordinate
@@ -721,7 +719,7 @@ public class GraphicContext implements Cloneable {
      * and then transforming the result by the original <code>Transform</code>
      * Cx. In other words, Cx'(p) = Cx(Tx(p)). A copy of the Tx is made, if
      * necessary, so further modifications to Tx do not affect rendering.
-     * 
+     *
      * @param Tx
      *            the <code>AffineTransform</code> object to be composed with
      *            the current <code>Transform</code>
@@ -736,7 +734,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Sets the <code>Transform</code> in the <code>Graphics2D</code> context.
-     * 
+     *
      * @param Tx
      *            the <code>AffineTransform</code> object to be used in the
      *            rendering process
@@ -763,7 +761,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Checks the status of the transform stack.
-     * 
+     *
      * @return true if the transform stack is valid
      */
     public boolean isTransformStackValid() {
@@ -794,7 +792,7 @@ public class GraphicContext implements Cloneable {
     /**
      * Returns a copy of the current <code>Transform</code> in the
      * <code>Graphics2D</code> context.
-     * 
+     *
      * @return the current <code>AffineTransform</code> in the
      *         <code>Graphics2D</code> context.
      * @see #transform
@@ -807,7 +805,7 @@ public class GraphicContext implements Cloneable {
     /**
      * Returns the current <code>Paint</code> of the <code>Graphics2D</code>
      * context.
-     * 
+     *
      * @return the current <code>Graphics2D</code> <code>Paint</code>, which
      *         defines a color or pattern.
      * @see #setPaint
@@ -820,7 +818,7 @@ public class GraphicContext implements Cloneable {
     /**
      * Returns the current <code>Composite</code> in the <code>Graphics2D</code>
      * context.
-     * 
+     *
      * @return the current <code>Graphics2D</code> <code>Composite</code>, which
      *         defines a compositing style.
      * @see #setComposite
@@ -839,7 +837,7 @@ public class GraphicContext implements Cloneable {
      * of the <code>Component</code>. To change the background of the
      * <code>Component</code>, use appropriate methods of the
      * <code>Component</code>.
-     * 
+     *
      * @param color
      *            the background color that isused in subsequent calls to
      *            <code>clearRect</code>
@@ -856,7 +854,7 @@ public class GraphicContext implements Cloneable {
 
     /**
      * Returns the background color used for clearing a region.
-     * 
+     *
      * @return the current <code>Graphics2D</code> <code>Color</code>, which
      *         defines the background color.
      * @see #setBackground
@@ -868,7 +866,7 @@ public class GraphicContext implements Cloneable {
     /**
      * Returns the current <code>Stroke</code> in the <code>Graphics2D</code>
      * context.
-     * 
+     *
      * @return the current <code>Graphics2D</code> <code>Stroke</code>, which
      *         defines the line style.
      * @see #setStroke
@@ -890,7 +888,7 @@ public class GraphicContext implements Cloneable {
      * the clip has been cleared using {@link java.awt.Graphics#setClip(Shape)
      * setClip} with a <code>null</code> argument, the specified
      * <code>Shape</code> becomes the new user clip.
-     * 
+     *
      * @param s
      *            the <code>Shape</code> to be intersected with the current
      *            <code>Clip</code>. If <code>s</code> is <code>null</code>,

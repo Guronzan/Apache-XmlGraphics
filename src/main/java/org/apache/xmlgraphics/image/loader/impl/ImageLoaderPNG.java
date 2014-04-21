@@ -31,7 +31,6 @@ import org.apache.xmlgraphics.image.codec.png.PNGImageDecoder;
 import org.apache.xmlgraphics.image.codec.util.ImageInputStreamSeekableStreamAdapter;
 import org.apache.xmlgraphics.image.codec.util.SeekableStream;
 import org.apache.xmlgraphics.image.loader.Image;
-import org.apache.xmlgraphics.image.loader.ImageException;
 import org.apache.xmlgraphics.image.loader.ImageFlavor;
 import org.apache.xmlgraphics.image.loader.ImageInfo;
 import org.apache.xmlgraphics.image.loader.ImageSessionContext;
@@ -46,8 +45,8 @@ public class ImageLoaderPNG extends AbstractImageLoader {
     /** {@inheritDoc} */
     @Override
     public Image loadImage(final ImageInfo info,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws IOException {
 
         final Source src = session.needSource(info.getOriginalURI());
         try (ImageInputStream imgStream = ImageUtil.needImageInputStream(src)) {

@@ -49,7 +49,7 @@ public interface ImageConverter {
      * <p>
      * Consumers can get the effective MIME type (if any) from the associated
      * {@link ImageFlavor}.
-     * 
+     *
      * @param src
      *            the source image
      * @param hints
@@ -60,19 +60,19 @@ public interface ImageConverter {
      * @throws IOException
      *             if an I/O error occurs while converting the image
      */
-    Image convert(final Image src, final Map<String, Object> hints)
+    Image convert(final Image src, final Map<Object, Object> hints)
             throws ImageException, IOException;
 
     /**
      * Returns the flavor that this converter converts images into.
-     * 
+     *
      * @return the target flavor
      */
     ImageFlavor getTargetFlavor();
 
     /**
      * Returns the flavor that this converter expects.
-     * 
+     *
      * @return the source flavor
      */
     ImageFlavor getSourceFlavor();
@@ -80,7 +80,7 @@ public interface ImageConverter {
     /**
      * Returns the conversion penalty for the conversion that this
      * implementation supports.
-     * 
+     *
      * @return the conversion penalty (must be a non-negative integer)
      */
     int getConversionPenalty();

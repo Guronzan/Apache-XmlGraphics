@@ -84,7 +84,7 @@ public class ImageLoaderImageIO extends AbstractImageLoader {
 
     /**
      * Main constructor.
-     * 
+     *
      * @param targetFlavor
      *            the target flavor
      */
@@ -106,8 +106,8 @@ public class ImageLoaderImageIO extends AbstractImageLoader {
     /** {@inheritDoc} */
     @Override
     public Image loadImage(final ImageInfo info,
-            final Map<String, Object> hints, final ImageSessionContext session)
-            throws ImageException, IOException {
+            final Map<Object, Object> hints, final ImageSessionContext session)
+                    throws ImageException, IOException {
         RenderedImage imageData = null;
         IIOException firstException = null;
 
@@ -260,8 +260,8 @@ public class ImageLoaderImageIO extends AbstractImageLoader {
                                     value);
                             transparentColor = new Color(Integer.parseInt(st
                                     .nextToken()), Integer.parseInt(st
-                                    .nextToken()), Integer.parseInt(st
-                                    .nextToken()));
+                                            .nextToken()), Integer.parseInt(st
+                                                    .nextToken()));
                         }
                     }
                 }
@@ -417,8 +417,8 @@ public class ImageLoaderImageIO extends AbstractImageLoader {
     static {
         // TODO: This list could be kept in a resource file.
         providersIgnoringICC
-                .add("Standard PNG image reader/Sun Microsystems, Inc./1.0");
+        .add("Standard PNG image reader/Sun Microsystems, Inc./1.0");
         providersIgnoringICC
-                .add("Standard JPEG Image Reader/Sun Microsystems, Inc./0.5");
+        .add("Standard JPEG Image Reader/Sun Microsystems, Inc./0.5");
     }
 }

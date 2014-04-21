@@ -37,7 +37,7 @@ public class ImageConverterBitmap2G2D extends AbstractImageConverter {
 
     /** {@inheritDoc} */
     @Override
-    public Image convert(final Image src, final Map<String, Object> hints) {
+    public Image convert(final Image src, final Map<Object, Object> hints) {
         checkSourceFlavor(src);
         final ImageRendered rendImage = (ImageRendered) src;
 
