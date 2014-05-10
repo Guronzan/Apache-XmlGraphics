@@ -387,7 +387,7 @@ public class ImageImplRegistry {
 
     /** Comparator for {@link ImageLoaderFactory} classes. */
     private class ImageLoaderFactoryComparator implements
-    Comparator<ImageLoaderFactory> {
+            Comparator<ImageLoaderFactory> {
 
         private final ImageFlavor targetFlavor;
 

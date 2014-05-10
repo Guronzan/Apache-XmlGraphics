@@ -122,7 +122,7 @@ public final class Service {
             return l.iterator();
         }
 
-        l = new java.util.ArrayList<>();
+        l = new ArrayList<>();
         classMap.put(serviceFile, l);
         l.addAll(getProviderNames(cls));
         return l.iterator();
@@ -148,7 +148,7 @@ public final class Service {
 
     private static List<String> getProviderNames(final Class<?> cls,
             final ClassLoader cl) {
-        final List<String> l = new java.util.ArrayList<>();
+        final List<String> l = new ArrayList<>();
 
         // No class loader so we can't find 'serviceFile'.
         if (cl == null) {

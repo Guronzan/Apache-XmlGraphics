@@ -156,7 +156,7 @@ public class Base64Test extends TestCase {
                     buf1.flip();
                     buf2.flip();
 
-                    for (int i = 0; i < Math.min(n1, n2); i++) {
+                    for (int i = 0; i < Math.min(n1, n2); ++i) {
                         if (buf1.get() != buf2.get()) {
                             return false;
                         }
