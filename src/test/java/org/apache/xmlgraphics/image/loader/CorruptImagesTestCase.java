@@ -20,6 +20,7 @@
 package org.apache.xmlgraphics.image.loader;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import junit.framework.TestCase;
 
@@ -38,8 +39,9 @@ public class CorruptImagesTestCase extends TestCase {
     }
 
     @Test
-    public void testCorruptPNG() throws IOException {
-        final String uri = "corrupt-image.png";
+    public void testCorruptPNG() throws IOException, URISyntaxException {
+        final String uri = getClass().getResource("/images/corrupt-image.png")
+                .toURI().getPath();
 
         final ImageSessionContext sessionContext = this.imageContext
                 .newSessionContext();

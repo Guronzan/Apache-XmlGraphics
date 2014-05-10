@@ -94,11 +94,11 @@ public class Any2LsRGBRed extends AbstractRed {
     static {
         final double scale = 1.0 / 255;
 
-        // System.out.print("S2L: ");
+        // log.info("S2L: ");
         for (int i = 0; i < 256; ++i) {
             final double value = sRGBToLsRGB(i * scale);
             sRGBToLsRGBLut[i] = (int) Math.round(value * 255.0);
-            // System.out.print(sRGBToLsRGBLut[i] + ",");
+            // log.info(sRGBToLsRGBLut[i] + ",");
         }
         // log.info("");
     }

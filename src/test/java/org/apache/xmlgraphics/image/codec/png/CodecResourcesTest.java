@@ -19,8 +19,6 @@
 
 package org.apache.xmlgraphics.image.codec.png;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
@@ -38,14 +36,16 @@ import org.junit.Test;
 public class CodecResourcesTest extends TestCase {
 
     @Test
-    public void testResources() throws IOException {
+    public void testResources() {
 
-        final InputStream in = new FileInputStream("test/images/barcode.eps");
+        final InputStream in = getClass().getResourceAsStream(
+                "/images/barcode.eps");
         final SeekableStream seekStream = new MemoryCacheSeekableStream(in);
         try {
             new PNGImage(seekStream, null);
             fail("Exception expected");
-        } catch (final RuntimeException re) {
+        } catch (final Exception re) {
+            log.info("FullException :", re);
             final String msg = re.getMessage();
             if ("PNGImageDecoder0".equals(msg)) {
                 log.error("Exception", re);

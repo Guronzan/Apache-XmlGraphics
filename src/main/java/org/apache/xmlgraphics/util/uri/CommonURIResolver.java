@@ -42,8 +42,7 @@ import org.apache.xmlgraphics.util.Service;
 @Slf4j
 public class CommonURIResolver implements URIResolver {
 
-    @SuppressWarnings("unused")
-    private final List<URIResolver> uriResolvers = new LinkedList<URIResolver>();
+    private final List<URIResolver> uriResolvers = new LinkedList<>();
 
     private static final class DefaultInstanceHolder {
         private static final CommonURIResolver INSTANCE = new CommonURIResolver();

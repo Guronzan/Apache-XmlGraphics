@@ -35,7 +35,7 @@ public abstract class FormGenerator {
 
     /**
      * Main constructor.
-     * 
+     *
      * @param formName
      *            the form's name
      * @param title
@@ -52,7 +52,7 @@ public abstract class FormGenerator {
 
     /**
      * Returns the form's name.
-     * 
+     *
      * @return the form's name
      */
     public String getFormName() {
@@ -61,7 +61,7 @@ public abstract class FormGenerator {
 
     /**
      * Returns the form's title.
-     * 
+     *
      * @return the form's title or null if there's no title
      */
     public String getTitle() {
@@ -70,7 +70,7 @@ public abstract class FormGenerator {
 
     /**
      * returns the form's dimensions.
-     * 
+     *
      * @return the form's dimensions
      */
     public Dimension2D getDimensions() {
@@ -79,7 +79,7 @@ public abstract class FormGenerator {
 
     /**
      * Generates the PostScript code for the PaintProc of the form.
-     * 
+     *
      * @param gen
      *            the PostScript generator
      * @throws IOException
@@ -91,12 +91,11 @@ public abstract class FormGenerator {
     /**
      * Generates some PostScript code right after the form definition (used
      * primarily for bitmap data).
-     * 
+     *
      * @param gen
      *            the PostScript generator
      * @throws IOException
      */
-    @SuppressWarnings("unused")
     protected void generateAdditionalDataStream(final PSGenerator gen)
             throws IOException {
         // nop
@@ -104,7 +103,7 @@ public abstract class FormGenerator {
 
     /**
      * Returns the matrix for use in the form.
-     * 
+     *
      * @return the matrix
      */
     protected AffineTransform getMatrix() {
@@ -113,7 +112,7 @@ public abstract class FormGenerator {
 
     /**
      * Returns the form's bounding box.
-     * 
+     *
      * @return the form's bounding box
      */
     protected Rectangle2D getBBox() {
@@ -123,7 +122,7 @@ public abstract class FormGenerator {
 
     /**
      * Generates the PostScript form.
-     * 
+     *
      * @param gen
      *            the PostScript generator
      * @return a PSResource instance representing the form

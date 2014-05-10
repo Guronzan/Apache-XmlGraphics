@@ -34,7 +34,7 @@ public final class DateFormatUtil {
     /**
      * Formats the date according to PDF format. See section 3.8.2 of the PDF
      * 1.4 specification.
-     * 
+     *
      * @param date
      *            The date time to format
      * @param timeZone
@@ -49,7 +49,7 @@ public final class DateFormatUtil {
 
     /**
      * Formats the date according to ISO 8601 standard.
-     * 
+     *
      * @param date
      *            The date time to format
      * @param timeZone
@@ -73,7 +73,7 @@ public final class DateFormatUtil {
     /**
      * Formats the date according to the specified format and returns as a
      * string.
-     * 
+     *
      * @param date
      *            The date / time object to format
      * @param dateFormat
@@ -151,7 +151,7 @@ public final class DateFormatUtil {
 
     /**
      * Parses an ISO 8601 date and time value.
-     * 
+     *
      * @param date
      *            the date and time value as an ISO 8601 string
      * @return the parsed date/time

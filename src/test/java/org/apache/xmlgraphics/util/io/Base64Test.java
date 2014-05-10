@@ -27,10 +27,14 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
 import junit.framework.TestCase;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 /**
@@ -74,25 +78,27 @@ public class Base64Test extends TestCase {
                         inIS = new Base64DecodeStream(inIS);
                     }
 
-                    final int mismatch = compareStreams(inIS, refIS,
+                    final boolean mismatch = compareStreams(inIS, refIS,
                             action.equals("ENCODE"));
 
-                    if (mismatch != -1) {
+                    if (!mismatch) {
                         fail("Wrong result");
                     }
                 }
             }
+        } finally {
+            IOUtils.closeQuietly(inIS);
         }
     }
 
     private void innerBase64Test(final String action, final String in,
             final String ref) throws MalformedURLException, IOException {
-        final String baseURL = "file:test/resources/org/apache/xmlgraphics/util/io/";
-        innerBase64Test(action, new URL(baseURL + in), new URL(baseURL + ref));
+        innerBase64Test(action, getClass().getResource(in), getClass()
+                .getResource(ref));
     }
 
     private void innerBase64Test(final String in) throws MalformedURLException,
-            IOException {
+    IOException {
         innerBase64Test("ROUND", in, in);
     }
 
@@ -106,7 +112,7 @@ public class Base64Test extends TestCase {
     /**
      * This method will only throw exceptions if some aspect of the test's
      * internal operation fails.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -127,113 +133,40 @@ public class Base64Test extends TestCase {
     /**
      * Returns true if the contents of <tt>is1</tt> match the contents of
      * <tt>is2</tt>
+     *
+     * @throws IOException
      */
-    public static int compareStreams(final InputStream is1,
-            final InputStream is2, final boolean skipws) {
-        final byte[] data1 = new byte[100];
-        final byte[] data2 = new byte[100];
-        int off1 = 0;
-        int off2 = 0;
-        int idx = 0;
+    public static boolean compareStreams(final InputStream i1,
+            final InputStream i2, final boolean skipws) throws IOException {
+        try (final ReadableByteChannel ch1 = Channels.newChannel(i1)) {
+            try (final ReadableByteChannel ch2 = Channels.newChannel(i2)) {
 
-        try {
-            while (true) {
-                int len1 = is1.read(data1, off1, data1.length - off1);
-                int len2 = is2.read(data2, off2, data2.length - off2);
+                final ByteBuffer buf1 = ByteBuffer.allocateDirect(1024);
+                final ByteBuffer buf2 = ByteBuffer.allocateDirect(1024);
 
-                if (off1 != 0) {
-                    if (len1 == -1) {
-                        len1 = off1;
-                    } else {
-                        len1 += off1;
-                    }
-                }
+                while (true) {
 
-                if (off2 != 0) {
-                    if (len2 == -1) {
-                        len2 = off2;
-                    } else {
-                        len2 += off2;
-                    }
-                }
+                    final int n1 = ch1.read(buf1);
+                    final int n2 = ch2.read(buf2);
 
-                if (len1 == -1) {
-                    if (len2 == -1) {
-                        break; // Both done...
+                    if (n1 == -1 || n2 == -1) {
+                        return n1 == n2;
                     }
 
-                    // Only is1 is done...
-                    if (!skipws) {
-                        return idx;
-                    }
+                    buf1.flip();
+                    buf2.flip();
 
-                    // check if the rest of is2 is whitespace...
-                    for (int i2 = 0; i2 < len2; i2++) {
-                        if (data2[i2] != '\n' && data2[i2] != '\r'
-                                && data2[i2] != ' ') {
-                            return idx + i2;
+                    for (int i = 0; i < Math.min(n1, n2); i++) {
+                        if (buf1.get() != buf2.get()) {
+                            return false;
                         }
                     }
-                    off1 = off2 = 0;
-                    continue;
-                }
 
-                if (len2 == -1) {
-                    // Only is2 is done...
-                    if (!skipws) {
-                        return idx;
-                    }
-
-                    // Check if rest of is1 is whitespace...
-                    for (int i1 = 0; i1 < len1; i1++) {
-                        if (data1[i1] != '\n' && data1[i1] != '\r'
-                                && data1[i1] != ' ') {
-                            return idx + i1;
-                        }
-                    }
-                    off1 = off2 = 0;
-                    continue;
+                    buf1.compact();
+                    buf2.compact();
                 }
-
-                int i1 = 0;
-                int i2 = 0;
-                while (i1 < len1 && i2 < len2) {
-                    if (skipws) {
-                        if (data1[i1] == '\n' || data1[i1] == '\r'
-                                || data1[i1] == ' ') {
-                            i1++;
-                            continue;
-                        }
-                        if (data2[i2] == '\n' || data2[i2] == '\r'
-                                || data2[i2] == ' ') {
-                            i2++;
-                            continue;
-                        }
-                    }
-                    if (data1[i1] != data2[i2]) {
-                        return idx + i2;
-                    }
-
-                    i1++;
-                    i2++;
-                }
-
-                if (i1 != len1) {
-                    System.arraycopy(data1, i1, data1, 0, len1 - i1);
-                }
-                if (i2 != len2) {
-                    System.arraycopy(data2, i2, data2, 0, len2 - i2);
-                }
-                off1 = len1 - i1;
-                off2 = len2 - i2;
-                idx += i2;
             }
-        } catch (final IOException ioe) {
-            log.error("Exception", ioe);
-            return idx;
         }
-
-        return -1;
     }
 
     static class StreamCopier extends Thread {

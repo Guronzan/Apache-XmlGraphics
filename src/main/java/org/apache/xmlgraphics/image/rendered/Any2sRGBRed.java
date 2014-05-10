@@ -124,7 +124,7 @@ public class Any2sRGBRed extends AbstractRed {
     static {
         final double scale = 1.0 / 255;
         final double exp = 1.0 / GAMMA;
-        // System.out.print("L2S: ");
+        // log.info("L2S: ");
         for (int i = 0; i < 256; ++i) {
             double value = i * scale;
             if (value <= 0.0031308) {
@@ -134,7 +134,7 @@ public class Any2sRGBRed extends AbstractRed {
             }
 
             linearToSRGBLut[i] = (int) Math.round(value * 255.);
-            // System.out.print(linearToSRGBLut[i] + ",");
+            // log.info(linearToSRGBLut[i] + ",");
         }
         // log.info("");
     }

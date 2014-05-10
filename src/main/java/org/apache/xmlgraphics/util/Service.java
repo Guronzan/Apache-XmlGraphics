@@ -159,11 +159,10 @@ public final class Service {
         try {
             e = cl.getResources(getServiceFilename(cls));
         } catch (final IOException ioe) {
-            log.error("Exception", ioe);
             return l;
         }
 
-        while (e.hasMoreElements()) {
+        while (true) {
             try {
                 final URL u = e.nextElement();
 
@@ -191,8 +190,8 @@ public final class Service {
                     IOUtils.closeQuietly(is);
                 }
             } catch (final Exception ex) {
-                log.error("Exception", ex);
                 // Just try the next file...
+                break;
             }
         }
         return l;
